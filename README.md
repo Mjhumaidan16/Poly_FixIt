@@ -84,10 +84,10 @@ This project follows a **user-centered design approach**, moving through researc
 
 ## 📂 Project Structure  
 ├── **DesignDocument.pdf** # Background research, feature list, mockups  <br>
-├── **Prototype.fig/.xd** # High-fidelity prototype (Figma/Adobe XD)
-├── **Screenshots/** # Mockups and app preview
-├── **SourceCode/** # Swift iOS source files
-├── **README.md** # Project documentation (this file)
+├── **Prototype.fig/.xd** # High-fidelity prototype (Figma/Adobe XD)  <br>
+├── **Screenshots/** # Mockups and app preview  <br>
+├── **SourceCode/** # Swift iOS source files <br>
+├── **README.md** # Project documentation (this file)  <br>
 
 
 
