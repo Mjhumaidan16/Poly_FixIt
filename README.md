@@ -77,7 +77,7 @@ This project follows a **user-centered design approach**, moving through researc
 - **Language/Framework:** Swift (Xcode 15/16)  
 - **Target Platform:** iOS 17+  
 - **Prototyping Tools:** Figma / Adobe XD  
-- **Database:** Core Data / SQLite (extendable to cloud backend)  
+- **Database:** MongoDB Atlas  
 - **Notifications:** Local + Push Notifications  
 
 ---
