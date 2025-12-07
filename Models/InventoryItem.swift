@@ -1,5 +1,5 @@
 //
-//  UserModel.swift
+//  InventoryItem.swift
 //  
 //
 //  Created by BP-36-201-16 on 05/12/2025.
