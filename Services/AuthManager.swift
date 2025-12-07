@@ -1,8 +1,8 @@
 //
-// AuthManager.swift
-// PolyFixit
+//  AuthManager.swift
+//  
 //
-// Created by Manus AI on 2025/12/07.
+//  Created by BP-36-201-16 on 06/12/2025.
 //
 
 import Foundation
