@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="s0d-6b-0kx">
+            <objects>
+                <viewController id="Y6W-OH-hqX" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5EZ-qb-Rvc">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="70W-0F-Squ">
+                                <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bgp-2m-0Vh">
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="1500"/>
+                                        <subviews>
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="K7R-Vc-LkR">
+                                                <rect key="frame" x="8" y="88" width="377" height="32"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="backgroundColor" red="0.074509806930000005" green="0.1411764771" blue="0.25098040700000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <segments>
+                                                    <segment title="Main"/>
+                                                    <segment title="Rating"/>
+                                                    <segment title="Ai Chatbot"/>
+                                                    <segment title="Escalation"/>
+                                                </segments>
+                                                <color key="selectedSegmentTintColor" red="0.1647058874" green="0.22745099660000001" blue="0.37254902719999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            </segmentedControl>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bhg-FH-fEJ">
+                                                <rect key="frame" x="8" y="127" width="106" height="39"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="filled" title="Date">
+                                                    <color key="baseBackgroundColor" red="0.074509806930000005" green="0.1411764771" blue="0.25098040700000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                </buttonConfiguration>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="318-8H-Mbd">
+                                                <rect key="frame" x="122" y="127" width="106" height="39"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="filled" title="Category">
+                                                    <color key="baseBackgroundColor" red="0.074509806930000005" green="0.1411764771" blue="0.25098040700000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                </buttonConfiguration>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lhh-bV-ffz">
+                                                <rect key="frame" x="236" y="127" width="106" height="39"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="filled" title="Location">
+                                                    <color key="baseBackgroundColor" red="0.074509806930000005" green="0.1411764771" blue="0.25098040700000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                </buttonConfiguration>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="48N-Bc-yBl">
+                                                <rect key="frame" x="350" y="127" width="106" height="39"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="filled" title="Technician">
+                                                    <color key="baseBackgroundColor" red="0.074509806930000005" green="0.1411764771" blue="0.25098040700000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                </buttonConfiguration>
+                                            </button>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="Screenshot 2025-12-13 at 7.32.21 PM" translatesAutoresizingMaskIntoConstraints="NO" id="80B-gn-SWr">
+                                                <rect key="frame" x="41" y="500" width="310" height="357"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="Screenshot 2025-12-13 at 7.01.43 PM" translatesAutoresizingMaskIntoConstraints="NO" id="Nzk-c2-A9U">
+                                                <rect key="frame" x="41" y="174" width="310" height="318"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="Screenshot 2025-12-13 at 8.16.49 PM" translatesAutoresizingMaskIntoConstraints="NO" id="MJh-Mz-PWi">
+                                                <rect key="frame" x="41" y="865" width="310" height="317"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="Screenshot 2025-12-13 at 8.17.12 PM" translatesAutoresizingMaskIntoConstraints="NO" id="Vx9-ah-Bns">
+                                                <rect key="frame" x="41" y="1193" width="310" height="307"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="bell" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="hy5-pb-EU8">
+                                                <rect key="frame" x="355" y="35" width="19" height="21"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </imageView>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="17b534d9-758c-4ff9-8f46-c7a27787af2e_removalai_preview" translatesAutoresizingMaskIntoConstraints="NO" id="15q-lA-huX">
+                                                <rect key="frame" x="149" y="-8" width="95" height="107"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" red="0.1647058874" green="0.22745099660000001" blue="0.37254902719999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="1500" id="eh7-cO-5cN"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="Bgp-2m-0Vh" firstAttribute="leading" secondItem="70W-0F-Squ" secondAttribute="leading" id="2w2-8H-2p1"/>
+                                    <constraint firstAttribute="bottom" secondItem="Bgp-2m-0Vh" secondAttribute="bottom" id="bTy-qJ-MeL"/>
+                                    <constraint firstAttribute="trailing" secondItem="Bgp-2m-0Vh" secondAttribute="trailing" id="k8X-hU-LLn"/>
+                                    <constraint firstItem="Bgp-2m-0Vh" firstAttribute="top" secondItem="70W-0F-Squ" secondAttribute="top" id="s7q-Tr-7RC"/>
+                                </constraints>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="vDu-zF-Fre"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="70W-0F-Squ" firstAttribute="top" secondItem="5EZ-qb-Rvc" secondAttribute="top" id="9ZC-Rj-R08"/>
+                            <constraint firstAttribute="bottom" secondItem="70W-0F-Squ" secondAttribute="bottom" id="Thj-wl-9Mr"/>
+                            <constraint firstItem="70W-0F-Squ" firstAttribute="leading" secondItem="vDu-zF-Fre" secondAttribute="leading" id="XQe-iu-Pvu"/>
+                            <constraint firstItem="Bgp-2m-0Vh" firstAttribute="height" secondItem="5EZ-qb-Rvc" secondAttribute="height" multiplier="1.76056" id="Xjx-Jm-2Ps"/>
+                            <constraint firstItem="Bgp-2m-0Vh" firstAttribute="width" secondItem="5EZ-qb-Rvc" secondAttribute="width" id="gbH-Tl-BQc"/>
+                            <constraint firstItem="70W-0F-Squ" firstAttribute="trailing" secondItem="vDu-zF-Fre" secondAttribute="trailing" id="i1k-xf-iL5"/>
+                        </constraints>
+                    </view>
+                    <size key="freeformSize" width="393" height="852"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ief-a0-LHa" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="29.770992366412212" y="3.5211267605633805"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="17b534d9-758c-4ff9-8f46-c7a27787af2e_removalai_preview" width="370" height="370"/>
+        <image name="Screenshot 2025-12-13 at 7.01.43 PM" width="446" height="452"/>
+        <image name="Screenshot 2025-12-13 at 7.32.21 PM" width="460" height="522"/>
+        <image name="Screenshot 2025-12-13 at 8.16.49 PM" width="462" height="464"/>
+        <image name="Screenshot 2025-12-13 at 8.17.12 PM" width="462" height="462"/>
+        <image name="bell" catalog="system" width="125" height="128"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
