@@ -1,6 +1,6 @@
 //
 //  AppDelegate.swift
-//  PolyFixit
+//  PolyFixIt
 //
 //  Created by BP-36-201-19 on 13/12/2025.
 //
