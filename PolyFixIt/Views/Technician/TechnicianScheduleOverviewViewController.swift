@@ -10,10 +10,10 @@ import UIKit
 class TechnicianScheduleOverviewViewController: UIViewController {
 
     
-    @IBOutlet var DatePickerView: UIView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        DatePickerView.layer.cornerRadius = 10
+        
     }
 
 
