@@ -140,36 +140,30 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kSV-3g-ilL">
+                                    <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kSV-3g-ilL">
                                         <rect key="frame" x="36" y="20" width="320" height="318"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <subviews>
-                                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" style="inline" translatesAutoresizingMaskIntoConstraints="NO" id="2Py-lr-x7a">
+                                            <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" style="inline" translatesAutoresizingMaskIntoConstraints="NO" id="2Py-lr-x7a">
                                                 <rect key="frame" x="0.0" y="0.0" width="320" height="326"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             </datePicker>
                                         </subviews>
                                         <color key="backgroundColor" red="0.3762207031" green="0.4367675781" blue="0.5541992188" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <constraints>
-                                            <constraint firstItem="2Py-lr-x7a" firstAttribute="top" secondItem="kSV-3g-ilL" secondAttribute="top" id="Ag8-ox-Tu3"/>
-                                            <constraint firstItem="2Py-lr-x7a" firstAttribute="leading" secondItem="kSV-3g-ilL" secondAttribute="leading" id="xRz-4g-4Su"/>
-                                        </constraints>
                                     </view>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="O7W-SQ-fTP" firstAttribute="top" secondItem="AH4-jC-BLh" secondAttribute="bottom" constant="22" id="0Y2-ud-pG5"/>
-                                    <constraint firstItem="kSV-3g-ilL" firstAttribute="trailing" secondItem="rAo-Rv-jPg" secondAttribute="trailing" id="80N-hM-H8V"/>
                                     <constraint firstItem="rAo-Rv-jPg" firstAttribute="trailing" secondItem="AH4-jC-BLh" secondAttribute="trailing" id="BOT-vd-5n2"/>
                                     <constraint firstItem="AH4-jC-BLh" firstAttribute="top" secondItem="rAo-Rv-jPg" secondAttribute="bottom" constant="47" id="CCx-zL-JfJ"/>
                                     <constraint firstItem="rAo-Rv-jPg" firstAttribute="top" secondItem="XSB-8P-4jH" secondAttribute="bottom" constant="8" symbolic="YES" id="E9T-eo-uoa"/>
                                     <constraint firstItem="TsS-fK-bne" firstAttribute="trailing" secondItem="XSB-8P-4jH" secondAttribute="trailing" constant="72" id="HoV-yr-8rn"/>
                                     <constraint firstAttribute="trailing" secondItem="XSB-8P-4jH" secondAttribute="trailing" constant="72" id="ISl-nd-nvw"/>
-                                    <constraint firstItem="kSV-3g-ilL" firstAttribute="top" secondItem="TsS-fK-bne" secondAttribute="top" constant="20" id="JP2-OA-mF5"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="500" id="O7O-jD-WB6"/>
                                     <constraint firstItem="AH4-jC-BLh" firstAttribute="leading" secondItem="O7W-SQ-fTP" secondAttribute="leading" id="TbR-ik-l2E"/>
                                     <constraint firstItem="XSB-8P-4jH" firstAttribute="leading" secondItem="TsS-fK-bne" secondAttribute="leading" constant="33" id="WAy-ep-m4Y"/>
                                     <constraint firstAttribute="height" constant="600" id="bqa-ye-PG9"/>
-                                    <constraint firstItem="XSB-8P-4jH" firstAttribute="top" secondItem="kSV-3g-ilL" secondAttribute="bottom" constant="19" id="fGq-vS-4fR"/>
                                     <constraint firstItem="rAo-Rv-jPg" firstAttribute="leading" secondItem="AH4-jC-BLh" secondAttribute="leading" id="gYl-i8-2sO"/>
-                                    <constraint firstItem="kSV-3g-ilL" firstAttribute="leading" secondItem="rAo-Rv-jPg" secondAttribute="leading" id="kty-a6-BIa"/>
                                     <constraint firstItem="AH4-jC-BLh" firstAttribute="trailing" secondItem="O7W-SQ-fTP" secondAttribute="trailing" id="rfB-6a-ihz"/>
                                     <constraint firstAttribute="bottom" secondItem="AH4-jC-BLh" secondAttribute="bottom" constant="115" id="vuw-Se-MHM"/>
                                 </constraints>
