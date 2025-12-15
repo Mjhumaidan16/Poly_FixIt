@@ -9,38 +9,42 @@
 import UIKit
 import FirebaseFirestore
 
-class RequsetViewController: UIViewController {
+class RequsetViewController: UIViewController{
     
     // MARK: - IBOutlets for Text Fields and Button
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
-    @IBOutlet weak var locationTextField: UITextField!
-    //@IBOutlet weak var categoryTextField: UITextField!
+    @IBOutlet weak var categoryPickerView: UIPickerView!
+    @IBOutlet weak var locationPickerView: UIPickerView!
     @IBOutlet weak var submitButton: UIButton!
     
     // Firestore reference
     private let db = Firestore.firestore()
     
-    // Example of custom keyboard
+    private var categories: [String] = []
+    private var locations: [String] = []
+    
+    //custom keyboard
     private var customKeyboard: UIView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+           
         // Safe unwrapping example
-        if titleTextField == nil || descriptionTextField == nil || locationTextField == nil {
+        if titleTextField == nil || descriptionTextField == nil{
             print("One or more are not connected properly!")
             // Optionally, set up the custom keyboard here if needed
         }
     }
+
+
     
     // MARK: - IBAction for Submit Button
     @IBAction func submitButtonTapped(_ sender: UIButton) {
         print("Submit button tapped!")  // Add logging here
         
         guard let title = titleTextField.text, !title.isEmpty,
-              let description = descriptionTextField.text, !description.isEmpty,
-              let location = locationTextField.text, !location.isEmpty else {
+              let description = descriptionTextField.text, !description.isEmpty else {
             showAlert(message: "Please fill in all fields.")
             return
         }
@@ -55,7 +59,7 @@ class RequsetViewController: UIViewController {
         let newRequest = RequestCreateDTO(
             title: title,
             description: description,
-            location: location,
+            location: "",
             categoryIndex: 0,
             priorityIndex: 0,
             submittedBy: userRef
