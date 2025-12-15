@@ -8,14 +8,23 @@
 import Foundation
 import FirebaseFirestore
 
+import Foundation
+import FirebaseFirestore
+
 struct Request {
-    var title: String
     var description: String
     var location: String
-    var categoryIndex: Int
-    var priorityIndex: Int
-    var submittedBy: String  // User's ID or email or something that identifies the user
-    
+    var category: [String]  // List of categories like IT, Plumbing, etc.
+    var priorityLevel: [String]  // List of priority levels like high, medium, low
+    var status: [String]  // List of possible status values
+    var assignedAt: Date?  // Timestamp when assigned
+    var assignedTechnician: DocumentReference?  // Reference to the assigned technician
+    var duplicateFlag: Bool  // Flag to mark duplicate requests
+    var image: String?  // Reference to the image stored in storage
+    var relatedTickets: [DocumentReference]  // References to related tickets
+    var requestTitle: String  // Title for the request
+    var submittedBy: DocumentReference  // Reference to the user who submitted the request
+
     // Initializer for creating a Request from Firestore Document
     init?(document: QueryDocumentSnapshot) {
         let data = document.data()
@@ -23,18 +32,33 @@ struct Request {
         guard let title = data["title"] as? String,
               let description = data["description"] as? String,
               let location = data["location"] as? String,
-              let categoryIndex = data["categoryIndex"] as? Int,
-              let priorityIndex = data["priorityIndex"] as? Int,
-              let submittedBy = data["submittedBy"] as? String else { return nil }
+              let category = data["category"] as? [String],
+              let priorityLevel = data["priorityLevel"] as? [String],
+              let status = data["status"] as? [String],
+              let assignedAtTimestamp = data["assignedAt"] as? Timestamp,
+              let assignedTechnician = data["assignedTechnician"] as? DocumentReference,
+              let duplicateFlag = data["duplicateFlag"] as? Bool,
+              let image = data["image"] as? String,
+              let relatedTickets = data["relatedTickets"] as? [DocumentReference],
+              let requestTitle = data["requestTitle"] as? String,
+              let submittedBy = data["submittedBy"] as? DocumentReference else { return nil }
         
-        self.title = title
+        
         self.description = description
         self.location = location
-        self.categoryIndex = categoryIndex
-        self.priorityIndex = priorityIndex
+        self.category = category
+        self.priorityLevel = priorityLevel
+        self.status = status
+        self.assignedAt = assignedAtTimestamp.dateValue()
+        self.assignedTechnician = assignedTechnician
+        self.duplicateFlag = duplicateFlag
+        self.image = image
+        self.relatedTickets = relatedTickets
+        self.requestTitle = requestTitle
         self.submittedBy = submittedBy
     }
 }
+
 
 
 // Data Transfer Object (DTO) for creating a new request

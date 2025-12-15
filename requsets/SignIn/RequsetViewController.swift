@@ -14,8 +14,7 @@ class RequsetViewController: UIViewController{
     // MARK: - IBOutlets for Text Fields and Button
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
-    @IBOutlet weak var categoryPickerView: UIPickerView!
-    @IBOutlet weak var locationPickerView: UIPickerView!
+    //@IBOutlet weak var locationPickerView: UIPickerView!
     @IBOutlet weak var submitButton: UIButton!
     
     // Firestore reference
