@@ -15,7 +15,7 @@ struct Request2 {
     let id: String
     let title: String
     let description: String
-    let location: [String: Any] // Assuming the location is a dictionary/map
+    let location: [String] // Assuming the location is a array
     let category: [String]
     let priorityLevel: [String]
     let assignedTechnician: DocumentReference
@@ -24,11 +24,7 @@ struct Request2 {
     let acceptanceTime: Timestamp
     let assignedAt: Timestamp
     let duplicateFlag: Bool
-    let imageReference: String?
-
-    let building: [String]
-    let campus: [String]
-    let room: [String]
+    let imageUrl: String?
 
     init?(document: QueryDocumentSnapshot) {
         let data = document.data()
@@ -48,13 +44,10 @@ struct Request2 {
             return nil
         }
         
-        let imageReference = data["image"] as? String
+        let imageUrl = data["image"] as? String
         
-        // Extract building, campus, and room from the location map
-        let location = data["location"] as? [String: Any] ?? [:]
-        let building = location["building"] as? [String] ?? []
-        let campus = location["campus"] as? [String] ?? []
-        let room = location["room"] as? [String] ?? []
+        // Extract location array: [Campus, Building, Room]
+                let location = data["location"] as? [String] ?? []
 
            self.id = document.documentID
            self.title = title
@@ -67,10 +60,7 @@ struct Request2 {
            self.acceptanceTime = acceptanceTime
            self.assignedAt = assignedAt
            self.duplicateFlag = duplicateFlag
-           self.imageReference = imageReference
-           self.building = building
-           self.campus = campus
-           self.room = room
+           self.imageUrl = imageUrl
            self.location = location
     }
 }
@@ -85,16 +75,30 @@ struct RequestCreateDTO2 {
     let categoryIndex: Int
     let priorityIndex: Int
     let submittedBy: DocumentReference
+    let imageUrl: String
+    let assignedTechnician: DocumentReference? = nil
+    let relatedTickets: [DocumentReference] = []
+    let status: [String] = []
+    let acceptanceTime: Timestamp = Timestamp()
+    let assignedAt: Timestamp = Timestamp()
+    let duplicateFlag: Bool = false
 
     func toDictionary() -> [String: Any] {
         [
             "title": title,
-            "description": description,
-            "location": location,
-            "categoryIndex": categoryIndex,
-            "priorityIndex": priorityIndex,
-            "submittedBy": submittedBy,
-            "createdAt": Timestamp()
+                 "description": description,
+                 "location": location,  // Save the location as a 3-element array
+                 "categoryIndex": categoryIndex,
+                 "priorityIndex": priorityIndex,
+                 "submittedBy": submittedBy,
+                 "imageUrl": imageUrl,
+                 "assignedTechnician": assignedTechnician as Any,  // Optional can be nil
+                 "relatedTickets": relatedTickets,
+                 "status": "Pending",
+                 "acceptanceTime": acceptanceTime,
+                 "assignedAt": assignedAt,
+                 "duplicateFlag": duplicateFlag,
+                 "createdAt": Timestamp()
         ]
     }
 }
@@ -159,5 +163,31 @@ final class RequestManager2 {
             }
         }
     }
+    
+    // MARK: - Fetch a Single Request
+        func fetchRequest(forRequestId requestId: String, completion: @escaping (Request2?) -> Void) {
+            db.collection("requests").document(requestId).getDocument { documentSnapshot, error in
+                if let error = error {
+                    print("Error fetching request: \(error)")
+                    completion(.failure(error))
+                    return
+                }
+
+                // Map Firestore document to Request2 model
+                guard let request = documentSnapshot else {
+                    completion(.failure(NSError(domain: "FirestoreError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Document not found."])))
+                    return
+                }
+
+                // Ensure the request status is "pending"
+                if request?.status == "pending" {
+                    completion(request) // Return the request if status is pending
+                } else {
+                    print("This request cannot be edited because its status is not 'pending'.")
+                    completion(nil)
+                }
+            }
+        }
+
 }
 

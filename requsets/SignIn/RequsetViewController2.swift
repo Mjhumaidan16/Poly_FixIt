@@ -1,8 +1,12 @@
 import UIKit
 import FirebaseFirestore
 import FirebaseAuth
+import Cloudinary
 
-final class RequestViewController2: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+private var uploadedImageUrl: String?
+private let uploadPreset = "iOS_requests_preset" // Cloudinary upload preset
+
+final class RequestViewController2: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     // MARK: - IBOutlets
     @IBOutlet weak var titleTextField: UITextField!
@@ -11,10 +15,25 @@ final class RequestViewController2: UIViewController, UIPickerViewDelegate, UIPi
     @IBOutlet weak var campusPickerView: UIPickerView!
     @IBOutlet weak var buildingPickerView: UIPickerView!
     @IBOutlet weak var roomPickerView: UIPickerView!
+    @IBOutlet weak var imageView: UIImageView!      // The single image view used for both selecting and displaying the image
     @IBOutlet weak var submitButton: UIButton!
 
     // MARK: - Properties
     private let db = Firestore.firestore()
+    private var uploadedImagePublicId: String?
+
+    
+    // Hardcoded data for campuses, buildings, and rooms
+      private let campusData: [String: [String: [String]]] = [
+          "campusA": [
+              "buildings": ["19", "36", "25"],
+              "rooms": ["100", "110", "200", "210"]
+          ],
+          "campusB": [
+              "buildings": ["20", "25"],
+              "rooms": ["100", "200", "300"]
+          ]
+      ]
     
     private var categories: [String] = []
     private var campus: [String] = []
@@ -26,6 +45,8 @@ final class RequestViewController2: UIViewController, UIPickerViewDelegate, UIPi
     private var selectedCampus: String?
     private var selectedBuilding: String?
     private var selectedRoom: String?
+    
+    private var uploadedImageUrl: String?
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -39,19 +60,22 @@ final class RequestViewController2: UIViewController, UIPickerViewDelegate, UIPi
         roomPickerView.delegate = self
         roomPickerView.dataSource = self
         
-        // Initialize default selections (optional)
-        selectedCampus = campus.first
-        selectedBuilding = building.first // Default building, for example
-        selectedRoom = room.first // Default room, for example
+        // Load campus data and set default campus (Campus A)
+             campus = Array(campusData.keys)  // Get all campus names
+             selectedCampus = campus.first    // Default to the first campus, "campusA"
+             
+             loadBuildingsAndRooms(forCampus: selectedCampus!)
 
         // Reload pickers initially
         campusPickerView.reloadAllComponents()
         buildingPickerView.reloadAllComponents()
         roomPickerView.reloadAllComponents()
         
-        // Fetch location data and shared settings
-        fetchLocations()
         fetchSharedSettings() // Fetch shared settings from the "requests/001" document
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
+              imageView.addGestureRecognizer(tapGesture)
+              imageView.isUserInteractionEnabled = true  // Make sure the imageView is interactive
     }
 
     // MARK: - Fetch Shared Settings (from "requests/001" document)
@@ -67,7 +91,7 @@ final class RequestViewController2: UIViewController, UIPickerViewDelegate, UIPi
                 print("No shared settings found in 'requests/001'.")
                 return
             }
-
+            
             // Fetch categories, campuses, buildings, and rooms
             if let categories = data["category"] as? [String] {
                 self.categories = categories
@@ -75,49 +99,28 @@ final class RequestViewController2: UIViewController, UIPickerViewDelegate, UIPi
                 print("Categories not found in 'requests/001'.")
             }
             
-            // Safely access the 'location' dictionary and fetch campuses, buildings, and rooms
-                    if let location = data["location"] as? [String: Any] {
-                        // Fetch campuses
-                        if let campuses = location["campus"] as? [String] {
-                            self.campus = campuses
-                        } else {
-                            print("Campuses not found in 'requests/001'.")
-                        }
-
-                        // Fetch buildings
-                        if let buildings = location["building"] as? [String] {
-                            self.building = buildings
-                            print(buildings)
-                        } else {
-                            print("Buildings not found in 'requests/001'.")
-                        }
-
-                        // Fetch rooms
-                        if let rooms = location["room"] as? [String] {
-                            self.room = rooms
-                            print(rooms)
-                        } else {
-                            print("Rooms not found in 'requests/001'.")
-                        }
-                    } else {
-                        print("Location data is missing or incorrectly formatted.")
-                    }
-
-
-            // Reload the pickers with the fetched data
-            DispatchQueue.main.async {
-                // Print the data to confirm everything is loaded
-                 print("Campuses: \(self.campus)")
-                 print("Buildings: \(self.building)")
-                 print("Rooms: \(self.room)")
-                
-                self.campusPickerView.reloadAllComponents()
-                self.buildingPickerView.reloadAllComponents()
-                self.roomPickerView.reloadAllComponents()
-                self.setupCategoryMenu() // Setup category button after loading categories
-            }
+            self.setupCategoryMenu() // Setup category button after loading categories
         }
     }
+    
+    // MARK: - Load buildings and rooms based on selected campus
+        private func loadBuildingsAndRooms(forCampus campus: String) {
+            guard let campusInfo = campusData[campus] else { return }
+            
+            // Get buildings and rooms for the selected campus
+            self.building = campusInfo["buildings"] ?? []
+            self.room = campusInfo["rooms"] ?? []
+            
+            // Set default building and room (optional)
+            self.selectedBuilding = building.first
+            self.selectedRoom = room.first
+            
+            // Reload building and room pickers
+            DispatchQueue.main.async {
+                self.buildingPickerView.reloadAllComponents()
+                self.roomPickerView.reloadAllComponents()
+            }
+        }
 
     // MARK: - UIPickerView DataSource
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -146,36 +149,94 @@ final class RequestViewController2: UIViewController, UIPickerViewDelegate, UIPi
 
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if pickerView == campusPickerView {
-            selectedCampus = campus[row]
-            print("Selected Campus:",selectedCampus)  // Debugging
-            fetchBuildings(forCampus: selectedCampus!)
-        } else if pickerView == buildingPickerView {
-            selectedBuilding = building[row]
-            print("Selected Building: \(selectedBuilding)")  // Debugging
-            fetchRooms(forBuilding: selectedBuilding!)
-        } else if pickerView == roomPickerView {
-            selectedRoom = room[row]
-            print("Selected Room: \(selectedRoom)")  // Debugging
+            if pickerView == campusPickerView {
+                selectedCampus = campus[row]
+                print("Selected Campus:", selectedCampus)
+                loadBuildingsAndRooms(forCampus: selectedCampus!)
+            } else if pickerView == buildingPickerView {
+                selectedBuilding = building[row]
+                print("Selected Building:", selectedBuilding)
+            } else if pickerView == roomPickerView {
+                selectedRoom = room[row]
+                print("Selected Room:", selectedRoom)
+            }
+         }
+    
+    
+    // MARK: - Image View Tap Action
+        @objc func imageViewTapped() {
+            let picker = UIImagePickerController()
+            picker.delegate = self
+            picker.sourceType = .photoLibrary
+            picker.allowsEditing = false
+            present(picker, animated: true) // Present the image picker
         }
+
+        // MARK: - UIImagePickerControllerDelegate
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            picker.dismiss(animated: true)
+
+            // Retrieve the selected image
+            guard let selectedImage = info[.originalImage] as? UIImage else { return }
+            
+            // Set the selected image to the imageView
+            imageView.image = selectedImage
+
+            // Optionally upload to Cloudinary
+            uploadToCloudinary(image: selectedImage)
+        }
+
+    // MARK: - Upload to Cloudinary (using unsigned upload preset)
+    private func uploadToCloudinary(image: UIImage) {
+        guard let data = image.jpegData(compressionQuality: 0.8) else { return }
+
+        // Cloudinary Unsigned Upload
+        AppDelegate.cloudinary.createUploader()
+            .upload(data: data, uploadPreset: uploadPreset, completionHandler: { response, error in
+                DispatchQueue.main.async {
+                    if let error = error {
+                        print("Cloudinary upload failed:", error.localizedDescription)
+                        self.showAlert("Image upload failed ❌")
+                        return
+                    }
+
+                    guard let secureUrl = response?.secureUrl else {
+                        self.showAlert("Could not get image URL")
+                        return
+                    }
+
+                    // Save the uploaded image URL
+                    self.uploadedImageUrl = secureUrl
+                    print("✅ Image uploaded to folder 'requests':", self.uploadedImageUrl!)
+                }
+            })
     }
+
 
 
     // MARK: - Submit Action
     @IBAction func submitButtonTapped(_ sender: UIButton) {
         guard validateFields() else { return }
-
-        guard let currentUser = Auth.auth().currentUser else {
-            showAlert("You must be signed in.")
-            return
+        let userId: String
+        if let currentUser = Auth.auth().currentUser{
+            //remove if and keep guard after
+            // Use real signed-in user
+               userId = currentUser.uid
+               print("Authenticated user ID:", userId)
+        }
+        else {
+            // Use mock user ID for testing
+            userId = "qFwpLWvpTNhEVNDdZ9BU"
+            print("Using mock user ID:", userId)
         }
 
         // Ensure the category index and campus are selected
         guard let selectedCategoryIndex = selectedCategoryIndex,
               let selectedCampus = selectedCampus,
               let selectedBuilding = selectedBuilding,
-              let selectedRoom = selectedRoom else {
-            showAlert("Please select both category and campus.")
+              let selectedRoom = selectedRoom,
+              let imageUrl = uploadedImageUrl else {
+            showAlert("Please complete all selections.")
             return
         }
 
@@ -189,7 +250,9 @@ final class RequestViewController2: UIViewController, UIPickerViewDelegate, UIPi
                 ],
             categoryIndex: selectedCategoryIndex,  // Use category index
             priorityIndex: 0,
-            submittedBy: db.collection("users").document(currentUser.uid) // Use current user's UID
+            submittedBy: db.collection("users").document("qFwpLWvpTNhEVNDdZ9BU"), // Use current user's UID
+            imageUrl:imageUrl
+           
         )
         
         Task {
@@ -223,106 +286,15 @@ final class RequestViewController2: UIViewController, UIPickerViewDelegate, UIPi
             children: actions
         )
     }
-
-    // MARK: - Location Setup
-    private func fetchLocations() {
-        db.collection("settings").document("location").getDocument { snapshot, error in
-            if let error = error {
-                print("Location fetch error:", error)
-                return
-            }
-
-            guard let data = snapshot?.data(),
-                  let campuses = data["campus"] as? [String] else {
-                // Fallback if campus data is missing
-                print("No location data found for campus. Using default campus.")
-                self.selectedCampus = self.campus.first
-                DispatchQueue.main.async {
-                    self.campusPickerView.reloadAllComponents()
-                }
-                return
-            }
-            self.campus = campuses
-            self.selectedCampus = self.campus.first
-
-            DispatchQueue.main.async {
-                self.campusPickerView.reloadAllComponents()
-            }
-
-            // Fetch buildings for the selected campus
-            self.fetchBuildings(forCampus: self.selectedCampus!)
-        }
-    }
-
-    func fetchBuildings(forCampus campus: String) {
-        db.collection("settings").document("location")
-            .collection(campus).document("building")
-            .getDocument { snapshot, error in
-                if let error = error {
-                    print("Building fetch error:", error)
-                    return
-                }
-
-                guard let data = snapshot?.data(),
-                      let buildings = data["building"] as? [String] else {
-                    // Fallback if building data is missing
-                    print("No building data found for \(campus). Using default building.")
-                    self.selectedBuilding = self.building.first
-
-                    DispatchQueue.main.async {
-                        self.buildingPickerView.reloadAllComponents()
-                        self.fetchRooms(forBuilding: self.selectedBuilding!)
-                    }
-                    return
-                }
-
-                self.building = buildings
-                self.selectedBuilding = self.building.first
-
-                DispatchQueue.main.async {
-                    self.buildingPickerView.reloadAllComponents()
-                    self.fetchRooms(forBuilding: self.selectedBuilding!)
-                }
-            }
-    }
-
-    func fetchRooms(forBuilding building: String) {
-        db.collection("settings").document("location")
-            .collection(selectedCampus!).document(building)
-            .getDocument { snapshot, error in
-                if let error = error {
-                    print("Room fetch error:", error)
-                    return
-                }
-
-                guard let data = snapshot?.data(),
-                      let rooms = data["room"] as? [String] else {
-                    // Fallback if room data is missing
-                    print("No room data found for \(building). Using default room.")
-                    self.selectedRoom = self.room.first
-
-                    DispatchQueue.main.async {
-                        self.roomPickerView.reloadAllComponents()
-                    }
-                    return
-                }
-
-                self.room = rooms
-                self.selectedRoom = self.room.first
-
-                DispatchQueue.main.async {
-                    self.roomPickerView.reloadAllComponents()
-                }
-            }
-    }
-
     // MARK: - Helpers
     private func validateFields() -> Bool {
         guard
             let title = titleTextField.text, !title.isEmpty,
             let description = descriptionTextField.text, !description.isEmpty,
             selectedCategoryIndex != nil,  // Validate category index
-            selectedCampus != nil
+            selectedCampus != nil,
+            selectedRoom != nil,
+            selectedBuilding != nil
         else {
             showAlert("Please fill all fields.")
             return false
@@ -339,6 +311,7 @@ final class RequestViewController2: UIViewController, UIPickerViewDelegate, UIPi
         selectedCampus = nil
         selectedBuilding = nil
         selectedRoom = nil
+        uploadedImageUrl = nil
         
         categoryButton.setTitle("Select Category", for: .normal)
         campusPickerView.reloadAllComponents()
