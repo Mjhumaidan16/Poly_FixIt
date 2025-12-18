@@ -11,7 +11,7 @@
         <!--Technician Task Details-->
         <scene sceneID="tLr-ji-OPt">
             <objects>
-                <viewController title="Technician Task Flow" id="WdH-Al-zvZ" userLabel="Technician Task Details" sceneMemberID="viewController">
+                <viewController title="Technician Task Flow" modalPresentationStyle="fullScreen" id="WdH-Al-zvZ" userLabel="Technician Task Details" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Kai-PK-dk6">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -235,6 +235,9 @@
                                                         <integer key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <segue destination="mEt-m7-lGL" kind="show" id="wob-8x-ayr"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YBG-kZ-lO3">
                                                 <rect key="frame" x="54" y="369" width="284" height="44"/>
@@ -253,6 +256,9 @@
                                                         <integer key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <segue destination="FAx-Nv-ZZR" kind="show" id="mku-ax-ORX"/>
+                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Parts needed for fixing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="STt-pD-K8D">
                                                 <rect key="frame" x="96" y="8" width="224" height="28"/>
@@ -320,6 +326,9 @@
                                             <navigationItem id="kD4-P4-QjV">
                                                 <barButtonItem key="leftBarButtonItem" image="arrow.backward" catalog="system" id="Ita-mr-DLK">
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <connections>
+                                                        <segue destination="J64-nK-SOt" kind="show" id="Y6L-fo-kTv"/>
+                                                    </connections>
                                                 </barButtonItem>
                                                 <barButtonItem key="rightBarButtonItem" image="bell.fill" catalog="system" id="qLL-HD-dpa">
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -360,6 +369,7 @@
                             <constraint firstItem="qE2-vX-zKe" firstAttribute="top" secondItem="RBg-0z-xvN" secondAttribute="bottom" id="k1Y-w9-nnT"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="tDe-aL-DiX"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SOu-Zt-Zvj" sceneMemberID="firstResponder"/>
             </objects>
@@ -368,7 +378,7 @@
         <!--Technician Task Details-->
         <scene sceneID="U9W-xL-2uK">
             <objects>
-                <viewController title="Technician Task Overview" id="wde-AM-eZz" userLabel="Technician Task Details" sceneMemberID="viewController">
+                <viewController title="Technician Task Overview" modalPresentationStyle="fullScreen" id="wde-AM-eZz" userLabel="Technician Task Details" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" ambiguous="YES" id="a3w-y4-5re">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -635,6 +645,7 @@
                             <constraint firstItem="fSB-Aw-TjU" firstAttribute="trailing" secondItem="51G-5r-klQ" secondAttribute="trailing" id="geu-jx-g9y"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="ZnD-78-oKq"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QHo-9e-frz" sceneMemberID="firstResponder"/>
             </objects>
@@ -643,7 +654,7 @@
         <!--Technician View-->
         <scene sceneID="Fu8-hW-rgS">
             <objects>
-                <viewController title="Technician Task Flow 2" id="FAx-Nv-ZZR" userLabel="Technician View" sceneMemberID="viewController">
+                <viewController title="Technician Task Flow 2" modalPresentationStyle="fullScreen" id="FAx-Nv-ZZR" userLabel="Technician View" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="N0w-bj-cXQ">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -697,6 +708,9 @@ issues, or add recommendations...</string>
                                                         <integer key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <segue destination="Qza-8V-m0a" kind="show" id="KNK-Ou-lXF"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -778,6 +792,9 @@ issues, or add recommendations...</string>
                                             <navigationItem id="wiU-W7-rvM">
                                                 <barButtonItem key="leftBarButtonItem" image="arrow.backward" catalog="system" id="cih-cW-dYa">
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <connections>
+                                                        <segue destination="WdH-Al-zvZ" kind="show" id="geF-u4-DGE"/>
+                                                    </connections>
                                                 </barButtonItem>
                                                 <barButtonItem key="rightBarButtonItem" image="bell.fill" catalog="system" id="slq-qZ-N6N">
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -818,6 +835,7 @@ issues, or add recommendations...</string>
                             <constraint firstItem="4j4-1a-6RG" firstAttribute="top" secondItem="k39-OI-a8A" secondAttribute="top" id="vnM-hu-Fit"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="gGX-2I-eJM"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Uyq-wI-RuE" sceneMemberID="firstResponder"/>
             </objects>
@@ -826,7 +844,7 @@ issues, or add recommendations...</string>
         <!--Technician View-->
         <scene sceneID="Dvz-N1-dMa">
             <objects>
-                <viewController title="Add Item For Inventory" id="mEt-m7-lGL" userLabel="Technician View" sceneMemberID="viewController">
+                <viewController title="Add Item For Inventory" modalPresentationStyle="fullScreen" id="mEt-m7-lGL" userLabel="Technician View" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="OYy-ry-511">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -869,6 +887,9 @@ issues, or add recommendations...</string>
                                                         <integer key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <segue destination="WdH-Al-zvZ" kind="show" id="5d9-9q-G1U"/>
+                                                </connections>
                                             </button>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Xue-gk-CXE">
                                                 <rect key="frame" x="40" y="94" width="315" height="132"/>
@@ -1092,6 +1113,9 @@ issues, or add recommendations...</string>
                                             <navigationItem id="kxB-4i-TTH">
                                                 <barButtonItem key="leftBarButtonItem" image="arrow.backward" catalog="system" id="hGh-Qs-2mC">
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <connections>
+                                                        <segue destination="WdH-Al-zvZ" kind="show" id="e4u-2u-KyI"/>
+                                                    </connections>
                                                 </barButtonItem>
                                                 <barButtonItem key="rightBarButtonItem" image="bell.fill" catalog="system" id="Ckq-eC-grc">
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1132,15 +1156,16 @@ issues, or add recommendations...</string>
                             <constraint firstItem="Q21-Lj-AI3" firstAttribute="top" secondItem="Q6x-3h-1vM" secondAttribute="bottom" id="zRj-tn-wVy"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="0YD-2T-Jmq"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QVT-QO-Us1" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4705" y="-4"/>
+            <point key="canvasLocation" x="1950" y="753"/>
         </scene>
         <!--Technician View-->
         <scene sceneID="zgL-Sr-cbN">
             <objects>
-                <viewController title="Technician Task Flow 3" id="Qza-8V-m0a" userLabel="Technician View" sceneMemberID="viewController">
+                <viewController title="Technician Task Flow 3" modalPresentationStyle="fullScreen" id="Qza-8V-m0a" userLabel="Technician View" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bpm-au-Sbp">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1203,6 +1228,11 @@ issues, or add recommendations...</string>
                                                             <constraint firstItem="43K-Wi-AHg" firstAttribute="top" secondItem="lPo-FU-pVI" secondAttribute="bottom" constant="6" id="fhJ-mo-3Zi"/>
                                                             <constraint firstItem="lPo-FU-pVI" firstAttribute="top" secondItem="cId-Z6-Bb9" secondAttribute="top" constant="8" id="x2h-QJ-j6U"/>
                                                         </constraints>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                <integer key="value" value="10"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bg2-Qc-F97">
                                                         <rect key="frame" x="0.0" y="86" width="310" height="83"/>
@@ -1281,6 +1311,11 @@ issues, or add recommendations...</string>
                                                             <constraint firstItem="75J-Rv-mcr" firstAttribute="leading" secondItem="gd1-WN-DU4" secondAttribute="trailing" constant="8" id="UrB-0S-ez6"/>
                                                             <constraint firstAttribute="width" constant="310" id="cF5-Yi-Mrd"/>
                                                         </constraints>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRaidus">
+                                                                <integer key="value" value="10"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
                                                     </view>
                                                 </subviews>
                                                 <constraints>
@@ -1337,6 +1372,9 @@ issues, or add recommendations...</string>
                                             <navigationItem id="Dga-Xx-jDu">
                                                 <barButtonItem key="leftBarButtonItem" image="arrow.backward" catalog="system" id="6An-HL-o4C">
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <connections>
+                                                        <segue destination="J64-nK-SOt" kind="show" id="B3c-Ra-ehn"/>
+                                                    </connections>
                                                 </barButtonItem>
                                                 <barButtonItem key="rightBarButtonItem" image="bell.fill" catalog="system" id="8a3-3m-ILH">
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1377,6 +1415,7 @@ issues, or add recommendations...</string>
                             <constraint firstItem="FPG-tx-naL" firstAttribute="leading" secondItem="iKF-9p-YQB" secondAttribute="leading" id="z5d-in-VhC"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="u2b-9r-NhL"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QAm-bJ-5hD" sceneMemberID="firstResponder"/>
             </objects>
@@ -1385,7 +1424,7 @@ issues, or add recommendations...</string>
         <!--Technician View-->
         <scene sceneID="cSk-l5-zZ2">
             <objects>
-                <viewController title="Rating Frame" id="3tG-aP-lWr" userLabel="Technician View" sceneMemberID="viewController">
+                <viewController title="Rating Frame" modalPresentationStyle="fullScreen" id="3tG-aP-lWr" userLabel="Technician View" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="lKa-Ke-8BX">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1559,6 +1598,9 @@ issues, or add recommendations...</string>
                                                                 <integer key="value" value="8"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <segue destination="J64-nK-SOt" kind="show" id="U1H-ug-sNq"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b4f-zV-Inr">
                                                         <rect key="frame" x="172" y="0.0" width="152" height="44"/>
@@ -1577,6 +1619,9 @@ issues, or add recommendations...</string>
                                                                 <integer key="value" value="8"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <segue destination="J64-nK-SOt" kind="show" id="9mn-gB-LRI"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
@@ -1607,7 +1652,7 @@ issues, or add recommendations...</string>
                                     <constraint firstItem="bG0-Gc-nX7" firstAttribute="top" secondItem="P8q-fg-k0Z" secondAttribute="top" id="o3O-WD-kQn"/>
                                 </constraints>
                             </scrollView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MZv-0m-WhC">
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MZv-0m-WhC">
                                 <rect key="frame" x="0.0" y="769" width="393" height="83"/>
                                 <subviews>
                                     <tabBar contentMode="scaleToFill" fixedFrame="YES" barStyle="black" translatesAutoresizingMaskIntoConstraints="NO" id="leQ-Ag-rdT">
@@ -1627,7 +1672,7 @@ issues, or add recommendations...</string>
                                     <constraint firstAttribute="height" constant="83" id="kFx-fA-yR6"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eDi-ub-gHU">
+                            <view hidden="YES" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eDi-ub-gHU">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="120"/>
                                 <subviews>
                                     <navigationBar contentMode="scaleToFill" fixedFrame="YES" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jU4-ks-hKj">
@@ -1678,15 +1723,16 @@ issues, or add recommendations...</string>
                             <constraint firstItem="MZv-0m-WhC" firstAttribute="top" secondItem="P8q-fg-k0Z" secondAttribute="bottom" id="oJh-bn-cgl"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="oHU-cQ-Np7"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lDi-Xk-QPj" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="5531" y="-4"/>
+            <point key="canvasLocation" x="972" y="735"/>
         </scene>
         <!--Technician View-->
         <scene sceneID="xDy-FL-f78">
             <objects>
-                <viewController title="Room Availability" id="uPc-B8-GL8" userLabel="Technician View" sceneMemberID="viewController">
+                <viewController title="Room Availability" modalPresentationStyle="fullScreen" id="uPc-B8-GL8" userLabel="Technician View" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" ambiguous="YES" id="8a0-zc-HSR">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1957,12 +2003,12 @@ issues, or add recommendations...</string>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8DY-q4-lZO" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6507.6335877862593" y="7.746478873239437"/>
+            <point key="canvasLocation" x="-927" y="-4"/>
         </scene>
         <!--Technician View-->
         <scene sceneID="Afb-G4-IIP">
             <objects>
-                <viewController id="J64-nK-SOt" userLabel="Technician View" sceneMemberID="viewController">
+                <viewController modalPresentationStyle="fullScreen" id="J64-nK-SOt" userLabel="Technician View" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="2H1-mw-1vZ">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2159,6 +2205,9 @@ issues, or add recommendations...</string>
                                                         <integer key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <segue destination="WdH-Al-zvZ" kind="show" id="SpH-Oa-q2p"/>
+                                                </connections>
                                             </button>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="c66-QN-hjE">
                                                 <rect key="frame" x="24" y="668" width="345" height="32"/>
@@ -2174,6 +2223,9 @@ issues, or add recommendations...</string>
                                                                 <integer key="value" value="8"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <segue destination="3tG-aP-lWr" kind="show" id="IXb-2t-FV4"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hRT-iN-iZ5">
                                                         <rect key="frame" x="182.66666666666663" y="0.0" width="162.33333333333337" height="32"/>
@@ -2381,7 +2433,7 @@ issues, or add recommendations...</string>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="task description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vqp-1w-7Gy">
-                                                                        <rect key="frame" x="48" y="25.666666666666625" width="289" height="13.333333333333332"/>
+                                                                        <rect key="frame" x="48" y="25.666666666666682" width="289" height="13.333333333333332"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                                         <color key="textColor" red="0.92156862750000001" green="0.92156862750000001" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                         <nil key="highlightedColor"/>
@@ -2531,6 +2583,9 @@ issues, or add recommendations...</string>
                                             <navigationItem id="sIH-rN-KsP">
                                                 <barButtonItem key="leftBarButtonItem" image="arrow.backward" catalog="system" id="n3Q-kq-jUR">
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <connections>
+                                                        <segue destination="wde-AM-eZz" kind="show" id="g35-hc-HIn"/>
+                                                    </connections>
                                                 </barButtonItem>
                                                 <barButtonItem key="rightBarButtonItem" image="bell.fill" catalog="system" id="UwO-oB-5Td">
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2571,12 +2626,17 @@ issues, or add recommendations...</string>
                             <constraint firstAttribute="bottom" secondItem="TBo-Ts-x5a" secondAttribute="bottom" id="uDT-ks-RfO"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="Fo0-4H-NZ4"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Wng-ZZ-MbU" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="972" y="-4"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="9mn-gB-LRI"/>
+        <segue reference="geF-u4-DGE"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="AdminInventory" width="24" height="24"/>
         <image name="Image" width="66" height="72"/>
