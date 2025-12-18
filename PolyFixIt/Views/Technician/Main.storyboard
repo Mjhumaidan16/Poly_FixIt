@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="wde-AM-eZz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Qza-8V-m0a">
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
@@ -1845,10 +1845,10 @@ issues, or add recommendations...</string>
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="pRe-Lt-w5Q">
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="pRe-Lt-w5Q">
                                                 <rect key="frame" x="41" y="147" width="310" height="251"/>
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cId-Z6-Bb9">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cId-Z6-Bb9">
                                                         <rect key="frame" x="0.0" y="0.0" width="310" height="85"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="glh-0g-p4e">
@@ -1868,19 +1868,29 @@ issues, or add recommendations...</string>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="43K-Wi-AHg">
-                                                                <rect key="frame" x="66" y="37" width="165" height="50"/>
-                                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="43K-Wi-AHg">
+                                                                <rect key="frame" x="66" y="35" width="62.333333333333343" height="50"/>
+                                                                <subviews>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 x silicon" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CWC-Uy-Loz">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="62.333333333333336" height="50"/>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                        <nil key="textColor"/>
+                                                                        <nil key="highlightedColor"/>
+                                                                    </label>
+                                                                </subviews>
                                                             </stackView>
                                                         </subviews>
                                                         <color key="backgroundColor" red="0.50196078431372548" green="0.55294117647058827" blue="0.64313725490196072" alpha="0.50147153253424659" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
+                                                            <constraint firstAttribute="bottom" secondItem="43K-Wi-AHg" secondAttribute="bottom" id="S3B-Ya-s1i"/>
                                                             <constraint firstItem="glh-0g-p4e" firstAttribute="top" secondItem="cId-Z6-Bb9" secondAttribute="top" constant="8" id="YQy-pV-y55"/>
                                                             <constraint firstAttribute="width" constant="310" id="bwt-TR-G7i"/>
                                                             <constraint firstItem="glh-0g-p4e" firstAttribute="leading" secondItem="cId-Z6-Bb9" secondAttribute="leading" constant="8" id="d0I-eZ-VU0"/>
+                                                            <constraint firstItem="43K-Wi-AHg" firstAttribute="top" secondItem="lPo-FU-pVI" secondAttribute="bottom" constant="6" id="fhJ-mo-3Zi"/>
+                                                            <constraint firstItem="lPo-FU-pVI" firstAttribute="top" secondItem="cId-Z6-Bb9" secondAttribute="top" constant="8" id="x2h-QJ-j6U"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bg2-Qc-F97">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bg2-Qc-F97">
                                                         <rect key="frame" x="0.0" y="85" width="310" height="83"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WtN-lc-sbk">
@@ -1917,7 +1927,7 @@ issues, or add recommendations...</string>
                                                             <constraint firstItem="WtN-lc-sbk" firstAttribute="leading" secondItem="bg2-Qc-F97" secondAttribute="leading" constant="8" id="wUa-rD-oK6"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="W1p-aC-qaJ">
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W1p-aC-qaJ">
                                                         <rect key="frame" x="0.0" y="168" width="310" height="83"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gd1-WN-DU4">
