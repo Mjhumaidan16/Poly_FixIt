@@ -367,7 +367,7 @@
             <objects>
                 <viewController title="Technician Task Overview" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="wde-AM-eZz" userLabel="Technician Task Details" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" ambiguous="YES" id="a3w-y4-5re">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="783"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E5W-4Y-dcW">
@@ -454,9 +454,6 @@
                                                                 <buttonConfiguration key="configuration" style="plain" image="chevron.right" catalog="system">
                                                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 </buttonConfiguration>
-                                                                <connections>
-                                                                    <segue destination="J64-nK-SOt" kind="show" id="qGL-iU-e9O"/>
-                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <color key="backgroundColor" red="0.50196078430000002" green="0.55294117649999996" blue="0.64313725489999995" alpha="0.70089908519999999" colorSpace="custom" customColorSpace="displayP3"/>
@@ -565,13 +562,13 @@
                                 </constraints>
                             </scrollView>
                             <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Jgg-8H-ynG">
-                                <rect key="frame" x="0.0" y="769" width="393" height="83"/>
+                                <rect key="frame" x="0.0" y="700" width="393" height="83"/>
                                 <color key="backgroundColor" red="0.1450980392" green="0.23137254900000001" blue="0.38431372549999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="83" id="Djz-ZV-Co2"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fSB-Aw-TjU">
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fSB-Aw-TjU">
                                 <rect key="frame" x="0.0" y="0.0" width="393" height="120"/>
                                 <subviews>
                                     <navigationBar contentMode="scaleToFill" fixedFrame="YES" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8jV-w2-BNo">
@@ -1358,7 +1355,8 @@ issues, or add recommendations...</string>
         <!--Tab Bar Controller-->
         <scene sceneID="xwZ-yg-AuS">
             <objects>
-                <tabBarController id="hod-et-Pux" sceneMemberID="viewController">
+                <tabBarController modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="hod-et-Pux" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="jex-g7-bUg"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="pV1-Ly-Z1M">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -2558,10 +2556,12 @@ issues, or add recommendations...</string>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="A4r-1v-ZPj"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="qZA-dg-Cc3">
+                        <rect key="frame" x="0.0" y="-69" width="0.0" height="0.0"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="1jy-iD-Ahs">
+                        <rect key="frame" x="0.0" y="-69" width="0.0" height="0.0"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </toolbar>
                     <connections>
@@ -2830,7 +2830,7 @@ issues, or add recommendations...</string>
                                     <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </buttonConfiguration>
                                 <connections>
-                                    <segue destination="xxY-ft-8cW" kind="show" id="JpI-oi-Efw"/>
+                                    <segue destination="hod-et-Pux" kind="show" id="eS6-0e-0Fg"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Noah Liam Hartwell" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="QUc-kM-xt2">
@@ -2906,8 +2906,8 @@ issues, or add recommendations...</string>
     </scenes>
     <inferredMetricsTieBreakers>
         <segue reference="yXz-aY-gep"/>
-        <segue reference="qGL-iU-e9O"/>
-        <segue reference="g35-hc-HIn"/>
+        <segue reference="Y6L-fo-kTv"/>
+        <segue reference="aod-EE-vH7"/>
         <segue reference="SpH-Oa-q2p"/>
     </inferredMetricsTieBreakers>
     <resources>
@@ -2920,7 +2920,7 @@ issues, or add recommendations...</string>
         <image name="LocationIcon" width="56" height="56"/>
         <image name="ProblemCategoryIcon" width="56" height="56"/>
         <image name="RoomIcon" width="18.666666030883789" height="22"/>
-        <image name="SettingsIcon" width="16" height="16.666666030883789"/>
+        <image name="SettingsIcon" width="24" height="25"/>
         <image name="TaskIcon" width="18.666666030883789" height="18.666666030883789"/>
         <image name="TechnicianScheduleIcon" width="20" height="18.666666030883789"/>
         <image name="arrow.backward" catalog="system" width="128" height="95"/>
