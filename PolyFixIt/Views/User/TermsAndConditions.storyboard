@@ -19,9 +19,18 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0F4-E2-CBa">
                                 <rect key="frame" x="0.0" y="124" width="440" height="1008"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hgG-Gk-25v">
-                                        <rect key="frame" x="0.0" y="0.0" width="440" height="1200"/>
+                                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hgG-Gk-25v">
+                                        <rect key="frame" x="0.0" y="8" width="440" height="1192"/>
                                         <subviews>
+                                            <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OTA-kF-uuZ">
+                                                <rect key="frame" x="9" y="121" width="423" height="897"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="dDX-lq-tsn">
+                                                    <rect key="frame" x="0.0" y="0.0" width="423" height="897"/>
+                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                </view>
+                                                <blurEffect style="regular"/>
+                                            </visualEffectView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Terms &amp; Conditions" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AHN-8O-0Nm">
                                                 <rect key="frame" x="23" y="36" width="303" height="76"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -90,7 +99,7 @@
                                                 <buttonConfiguration key="configuration" style="plain" title="I agree"/>
                                             </button>
                                         </subviews>
-                                        <color key="backgroundColor" red="0.25490197539999998" green="0.32156863810000003" blue="0.47450977560000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <color key="backgroundColor" red="0.1647058874" green="0.22745099660000001" blue="0.37254902719999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="1200" id="T3t-Tj-qNJ"/>
                                             <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1200" id="hkg-8A-HLc"/>
@@ -131,7 +140,7 @@
     </scenes>
     <resources>
         <systemColor name="groupTableViewBackgroundColor">
-            <color red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tableBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
