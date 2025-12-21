@@ -22,10 +22,19 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q7F-Ho-Wvh">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="900"/>
                                         <subviews>
-                                            <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" style="inline" translatesAutoresizingMaskIntoConstraints="NO" id="LR9-CY-Zef">
-                                                <rect key="frame" x="0.0" y="8" width="393" height="420"/>
-                                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                            </datePicker>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2cZ-Mc-xl7">
+                                                <rect key="frame" x="16" y="8" width="361" height="390"/>
+                                                <subviews>
+                                                    <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="dateAndTime" minuteInterval="1" style="inline" translatesAutoresizingMaskIntoConstraints="NO" id="LR9-CY-Zef">
+                                                        <rect key="frame" x="23" y="20" width="330" height="370"/>
+                                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                                    </datePicker>
+                                                </subviews>
+                                                <color key="backgroundColor" red="0.50196078431372548" green="0.55294117647058827" blue="0.64313725490196072" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="390" id="Vdf-EU-3ro"/>
+                                                </constraints>
+                                            </view>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="MON, 26 June 2024" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xpk-xM-aLT">
                                                 <rect key="frame" x="8" y="436" width="203" height="28"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -188,6 +197,9 @@
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="2cZ-Mc-xl7" secondAttribute="trailing" constant="16" id="GOY-Gq-g41"/>
+                                            <constraint firstItem="2cZ-Mc-xl7" firstAttribute="top" secondItem="Q7F-Ho-Wvh" secondAttribute="top" constant="8" id="J4g-X3-rxx"/>
+                                            <constraint firstItem="2cZ-Mc-xl7" firstAttribute="leading" secondItem="Q7F-Ho-Wvh" secondAttribute="leading" constant="16" id="bmB-pY-vmq"/>
                                             <constraint firstAttribute="height" constant="900" id="rLr-4H-o8O"/>
                                         </constraints>
                                     </view>
