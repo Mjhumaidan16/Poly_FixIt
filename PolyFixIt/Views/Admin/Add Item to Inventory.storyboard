@@ -145,9 +145,12 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aFh-Ao-RN2">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aFh-Ao-RN2">
                                                 <rect key="frame" x="29" y="558" width="335" height="39"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="39" id="Dbj-Ag-rpW"/>
+                                                    <constraint firstAttribute="width" constant="335" id="Yf8-bn-SKK"/>
+                                                </constraints>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="filled" title="Continue"/>
                                             </button>
@@ -155,6 +158,7 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstItem="gbk-xo-NFB" firstAttribute="leading" secondItem="7eu-Jb-ati" secondAttribute="leading" constant="144" id="0EE-04-KRc"/>
+                                            <constraint firstItem="aFh-Ao-RN2" firstAttribute="leading" secondItem="7eu-Jb-ati" secondAttribute="leading" constant="29" id="3yV-fh-H1K"/>
                                             <constraint firstItem="Lg6-7U-QFx" firstAttribute="leading" secondItem="7eu-Jb-ati" secondAttribute="leading" constant="36" id="4tQ-vI-el2"/>
                                             <constraint firstItem="Lg6-7U-QFx" firstAttribute="top" secondItem="cjz-iX-SvB" secondAttribute="bottom" constant="22.670000000000002" id="62q-15-fSS"/>
                                             <constraint firstAttribute="trailing" secondItem="Lg6-7U-QFx" secondAttribute="trailing" constant="37" id="H01-OH-8Ry"/>
@@ -164,6 +168,7 @@
                                             <constraint firstAttribute="trailing" secondItem="cjz-iX-SvB" secondAttribute="trailing" constant="37" id="WIx-JG-fQ5"/>
                                             <constraint firstItem="Zn8-PH-Eie" firstAttribute="top" secondItem="1rw-gp-j4X" secondAttribute="bottom" constant="22.670000000000002" id="YRB-wE-SPQ"/>
                                             <constraint firstItem="cjz-iX-SvB" firstAttribute="leading" secondItem="7eu-Jb-ati" secondAttribute="leading" constant="36" id="dar-zJ-mgB"/>
+                                            <constraint firstItem="aFh-Ao-RN2" firstAttribute="top" secondItem="Nlk-CE-edx" secondAttribute="bottom" constant="57.670000000000002" id="e40-fy-DVA"/>
                                             <constraint firstItem="Nlk-CE-edx" firstAttribute="leading" secondItem="7eu-Jb-ati" secondAttribute="leading" constant="36" id="k2a-dZ-Nhl"/>
                                             <constraint firstItem="gbk-xo-NFB" firstAttribute="top" secondItem="7eu-Jb-ati" secondAttribute="top" constant="8" id="l9C-Hm-ist"/>
                                             <constraint firstItem="cjz-iX-SvB" firstAttribute="top" secondItem="Zn8-PH-Eie" secondAttribute="bottom" constant="22.670000000000002" id="mQF-GD-SyV"/>
