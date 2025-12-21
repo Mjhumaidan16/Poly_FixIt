@@ -47,21 +47,6 @@
                                                 </segments>
                                                 <color key="selectedSegmentTintColor" red="0.1647058874" green="0.22745099660000001" blue="0.37254902719999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                             </segmentedControl>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="3" translatesAutoresizingMaskIntoConstraints="NO" id="Fgp-yt-v7g">
-                                                <rect key="frame" x="8" y="215" width="377" height="32"/>
-                                                <color key="backgroundColor" red="0.074509806930000005" green="0.1411764771" blue="0.25098040700000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="377" id="76R-k5-ud9"/>
-                                                    <constraint firstAttribute="height" constant="31" id="mUg-be-ot9"/>
-                                                </constraints>
-                                                <segments>
-                                                    <segment title="Main"/>
-                                                    <segment title="Rating"/>
-                                                    <segment title="Ai Chatbot"/>
-                                                    <segment title="Escalation"/>
-                                                </segments>
-                                                <color key="selectedSegmentTintColor" red="0.1647058874" green="0.22745099660000001" blue="0.37254902719999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                            </segmentedControl>
                                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="inX-CC-kbu">
                                                 <rect key="frame" x="204" y="98" width="181" height="108"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="c6x-4Q-ebC">
@@ -120,7 +105,7 @@
                                                 </constraints>
                                                 <blurEffect style="regular"/>
                                             </visualEffectView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ZUI-jf-gQ9">
+                                            <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ZUI-jf-gQ9">
                                                 <rect key="frame" x="8" y="261" width="377" height="400"/>
                                                 <subviews>
                                                     <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bat-Oh-pBk">
@@ -233,6 +218,39 @@
                                                     </visualEffectView>
                                                 </subviews>
                                             </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Eya-As-luG">
+                                                <rect key="frame" x="8" y="214" width="445.33333333333331" height="38.333333333333343"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rod-B2-0Qw">
+                                                        <rect key="frame" x="0.0" y="0.0" width="105.33333333333333" height="38.333333333333336"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="filled" title="Date">
+                                                            <color key="baseBackgroundColor" red="0.074509806930000005" green="0.1411764771" blue="0.25098040700000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                        </buttonConfiguration>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ARs-si-pxe">
+                                                        <rect key="frame" x="113.33333333333334" y="0.0" width="105.33333333333334" height="38.333333333333336"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="filled" title="Category">
+                                                            <color key="baseBackgroundColor" red="0.074509806930000005" green="0.1411764771" blue="0.25098040700000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                        </buttonConfiguration>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2J9-ig-M5k">
+                                                        <rect key="frame" x="226.66666666666666" y="0.0" width="105.33333333333334" height="38.333333333333336"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="filled" title="Location">
+                                                            <color key="baseBackgroundColor" red="0.074509806930000005" green="0.1411764771" blue="0.25098040700000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                        </buttonConfiguration>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="StT-Z0-qgg">
+                                                        <rect key="frame" x="340" y="0.0" width="105.33333333333331" height="38.333333333333336"/>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="filled" title="Technician">
+                                                            <color key="baseBackgroundColor" red="0.074509806930000005" green="0.1411764771" blue="0.25098040700000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                        </buttonConfiguration>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -241,13 +259,10 @@
                                             <constraint firstItem="RuM-ya-lFA" firstAttribute="top" secondItem="DAa-dp-3zV" secondAttribute="bottom" constant="8" id="924-A6-beC"/>
                                             <constraint firstItem="DAa-dp-3zV" firstAttribute="leading" secondItem="WuV-W7-uF6" secondAttribute="leading" constant="106" id="HUb-hG-wwM"/>
                                             <constraint firstItem="RuM-ya-lFA" firstAttribute="leading" secondItem="WuV-W7-uF6" secondAttribute="leading" constant="8" id="LqV-ME-5K6"/>
-                                            <constraint firstItem="Fgp-yt-v7g" firstAttribute="top" secondItem="inX-CC-kbu" secondAttribute="bottom" constant="9" id="PB3-Ko-D2k"/>
                                             <constraint firstItem="KUl-fE-WiG" firstAttribute="leading" secondItem="WuV-W7-uF6" secondAttribute="leading" constant="8" id="Wn7-uX-GwN"/>
                                             <constraint firstItem="ZUI-jf-gQ9" firstAttribute="leading" secondItem="WuV-W7-uF6" secondAttribute="leading" constant="8" id="X5a-Ke-sYX"/>
                                             <constraint firstAttribute="trailing" secondItem="inX-CC-kbu" secondAttribute="trailing" constant="8" id="YhY-MV-EuB"/>
                                             <constraint firstItem="inX-CC-kbu" firstAttribute="top" secondItem="RuM-ya-lFA" secondAttribute="bottom" constant="18" id="eIW-5b-Liq"/>
-                                            <constraint firstItem="Fgp-yt-v7g" firstAttribute="leading" secondItem="WuV-W7-uF6" secondAttribute="leading" constant="8" id="fuB-KK-Nge"/>
-                                            <constraint firstItem="ZUI-jf-gQ9" firstAttribute="top" secondItem="Fgp-yt-v7g" secondAttribute="bottom" constant="15" id="g4I-CG-nSD"/>
                                             <constraint firstItem="DAa-dp-3zV" firstAttribute="top" secondItem="WuV-W7-uF6" secondAttribute="top" constant="8" id="zgc-Id-HOP"/>
                                         </constraints>
                                     </view>
