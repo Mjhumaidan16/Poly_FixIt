@@ -22,9 +22,48 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WuV-W7-uF6">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="700"/>
                                         <subviews>
-                                            <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="inX-CC-kbu">
-                                                <rect key="frame" x="204" y="60" width="181" height="108"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Escalition Panel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DAa-dp-3zV">
+                                                <rect key="frame" x="106" y="8" width="181" height="33"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="181" id="SFZ-8d-zsd"/>
+                                                    <constraint firstAttribute="height" constant="33" id="fOx-dg-nha"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="3" translatesAutoresizingMaskIntoConstraints="NO" id="RuM-ya-lFA">
+                                                <rect key="frame" x="8" y="49" width="377" height="32"/>
+                                                <color key="backgroundColor" red="0.074509806930000005" green="0.1411764771" blue="0.25098040700000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="377" id="OD2-1u-nBp"/>
+                                                    <constraint firstAttribute="height" constant="31" id="f2l-wa-8Fc"/>
+                                                </constraints>
+                                                <segments>
+                                                    <segment title="Main"/>
+                                                    <segment title="Rating"/>
+                                                    <segment title="Ai Chatbot"/>
+                                                    <segment title="Escalation"/>
+                                                </segments>
+                                                <color key="selectedSegmentTintColor" red="0.1647058874" green="0.22745099660000001" blue="0.37254902719999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            </segmentedControl>
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="3" translatesAutoresizingMaskIntoConstraints="NO" id="Fgp-yt-v7g">
+                                                <rect key="frame" x="8" y="215" width="377" height="32"/>
+                                                <color key="backgroundColor" red="0.074509806930000005" green="0.1411764771" blue="0.25098040700000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="377" id="76R-k5-ud9"/>
+                                                    <constraint firstAttribute="height" constant="31" id="mUg-be-ot9"/>
+                                                </constraints>
+                                                <segments>
+                                                    <segment title="Main"/>
+                                                    <segment title="Rating"/>
+                                                    <segment title="Ai Chatbot"/>
+                                                    <segment title="Escalation"/>
+                                                </segments>
+                                                <color key="selectedSegmentTintColor" red="0.1647058874" green="0.22745099660000001" blue="0.37254902719999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                            </segmentedControl>
+                                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="inX-CC-kbu">
+                                                <rect key="frame" x="204" y="98" width="181" height="108"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="c6x-4Q-ebC">
                                                     <rect key="frame" x="0.0" y="0.0" width="181" height="108"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -46,11 +85,14 @@
                                                     </subviews>
                                                 </view>
                                                 <color key="tintColor" red="0.31920295949999999" green="0.39176574349999999" blue="0.51512324809999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="181" id="GwS-aT-C37"/>
+                                                    <constraint firstAttribute="height" constant="108" id="U1b-Ky-dX2"/>
+                                                </constraints>
                                                 <blurEffect style="regular"/>
                                             </visualEffectView>
-                                            <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KUl-fE-WiG">
-                                                <rect key="frame" x="8" y="60" width="181" height="108"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KUl-fE-WiG">
+                                                <rect key="frame" x="8" y="98" width="181" height="108"/>
                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="cML-62-BUe">
                                                     <rect key="frame" x="0.0" y="0.0" width="181" height="108"/>
                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -72,157 +114,143 @@
                                                     </subviews>
                                                 </view>
                                                 <color key="tintColor" red="0.31920295949999999" green="0.39176574349999999" blue="0.51512324809999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="108" id="ESl-KJ-cEy"/>
+                                                    <constraint firstAttribute="width" constant="181" id="TLh-jd-gBg"/>
+                                                </constraints>
                                                 <blurEffect style="regular"/>
                                             </visualEffectView>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FVk-dW-OTP">
-                                                <rect key="frame" x="8" y="176" width="106" height="39"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="filled" title="Date">
-                                                    <color key="baseBackgroundColor" red="0.074509806930000005" green="0.1411764771" blue="0.25098040700000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                </buttonConfiguration>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pyE-ld-RcS">
-                                                <rect key="frame" x="122" y="176" width="106" height="39"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="filled" title="Category">
-                                                    <color key="baseBackgroundColor" red="0.074509806930000005" green="0.1411764771" blue="0.25098040700000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                </buttonConfiguration>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wfO-mj-wWr">
-                                                <rect key="frame" x="236" y="176" width="106" height="39"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="filled" title="Location">
-                                                    <color key="baseBackgroundColor" red="0.074509806930000005" green="0.1411764771" blue="0.25098040700000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                </buttonConfiguration>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3wC-xu-bC4">
-                                                <rect key="frame" x="350" y="176" width="106" height="39"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="filled" title="Technician">
-                                                    <color key="baseBackgroundColor" red="0.074509806930000005" green="0.1411764771" blue="0.25098040700000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                </buttonConfiguration>
-                                            </button>
-                                            <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PPM-0h-qNj">
-                                                <rect key="frame" x="8" y="359" width="377" height="128"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="ATs-fl-0aW">
-                                                    <rect key="frame" x="0.0" y="0.0" width="377" height="128"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Escalated by Ethan Carter" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nio-gJ-EPB">
-                                                            <rect key="frame" x="8" y="95" width="197" height="21"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Status: Closed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UET-ZA-WGv">
-                                                            <rect key="frame" x="8" y="66" width="111" height="21"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" systemColor="systemGreenColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Request: #12346 Poor Wifi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tg7-XT-uQe">
-                                                            <rect key="frame" x="8" y="8" width="267" height="28"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </view>
-                                                <color key="tintColor" red="0.31920295949999999" green="0.39176574349999999" blue="0.51512324809999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <blurEffect style="regular"/>
-                                            </visualEffectView>
-                                            <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="is2-k2-4B1">
-                                                <rect key="frame" x="8" y="495" width="377" height="128"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Zcm-12-z5T">
-                                                    <rect key="frame" x="0.0" y="0.0" width="377" height="128"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Escalated by Ethan Carter" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L9Y-nJ-CaZ">
-                                                            <rect key="frame" x="8" y="95" width="197" height="21"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Status: Overdue" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lRr-0g-bzH">
-                                                            <rect key="frame" x="8" y="66" width="123" height="21"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" systemColor="systemRedColor"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Request: #12346 Leaky Faucet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="47C-Lr-6wU">
-                                                            <rect key="frame" x="8" y="8" width="309" height="28"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </view>
-                                                <color key="tintColor" red="0.31920295949999999" green="0.39176574349999999" blue="0.51512324809999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <blurEffect style="regular"/>
-                                            </visualEffectView>
-                                            <visualEffectView opaque="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bat-Oh-pBk">
-                                                <rect key="frame" x="8" y="223" width="377" height="128"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="TGE-Kj-6RN">
-                                                    <rect key="frame" x="0.0" y="0.0" width="377" height="128"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                    <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Escalated by Max Thomson" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ybT-C6-qUI">
-                                                            <rect key="frame" x="8" y="95" width="209" height="21"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Status: New" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cj9-Jp-Mjf">
-                                                            <rect key="frame" x="8" y="66" width="92" height="21"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Request: #12346 Leaky Faucet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vkd-av-rQo">
-                                                            <rect key="frame" x="8" y="8" width="309" height="28"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                            <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
-                                                    </subviews>
-                                                </view>
-                                                <color key="tintColor" red="0.31920295949999999" green="0.39176574349999999" blue="0.51512324809999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <blurEffect style="regular"/>
-                                            </visualEffectView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ZUI-jf-gQ9">
+                                                <rect key="frame" x="8" y="261" width="377" height="400"/>
+                                                <subviews>
+                                                    <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Bat-Oh-pBk">
+                                                        <rect key="frame" x="0.0" y="0.0" width="377" height="128"/>
+                                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="TGE-Kj-6RN">
+                                                            <rect key="frame" x="0.0" y="0.0" width="377" height="128"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Escalated by Max Thomson" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ybT-C6-qUI">
+                                                                    <rect key="frame" x="8" y="95" width="209" height="21"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Status: New" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cj9-Jp-Mjf">
+                                                                    <rect key="frame" x="8" y="66" width="92" height="21"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Request: #12346 Leaky Faucet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vkd-av-rQo">
+                                                                    <rect key="frame" x="8" y="8" width="309" height="28"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </view>
+                                                        <color key="tintColor" red="0.31920295949999999" green="0.39176574349999999" blue="0.51512324809999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="377" id="7cb-M4-dMN"/>
+                                                            <constraint firstAttribute="height" constant="128" id="NrE-0q-FKi"/>
+                                                        </constraints>
+                                                        <blurEffect style="regular"/>
+                                                    </visualEffectView>
+                                                    <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PPM-0h-qNj">
+                                                        <rect key="frame" x="0.0" y="136" width="377" height="128"/>
+                                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="ATs-fl-0aW">
+                                                            <rect key="frame" x="0.0" y="0.0" width="377" height="128"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Escalated by Ethan Carter" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nio-gJ-EPB">
+                                                                    <rect key="frame" x="8" y="95" width="197" height="21"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Status: Closed" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UET-ZA-WGv">
+                                                                    <rect key="frame" x="8" y="66" width="111" height="21"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" systemColor="systemGreenColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Request: #12346 Poor Wifi" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tg7-XT-uQe">
+                                                                    <rect key="frame" x="8" y="8" width="267" height="28"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </view>
+                                                        <color key="tintColor" red="0.31920295949999999" green="0.39176574349999999" blue="0.51512324809999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="377" id="b0g-bC-4Ii"/>
+                                                            <constraint firstAttribute="height" constant="128" id="mDU-9R-Df2"/>
+                                                        </constraints>
+                                                        <blurEffect style="regular"/>
+                                                    </visualEffectView>
+                                                    <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="is2-k2-4B1">
+                                                        <rect key="frame" x="0.0" y="272" width="377" height="128"/>
+                                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="Zcm-12-z5T">
+                                                            <rect key="frame" x="0.0" y="0.0" width="377" height="128"/>
+                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Escalated by Ethan Carter" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L9Y-nJ-CaZ">
+                                                                    <rect key="frame" x="8" y="95" width="197" height="21"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Status: Overdue" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lRr-0g-bzH">
+                                                                    <rect key="frame" x="8" y="66" width="123" height="21"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                                    <color key="textColor" systemColor="systemRedColor"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Request: #12346 Leaky Faucet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="47C-Lr-6wU">
+                                                                    <rect key="frame" x="8" y="8" width="309" height="28"/>
+                                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                    <fontDescription key="fontDescription" type="system" pointSize="23"/>
+                                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </view>
+                                                        <color key="tintColor" red="0.31920295949999999" green="0.39176574349999999" blue="0.51512324809999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="128" id="hRh-ty-pov"/>
+                                                            <constraint firstAttribute="width" constant="377" id="t0z-kF-zQC"/>
+                                                        </constraints>
+                                                        <blurEffect style="regular"/>
+                                                    </visualEffectView>
+                                                </subviews>
+                                            </stackView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstItem="KUl-fE-WiG" firstAttribute="top" secondItem="RuM-ya-lFA" secondAttribute="bottom" constant="18" id="1QU-bN-SwA"/>
                                             <constraint firstAttribute="height" constant="700" id="1ej-nV-EK5"/>
+                                            <constraint firstItem="RuM-ya-lFA" firstAttribute="top" secondItem="DAa-dp-3zV" secondAttribute="bottom" constant="8" id="924-A6-beC"/>
+                                            <constraint firstItem="DAa-dp-3zV" firstAttribute="leading" secondItem="WuV-W7-uF6" secondAttribute="leading" constant="106" id="HUb-hG-wwM"/>
+                                            <constraint firstItem="RuM-ya-lFA" firstAttribute="leading" secondItem="WuV-W7-uF6" secondAttribute="leading" constant="8" id="LqV-ME-5K6"/>
+                                            <constraint firstItem="Fgp-yt-v7g" firstAttribute="top" secondItem="inX-CC-kbu" secondAttribute="bottom" constant="9" id="PB3-Ko-D2k"/>
+                                            <constraint firstItem="KUl-fE-WiG" firstAttribute="leading" secondItem="WuV-W7-uF6" secondAttribute="leading" constant="8" id="Wn7-uX-GwN"/>
+                                            <constraint firstItem="ZUI-jf-gQ9" firstAttribute="leading" secondItem="WuV-W7-uF6" secondAttribute="leading" constant="8" id="X5a-Ke-sYX"/>
+                                            <constraint firstAttribute="trailing" secondItem="inX-CC-kbu" secondAttribute="trailing" constant="8" id="YhY-MV-EuB"/>
+                                            <constraint firstItem="inX-CC-kbu" firstAttribute="top" secondItem="RuM-ya-lFA" secondAttribute="bottom" constant="18" id="eIW-5b-Liq"/>
+                                            <constraint firstItem="Fgp-yt-v7g" firstAttribute="leading" secondItem="WuV-W7-uF6" secondAttribute="leading" constant="8" id="fuB-KK-Nge"/>
+                                            <constraint firstItem="ZUI-jf-gQ9" firstAttribute="top" secondItem="Fgp-yt-v7g" secondAttribute="bottom" constant="15" id="g4I-CG-nSD"/>
+                                            <constraint firstItem="DAa-dp-3zV" firstAttribute="top" secondItem="WuV-W7-uF6" secondAttribute="top" constant="8" id="zgc-Id-HOP"/>
                                         </constraints>
                                     </view>
-                                    <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="3" translatesAutoresizingMaskIntoConstraints="NO" id="RuM-ya-lFA">
-                                        <rect key="frame" x="10" y="10" width="377" height="32"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="0.074509806930000005" green="0.1411764771" blue="0.25098040700000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <segments>
-                                            <segment title="Main"/>
-                                            <segment title="Rating"/>
-                                            <segment title="Ai Chatbot"/>
-                                            <segment title="Escalation"/>
-                                        </segments>
-                                        <color key="selectedSegmentTintColor" red="0.1647058874" green="0.22745099660000001" blue="0.37254902719999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                    </segmentedControl>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="WuV-W7-uF6" secondAttribute="trailing" id="27h-rL-N9L"/>
@@ -274,13 +302,6 @@
                                     <constraint firstItem="gNQ-wa-fDI" firstAttribute="centerX" secondItem="ewo-xH-MdK" secondAttribute="centerX" id="n5h-wS-YgD"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Escalition Panel" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DAa-dp-3zV">
-                                <rect key="frame" x="106" y="128" width="181" height="33"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="K1d-pp-wlK"/>
                         <color key="backgroundColor" red="0.1450980392" green="0.23137254900000001" blue="0.38431372549999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
