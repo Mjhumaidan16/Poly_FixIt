@@ -392,7 +392,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="BHa-dB-XEl">
-                                                <rect key="frame" x="21" y="375" width="350" height="63"/>
+                                                <rect key="frame" x="21" y="375" width="350" height="85"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Task On: December 14" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bsX-ra-G6u">
                                                         <rect key="frame" x="0.0" y="0.0" width="350" height="24"/>
@@ -400,19 +400,28 @@
                                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Search by category or location" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lMe-Xa-asj">
-                                                        <rect key="frame" x="0.0" y="29" width="350" height="34"/>
-                                                        <color key="backgroundColor" red="0.50196078430000002" green="0.55294117649999996" blue="0.64313725489999995" alpha="0.70040955839999997" colorSpace="custom" customColorSpace="displayP3"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <searchBar contentMode="redraw" barStyle="black" text="" placeholder="Search Task" showsSearchResultsButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XOU-VG-F9e">
+                                                        <rect key="frame" x="0.0" y="29" width="350" height="56"/>
+                                                        <color key="backgroundColor" red="0.15686275059999999" green="0.2470588088" blue="0.5411764979" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="56" id="5eG-Op-rgY"/>
+                                                            <constraint firstAttribute="width" constant="292" id="Oyf-8a-I3C"/>
+                                                        </constraints>
+                                                        <color key="tintColor" red="0.1647058874" green="0.22745099660000001" blue="0.37254902719999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                        <color key="barTintColor" red="0.20784312490000001" green="0.25490197539999998" blue="0.35294118520000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         <textInputTraits key="textInputTraits"/>
-                                                    </textField>
+                                                        <scopeButtonTitles>
+                                                            <string>Title</string>
+                                                            <string>Title</string>
+                                                        </scopeButtonTitles>
+                                                    </searchBar>
                                                 </subviews>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="350" id="jfD-i0-zOv"/>
                                                 </constraints>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="11" translatesAutoresizingMaskIntoConstraints="NO" id="Htk-8i-5YB">
-                                                <rect key="frame" x="16" y="465" width="360" height="155"/>
+                                                <rect key="frame" x="16" y="487" width="360" height="155"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BZM-lc-2Pa">
                                                         <rect key="frame" x="0.0" y="0.0" width="360" height="72"/>
@@ -3356,7 +3365,7 @@ issues, or add recommendations...</string>
         <segue reference="Y6L-fo-kTv"/>
         <segue reference="ZVQ-UK-dZm"/>
         <segue reference="aod-EE-vH7"/>
-        <segue reference="SpH-Oa-q2p"/>
+        <segue reference="e4u-2u-KyI"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AdminDashboard" width="20" height="18.666666030883789"/>
