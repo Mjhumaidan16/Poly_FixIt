@@ -74,6 +74,15 @@ final class AddRequsetViewController: UIViewController, UIPickerViewDelegate, UI
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
         imageView.addGestureRecognizer(tapGesture)
         imageView.isUserInteractionEnabled = true
+        
+        // ✅ Set default image from Cloudinary
+            let defaultImageUrl = "https://res.cloudinary.com/polyfixit/image/upload/v1766424070/images-3_ufcbkf.png"
+            downloadImage(from: defaultImageUrl) { [weak self] image in
+                DispatchQueue.main.async {
+                    self?.imageView.image = image
+                    self?.imageView.contentMode = .scaleAspectFit
+                }
+            }
     }
 
     // MARK: - Fetch Shared Settings (from "requests/001" document)
@@ -215,6 +224,19 @@ final class AddRequsetViewController: UIViewController, UIPickerViewDelegate, UI
                     completion(.success(url))
                 }
             })
+    }
+    
+    // MARK: - Image Download
+    func downloadImage(from urlString: String, completion: @escaping (UIImage?) -> Void) {
+        guard let url = URL(string: urlString) else { completion(nil); return }
+
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            if let data, let image = UIImage(data: data) {
+                completion(image)
+            } else {
+                completion(nil)
+            }
+        }.resume()
     }
 
     // MARK: - Submit Action
