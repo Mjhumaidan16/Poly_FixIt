@@ -18,8 +18,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <!-- Single 3-component picker: Campus / Building / Room -->
                             <pickerView contentMode="scaleToFill" verticalCompressionResistancePriority="749" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XPc-4Y-gxo">
-                                <rect key="frame" x="16" y="242" width="142" height="102"/>
+                                <rect key="frame" x="16" y="242" width="361" height="220"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             </pickerView>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="requst title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZFi-Ei-Pkw">
@@ -28,14 +29,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Y6S-PP-YLk">
-                                <rect key="frame" x="226" y="242" width="151" height="102"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            </pickerView>
-                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TqG-oU-e9s">
-                                <rect key="frame" x="33" y="363" width="327" height="109"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            </pickerView>
+                            <!-- (Removed the old separate Building/Room pickers) -->
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="M8a-ve-uiW">
                                 <rect key="frame" x="158" y="765" width="78" height="39"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -72,12 +66,10 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <connections>
-                        <outlet property="buildingPickerView" destination="Y6S-PP-YLk" id="tas-aV-Zo6"/>
-                        <outlet property="campusPickerView" destination="XPc-4Y-gxo" id="MLh-Lq-sPK"/>
-                        <outlet property="categoryButton" destination="AH5-ie-vYQ" id="1en-uC-0ab"/>
+                        <outlet property="locationPickerView" destination="XPc-4Y-gxo" id="MLh-Lq-sPK"/>
+                        <outlet property="categoryButton" destination="Sj6-bD-o6A" id="1en-uC-0ab"/>
                         <outlet property="descriptionTextField" destination="T7l-G9-c1W" id="WMS-kB-1g2"/>
                         <outlet property="imageView" destination="3fM-XP-JOc" id="Hgi-a7-hXc"/>
-                        <outlet property="roomPickerView" destination="TqG-oU-e9s" id="6xn-fG-7kP"/>
                         <outlet property="submitButton" destination="M8a-ve-uiW" id="EQa-eH-lux"/>
                         <outlet property="titleTextField" destination="ZFi-Ei-Pkw" id="wgR-Xb-c7e"/>
                     </connections>

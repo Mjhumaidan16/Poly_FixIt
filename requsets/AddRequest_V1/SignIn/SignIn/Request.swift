@@ -14,7 +14,7 @@ struct Request {
     let title: String
     let description: String
     let location: [String]
-    var category: [String]
+    let category: [String]
     let priorityLevel: [String]
     let submittedBy: DocumentReference?
     let assignedTechnician: DocumentReference?
@@ -25,6 +25,7 @@ struct Request {
     let assignedAt: Timestamp?
     let duplicateFlag: Bool
     let imageUrl: String?
+    let createdAt: Timestamp
     
     // Modify init for category and priority to handle array data properly
     init?(document: DocumentSnapshot) {
@@ -39,7 +40,8 @@ struct Request {
             let description = data["description"] as? String,
             //let category = data["category"] as? [String],  // Category is now an array of strings
             let priorityLevel = data["priorityLevel"] as? [String],  // PriorityLevel is now an array of strings
-            let status = data["status"] as? String
+            let status = data["status"] as? String,
+            let createdAt = data["createdAt"] as? Timestamp
           
             
         else {
@@ -106,6 +108,7 @@ struct Request {
         self.assignedAt = assignedAt
         self.duplicateFlag = duplicateFlag
         self.imageUrl = imageUrl
+        self.createdAt = createdAt
     }
 
 
@@ -119,8 +122,10 @@ struct RequestCreateDTO{
     let title: String?
     let description: String?
     let location: [String: Any]?
-    let category: String?
-    let priorityLevel: String?
+    var category: [String]
+    let priorityLevel: [String]
+    let selectedCategory: String?
+    let selectedPriorityLevel: String?
     let imageUrl: String?
     let submittedBy: DocumentReference
     let assignedTechnician: DocumentReference?
@@ -130,6 +135,7 @@ struct RequestCreateDTO{
     let completionTime: Timestamp?
     let assignedAt: Timestamp?
     let duplicateFlag: Bool?
+    let createdAt: Timestamp
 
     func toDictionary() -> [String: Any] {
         var dict: [String: Any] = [:]
@@ -137,19 +143,20 @@ struct RequestCreateDTO{
         if let title { dict["title"] = title }
         if let description { dict["description"] = description }
         if let location { dict["location"] = location }
-        if let category { dict["category"] = category }
-        if let priorityLevel { dict["priorityLevel"] = priorityLevel }
+        dict["category"] = category
+        dict["priorityLevel"] = priorityLevel
+        if let selectedCategory { dict["selectedCategory"] = selectedCategory }
+        if let selectedPriorityLevel { dict["selectedPriorityLevel"] = selectedPriorityLevel }
         if let imageUrl { dict["image"] = imageUrl }
-        let submittedBy = dict["submittedBy"] as? DocumentReference
-        if let assignedTechnician { dict["assignedTechnician"] = assignedTechnician }
+        dict["submittedBy"] = submittedBy
+        dict["assignedTechnician"] = assignedTechnician ?? NSNull()
         if let relatedTickets { dict["relatedTickets"] = relatedTickets }
         if let status { dict["status"] = status }
-        if let acceptanceTime { dict["acceptanceTime"] = acceptanceTime }
-        if let completionTime { dict["completionTime"] = completionTime }
-        if let assignedAt { dict["assignedAt"] = assignedAt }
+        dict["acceptanceTime"] = acceptanceTime ?? NSNull()  // Optional fields
+        dict["completionTime"] = completionTime ?? NSNull()
+        dict["assignedAt"] = assignedAt ?? NSNull()
         if let duplicateFlag { dict["duplicateFlag"] = duplicateFlag }
-
-        dict["updatedAt"] = Timestamp()
+       dict["createdAt"] = createdAt
         return dict
     }
 }

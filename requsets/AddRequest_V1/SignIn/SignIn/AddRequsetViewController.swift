@@ -13,165 +13,173 @@ final class AddRequsetViewController: UIViewController, UIPickerViewDelegate, UI
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var categoryButton: UIButton!
-    @IBOutlet weak var campusPickerView: UIPickerView!
-    @IBOutlet weak var buildingPickerView: UIPickerView!
-    @IBOutlet weak var roomPickerView: UIPickerView!
-    @IBOutlet weak var imageView: UIImageView!      // The single image view used for both selecting and displaying the image
+    /// Single picker with 3 components: Campus / Building / Room (Room = Class)
+    @IBOutlet weak var locationPickerView: UIPickerView!
+    @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var submitButton: UIButton!
 
     // MARK: - Properties
     private let db = Firestore.firestore()
     private var uploadedImagePublicId: String?
 
-    
-    // Hardcoded data for campuses, buildings, and rooms
-      private let campusData: [String: [String: [String]]] = [
-          "campusA": [
-              "buildings": ["19", "36", "25"],
-              "rooms": ["100", "110", "200", "210"]
-          ],
-          "campusB": [
-              "buildings": ["20", "25"],
-              "rooms": ["100", "200", "300"]
-          ]
-      ]
-    
+    // ✅ Campus -> Buildings
+    private let buildingsByCampus: [String: [String]] = [
+        "CampusA": ["19", "36", "25"],
+        "CampusB": ["20", "25"]
+    ]
+
+    // ✅ Building -> 4 Classes (edit these names as you want)
+    private let classesByBuilding: [String: [String]] = [
+        "19": ["01", "02", "03", "04"],
+        "36": ["101", "102", "103", "104"],
+        "25": ["313", "314", "315", "316"],
+        "20": ["98", "99", "100", "101"]
+    ]
+
     private var categories: [String] = []
     private var campus: [String] = []
     private var building: [String] = []
-    private var room: [String] = []
-    
+    private var room: [String] = []   // ✅ this now holds CLASSES
+
     private var selectedCategory: String?
     private var selectedCategoryName: String?
     private var selectedCampus: String?
     private var selectedBuilding: String?
-    private var selectedRoom: String?
-    
+    private var selectedRoom: String?  // ✅ selected class
+
     private var uploadedImageUrl: String?
+    private var userId: String = ""
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Set delegates and data sources
-        campusPickerView.delegate = self
-        campusPickerView.dataSource = self
-        buildingPickerView.delegate = self
-        buildingPickerView.dataSource = self
-        roomPickerView.delegate = self
-        roomPickerView.dataSource = self
-        
-        // Load campus data and set default campus (Campus A)
-             campus = Array(campusData.keys)  // Get all campus names
-             selectedCampus = campus.first    // Default to the first campus, "campusA"
-             
-             loadBuildingsAndRooms(forCampus: selectedCampus!)
 
-        // Reload pickers initially
-        campusPickerView.reloadAllComponents()
-        buildingPickerView.reloadAllComponents()
-        roomPickerView.reloadAllComponents()
-        
+        // Set delegates and data sources
+        locationPickerView.delegate = self
+        locationPickerView.dataSource = self
+
+        // ✅ Load campuses
+        campus = Array(buildingsByCampus.keys)
+        selectedCampus = campus.first
+
+        if let selectedCampus = selectedCampus {
+            loadBuildingsAndRooms(forCampus: selectedCampus)
+        }
+
+        // Reload picker initially
+        locationPickerView.reloadAllComponents()
+
         fetchSharedSettings() // Fetch shared settings from the "requests/001" document
-        
+
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
-              imageView.addGestureRecognizer(tapGesture)
-              imageView.isUserInteractionEnabled = true  // Make sure the imageView is interactive
+        imageView.addGestureRecognizer(tapGesture)
+        imageView.isUserInteractionEnabled = true
     }
 
     // MARK: - Fetch Shared Settings (from "requests/001" document)
     func fetchSharedSettings() {
-        // Fetching the shared settings from the `requests/001` document
-        db.collection("requests").document("001").getDocument { snapshot, error in
+        db.collection("requests").document("xnPtlNRUYzdPMB5GeXwf").getDocument { snapshot, error in
             if let error = error {
                 print("Error fetching shared settings: \(error)")
                 return
             }
-            
+
             guard let data = snapshot?.data() else {
                 print("No shared settings found in 'requests/001'.")
                 return
             }
-            
-            // Fetch categories, campuses, buildings, and rooms
+
             if let categories = data["category"] as? [String] {
                 self.categories = categories
             } else {
                 print("Categories not found in 'requests/001'.")
             }
-            
-            self.setupCategoryMenu() // Setup category button after loading categories
+
+            self.setupCategoryMenu()
         }
     }
-    
-    // MARK: - Load buildings and rooms based on selected campus
-        private func loadBuildingsAndRooms(forCampus campus: String) {
-            guard let campusInfo = campusData[campus] else { return }
-            
-            // Get buildings and rooms for the selected campus
-            self.building = campusInfo["buildings"] ?? []
-            self.room = campusInfo["rooms"] ?? []
-            
-            // Set default building and room (optional)
-            self.selectedBuilding = building.first
-            self.selectedRoom = room.first
-            
-            // Reload building and room pickers
-            DispatchQueue.main.async {
-                self.buildingPickerView.reloadAllComponents()
-                self.roomPickerView.reloadAllComponents()
-            }
+
+    // MARK: - Load buildings and classes based on selected campus
+    private func loadBuildingsAndRooms(forCampus campus: String) {
+        // ✅ Buildings for campus
+        self.building = buildingsByCampus[campus] ?? []
+        self.selectedBuilding = building.first
+
+        // ✅ Classes for the selected building (component 2)
+        if let b = self.selectedBuilding {
+            self.room = classesByBuilding[b] ?? []
+        } else {
+            self.room = []
         }
+        self.selectedRoom = room.first
+
+        DispatchQueue.main.async {
+            self.locationPickerView.reloadComponent(1) // buildings
+            self.locationPickerView.reloadComponent(2) // classes
+            self.locationPickerView.selectRow(0, inComponent: 1, animated: true)
+            self.locationPickerView.selectRow(0, inComponent: 2, animated: true)
+        }
+    }
 
     // MARK: - UIPickerView DataSource
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
+    func numberOfComponents(in pickerView: UIPickerView) -> Int { 3 }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if pickerView == campusPickerView {
-            return campus.count
-        } else if pickerView == buildingPickerView {
-            return building.count
-        } else {
-            return room.count
+        switch component {
+        case 0: return campus.count
+        case 1: return building.count
+        case 2: return room.count
+        default: return 0
         }
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if pickerView == campusPickerView {
-            return campus[row]
-        } else if pickerView == buildingPickerView {
-            return building[row]
-        } else {
-            return room[row]
+        switch component {
+        case 0: return campus.indices.contains(row) ? campus[row] : nil
+        case 1: return building.indices.contains(row) ? building[row] : nil
+        case 2: return room.indices.contains(row) ? room[row] : nil
+        default: return nil
         }
     }
 
-
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-            if pickerView == campusPickerView {
-                selectedCampus = campus[row]
-                print("Selected Campus:", selectedCampus)
-                loadBuildingsAndRooms(forCampus: selectedCampus!)
-            } else if pickerView == buildingPickerView {
-                selectedBuilding = building[row]
-                print("Selected Building:", selectedBuilding)
-            } else if pickerView == roomPickerView {
-                selectedRoom = room[row]
-                print("Selected Room:", selectedRoom)
+        switch component {
+        case 0:
+            guard campus.indices.contains(row) else { return }
+            selectedCampus = campus[row]
+            if let selectedCampus {
+                loadBuildingsAndRooms(forCampus: selectedCampus)
             }
-         }
-    
-    
-    // MARK: - Image View Tap Action
-        @objc func imageViewTapped() {
-            let picker = UIImagePickerController()
-            picker.delegate = self
-            picker.sourceType = .photoLibrary
-            picker.allowsEditing = false
-            present(picker, animated: true) // Present the image picker
+
+        case 1:
+            guard building.indices.contains(row) else { return }
+            selectedBuilding = building[row]
+
+            // ✅ Building changed -> reload classes (component 2)
+            let newClasses = classesByBuilding[selectedBuilding ?? ""] ?? []
+            room = newClasses
+            selectedRoom = room.first
+
+            pickerView.reloadComponent(2)
+            pickerView.selectRow(0, inComponent: 2, animated: true)
+
+        case 2:
+            guard room.indices.contains(row) else { return }
+            selectedRoom = room[row]
+
+        default:
+            break
         }
+    }
+
+    // MARK: - Image View Tap Action
+    @objc func imageViewTapped() {
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.sourceType = .photoLibrary
+        picker.allowsEditing = false
+        present(picker, animated: true)
+    }
 
     func imagePickerController(
         _ picker: UIImagePickerController,
@@ -181,9 +189,8 @@ final class AddRequsetViewController: UIViewController, UIPickerViewDelegate, UI
 
         guard let image = info[.originalImage] as? UIImage else { return }
         imageView.image = image
-        selectedImage = image   // 👈 store only
+        selectedImage = image
     }
-
 
     // MARK: - Upload to Cloudinary (using unsigned upload preset)
     private func uploadToCloudinary(
@@ -193,7 +200,7 @@ final class AddRequsetViewController: UIViewController, UIPickerViewDelegate, UI
         guard let data = image.jpegData(compressionQuality: 0.8) else { return }
 
         AppDelegate.cloudinary.createUploader()
-            .upload(data: data, uploadPreset: uploadPreset) { response, error in
+            .upload(data: data, uploadPreset: uploadPreset, completionHandler: { response, error in
                 DispatchQueue.main.async {
                     if let error = error {
                         completion(.failure(error))
@@ -207,9 +214,8 @@ final class AddRequsetViewController: UIViewController, UIPickerViewDelegate, UI
 
                     completion(.success(url))
                 }
-            }
+            })
     }
-
 
     // MARK: - Submit Action
     @IBAction func submitButtonTapped(_ sender: UIButton) {
@@ -219,7 +225,6 @@ final class AddRequsetViewController: UIViewController, UIPickerViewDelegate, UI
             return
         }
 
-        // Optional: disable button to prevent double taps
         sender.isEnabled = false
 
         uploadToCloudinary(image: image) { [weak self] result in
@@ -229,20 +234,20 @@ final class AddRequsetViewController: UIViewController, UIPickerViewDelegate, UI
             switch result {
             case .failure:
                 self.showAlert("Image upload failed ❌")
-
             case .success(let imageUrl):
                 self.submitRequest(with: imageUrl)
             }
         }
     }
-    
-    private func submitRequest(with imageUrl: String) {
-        let userId = Auth.auth().currentUser?.uid ?? "SWbHXFG4i7vvkOScM3K2"
 
-        guard let selectedCategory = selectedCategory,
-              let selectedCampus = selectedCampus,
-              let selectedBuilding = selectedBuilding,
-              let selectedRoom = selectedRoom else {
+    private func submitRequest(with imageUrl: String) {
+        userId = "bmVxgwiDv3MIFMLWgfb7hxOrHsl2"
+
+        guard
+            let selectedCampus = selectedCampus,
+            let selectedBuilding = selectedBuilding,
+            let selectedRoom = selectedRoom
+        else {
             showAlert("Please complete all selections.")
             return
         }
@@ -253,25 +258,34 @@ final class AddRequsetViewController: UIViewController, UIPickerViewDelegate, UI
             location: [
                 "campus": [selectedCampus],
                 "building": [selectedBuilding],
-                "room": [selectedRoom]
+                "room": [selectedRoom]   // ✅ this is the selected class now
             ],
-            category: selectedCategory,
-            priorityLevel: "low",
+            category: ["IT",
+                       "pluming",
+                       "HVAC",
+                       "Furniture",
+                       "Safety"],
+            priorityLevel: ["high",
+                            "middel",
+                            "low"],
+            selectedCategory: "IT",
+            selectedPriorityLevel: "low",
             imageUrl: imageUrl,
-            submittedBy: db.collection("users").document(userId),
+            submittedBy: db.collection("users").document("bmVxgwiDv3MIFMLWgfb7hxOrHsl2"),
             assignedTechnician: nil,
-            relatedTickets: nil,
+            relatedTickets: [],
             status: "Pending",
             acceptanceTime: nil,
             completionTime: nil,
             assignedAt: nil,
-            duplicateFlag: false
+            duplicateFlag: false,
+            createdAt: Timestamp()
         )
 
         Task {
             do {
-                try await RequestManager.shared.addRequest(request)
-                clearFields()
+                userId = try await RequestManager.shared.addRequest(request)
+                print("Request submitted with ID: \(userId)")
                 showAlert("Request submitted successfully ✅")
             } catch {
                 showAlert("Failed to submit request ❌")
@@ -279,44 +293,30 @@ final class AddRequsetViewController: UIViewController, UIPickerViewDelegate, UI
         }
     }
 
-
-
     // MARK: - Category Setup
     private func setupCategoryMenu() {
-        // Ensure categories is not empty before setting up the menu
         guard !categories.isEmpty else {
             print("No categories available to setup menu.")
             return
         }
 
-        print("Categories available: \(categories)")
-
-        // Creating actions for each category
         let actions = categories.map { (category) in
-            print("Creating action for category: \(category)")
-
-            return UIAction(title: category) { [weak self] _ in
-                self?.selectedCategory = category  // Set selectedCategory to category
+            UIAction(title: category) { [weak self] _ in
+                self?.selectedCategory = category
                 self?.categoryButton.setTitle(category, for: .normal)
                 print("Category selected: \(self?.selectedCategory ?? "None")")
             }
         }
 
-        // Ensure categoryButton is not nil before assigning the menu
-        if let categoryButton = categoryButton {
-            categoryButton.menu = UIMenu(title: "Select Category", children: actions)
-            categoryButton.showsMenuAsPrimaryAction = true
-            print("Menu assigned to categoryButton.")
-        } else {
-            print("categoryButton is nil, cannot assign menu.")
-        }
+        categoryButton.menu = UIMenu(title: "Select Category", children: actions)
+        categoryButton.showsMenuAsPrimaryAction = true
     }
+
     // MARK: - Helpers
     private func validateFields() -> Bool {
         guard
             let title = titleTextField.text, !title.isEmpty,
             let description = descriptionTextField.text, !description.isEmpty,
-            selectedCategory != nil,  // Validate category index
             selectedCampus != nil,
             selectedRoom != nil,
             selectedBuilding != nil
@@ -330,20 +330,17 @@ final class AddRequsetViewController: UIViewController, UIPickerViewDelegate, UI
     private func clearFields() {
         titleTextField.text = ""
         descriptionTextField.text = ""
-        
-        selectedCategory = nil
+
         selectedCategoryName = nil
         selectedCampus = nil
         selectedBuilding = nil
         selectedRoom = nil
         uploadedImageUrl = nil
-        
+
         categoryButton.setTitle("Select Category", for: .normal)
-        campusPickerView.reloadAllComponents()
-        buildingPickerView.reloadAllComponents()
-        roomPickerView.reloadAllComponents()
+        locationPickerView.reloadAllComponents()
     }
-    
+
     private func showAlert(_ message: String) {
         let alert = UIAlertController(
             title: "Notice",
