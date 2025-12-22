@@ -16,6 +16,10 @@ struct Request {
     let location: [String]
     var category: [String]
     let priorityLevel: [String]
+    /// The user-chosen category (stored in Firestore as `selectedCategory`)
+    let selectedCategory: String?
+    /// The user-chosen priority (stored in Firestore as `selectedPriorityLevel`)
+    let selectedPriorityLevel: String?
     let submittedBy: DocumentReference?
     let assignedTechnician: DocumentReference?
     let relatedTickets: [DocumentReference]?
@@ -25,6 +29,7 @@ struct Request {
     let assignedAt: Timestamp?
     let duplicateFlag: Bool
     let imageUrl: String?
+    let createdAt: Timestamp
     
     // Modify init for category and priority to handle array data properly
     init?(document: DocumentSnapshot) {
@@ -39,7 +44,8 @@ struct Request {
             let description = data["description"] as? String,
             //let category = data["category"] as? [String],  // Category is now an array of strings
             let priorityLevel = data["priorityLevel"] as? [String],  // PriorityLevel is now an array of strings
-            let status = data["status"] as? String
+            let status = data["status"] as? String,
+            let createdAt = data["createdAt"] as? Timestamp
           
             
         else {
@@ -56,7 +62,11 @@ struct Request {
         let relatedTickets = data["relatedTickets"] as? [DocumentReference] ?? []
         let completionTime = data["completionTime"] as? Timestamp
         let assignedAt = data["assignedAt"] as? Timestamp
-        let imageUrl = data["imageUrl"] as? String
+        // Some older writes used the key `image` instead of `imageUrl`.
+        let imageUrl = (data["imageUrl"] as? String) ?? (data["image"] as? String)
+
+        let selectedCategory = data["selectedCategory"] as? String
+        let selectedPriorityLevel = data["selectedPriorityLevel"] as? String
 
         // Debugging: print the location data
         if let locationData = data["location"] as? [String: [String]] {
@@ -106,6 +116,9 @@ struct Request {
         self.assignedAt = assignedAt
         self.duplicateFlag = duplicateFlag
         self.imageUrl = imageUrl
+        self.selectedCategory = selectedCategory
+        self.selectedPriorityLevel = selectedPriorityLevel
+        self.createdAt = createdAt
     }
 
 
@@ -116,39 +129,45 @@ struct Request {
 // MARK: - DTO (Write)
 struct RequestCreateDTO{
 
-    let title: String
-    let description: String
-    let location: [String: Any]
-    let category: String
-    let priorityLevel: String
-    let submittedBy: DocumentReference? = nil
-    let imageUrl: String
-    let assignedTechnician: DocumentReference? = nil
-    let relatedTickets: [DocumentReference] = []
-    let status: String
-    let acceptanceTime: Timestamp? = nil
-    let completionTime: Timestamp? = nil
+    let title: String?
+    let description: String?
+    let location: [String: Any]?
+    var category: [String]
+    let priorityLevel: [String]
+    let selectedCategory: String?
+    let selectedPriorityLevel: String?
+    let imageUrl: String?
+    let submittedBy: DocumentReference
+    let assignedTechnician: DocumentReference?
+    let relatedTickets: [DocumentReference]?
+    let status: String?
+    let acceptanceTime: Timestamp?
+    let completionTime: Timestamp?
     let assignedAt: Timestamp?
-    let duplicateFlag: Bool = false
+    let duplicateFlag: Bool?
+    let createdAt: Timestamp
 
     func toDictionary() -> [String: Any] {
-        [
-            "title": title,
-                 "description": description,
-                 "location": location,  // Save the location as a 3-element array
-                 "category": category,
-                 "priorityLevel": priorityLevel,
-                 "submittedBy": submittedBy as Any,
-                 "imageUrl": imageUrl,
-                 "assignedTechnician": assignedTechnician as Any,  // Optional can be nil
-                 "relatedTickets": relatedTickets,
-                 "status": "Pending",
-                 "acceptanceTime": acceptanceTime as Any,
-                 "completionTime": completionTime  as Any,
-                 "assignedAt": assignedAt  as Any,
-                 "duplicateFlag": duplicateFlag,
-                 "createdAt": Timestamp()
-        ]
+        var dict: [String: Any] = [:]
+
+        if let title { dict["title"] = title }
+        if let description { dict["description"] = description }
+        if let location { dict["location"] = location }
+        dict["category"] = category
+        dict["priorityLevel"] = priorityLevel
+        if let selectedCategory { dict["selectedCategory"] = selectedCategory }
+        if let selectedPriorityLevel { dict["selectedPriorityLevel"] = selectedPriorityLevel }
+        if let imageUrl { dict["imageUrl"] = imageUrl }
+        dict["submittedBy"] = submittedBy
+        dict["assignedTechnician"] = assignedTechnician ?? NSNull()
+        if let relatedTickets { dict["relatedTickets"] = relatedTickets }
+        if let status { dict["status"] = status }
+        dict["acceptanceTime"] = acceptanceTime ?? NSNull()  // Optional fields
+        dict["completionTime"] = completionTime ?? NSNull()
+        dict["assignedAt"] = assignedAt ?? NSNull()
+        if let duplicateFlag { dict["duplicateFlag"] = duplicateFlag }
+       dict["createdAt"] = createdAt
+        return dict
     }
 }
 
@@ -158,8 +177,10 @@ struct RequestUpdateDTO{
     let title: String?
     let description: String?
     let location: [String: Any]?
-    let category: String?
-    let priorityLevel: Int?
+    var category: [String]
+    let priorityLevel: [String]
+    let selectedCategory: String?
+    let selectedPriorityLevel: String?
     let imageUrl: String?
     let submittedBy: DocumentReference?
     let assignedTechnician: DocumentReference?
@@ -176,9 +197,11 @@ struct RequestUpdateDTO{
         if let title { dict["title"] = title }
         if let description { dict["description"] = description }
         if let location { dict["location"] = location }
-        if let category { dict["category"] = category }
-        if let priorityLevel { dict["priorityLevel"] = priorityLevel }
-        if let imageUrl { dict["image"] = imageUrl }
+        dict["category"] = category
+        dict["priorityLevel"] = priorityLevel
+        if let selectedCategory { dict["selectedCategory"] = selectedCategory }
+        if let selectedPriorityLevel { dict["selectedPriorityLevel"] = selectedPriorityLevel }
+        if let imageUrl { dict["imageUrl"] = imageUrl }
         if let assignedTechnician { dict["assignedTechnician"] = assignedTechnician }
         if let relatedTickets { dict["relatedTickets"] = relatedTickets }
         if let status { dict["status"] = status }
@@ -212,55 +235,39 @@ final class RequestManager{
     }
     
     // MARK: - Update Request
-    func updateRequest(requestId: String, updateDTO: RequestUpdateDTO) async throws {
-        let docRef = db.collection("requests").document(requestId)
-        let updateData = updateDTO.toDictionary()
-        try await docRef.updateData(updateData)
-    }
-    
+        func updateRequest(requestId: String, updateDTO: RequestUpdateDTO) async throws {
+            let docRef = db.collection("requests").document(requestId)
+            let updateData = updateDTO.toDictionary()
+            try await docRef.updateData(updateData)
+        }
 
-    // MARK: - Fetch Request by ID (Improved with Error Logging)
-    func fetchRequest(requestId: String, completion: @escaping (Request?) -> Void) {
-        print("Fetching request for requestId: \(requestId)")  // Debugging line
+        // MARK: - Fetch Request
+        func fetchRequest(requestId: String, completion: @escaping (Request?) -> Void) {
+            print("Fetching request for requestId: \(requestId)")
 
-        db.collection("requests")
-            .document(requestId)  // Fetch the document using the requestId
-            .getDocument { snapshot, error in
+            db.collection("requests").document(requestId).getDocument { snapshot, error in
                 if let error = error {
-                    print("Error fetching request: \(error.localizedDescription)")  // Log the error
-                    completion(nil)
+                    print("Error fetching request: \(error.localizedDescription)")
+                    DispatchQueue.main.async { completion(nil) }
                     return
                 }
                 
-                guard let snapshot = snapshot else {
-                    print("Snapshot is nil.")
-                    completion(nil)
+                guard let snapshot = snapshot, snapshot.exists else {
+                    print("No request found for ID: \(requestId)")
+                    DispatchQueue.main.async { completion(nil) }
                     return
                 }
 
-                if !snapshot.exists {
-                    print("No request found for this ID: \(requestId)")  // Document doesn't exist
-                    completion(nil)
-                    return
-                }
-
-                print("Fetched document snapshot: \(snapshot.data() ?? [:])")  // Log the fetched data
-
-                // Attempt to initialize the Request model with the fetched data
+                // Attempt to map
                 if let request = Request(document: snapshot) {
                     print("Request successfully fetched and mapped.")
-                    completion(request)
+                    DispatchQueue.main.async { completion(request) }
                 } else {
-                    print("Failed to map document data to Request model for ID: \(requestId)")
-                    completion(nil)
+                    print("Failed to map document data to Request model.")
+                    DispatchQueue.main.async { completion(nil) }
                 }
             }
-    }
-
-
-
-
-
+        }
         
         // MARK: - Fetch Shared Data (Document UID "001")
         func fetchSharedData(completion: @escaping (Result<[String: Any], Error>) -> Void) {

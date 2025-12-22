@@ -18,22 +18,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <pickerView contentMode="scaleToFill" verticalCompressionResistancePriority="749" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ace-Rm-j6N">
-                                <rect key="frame" x="16" y="230" width="142" height="102"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            </pickerView>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="requst title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SNU-gQ-2aK">
                                 <rect key="frame" x="123" y="90" width="149" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fOQ-0z-1fg">
-                                <rect key="frame" x="226" y="230" width="151" height="102"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                            </pickerView>
                             <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="inu-F5-q9A">
-                                <rect key="frame" x="33" y="351" width="327" height="109"/>
+                                <rect key="frame" x="38" y="258" width="327" height="109"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             </pickerView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gLQ-BQ-TZY">
@@ -42,7 +34,7 @@
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Submit"/>
                                 <connections>
-                                    <action selector="submitButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9Ec-mf-UkL"/>
+                                    <action selector="submitButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="lNc-Ax-5uv"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="discrption" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="maU-Hn-ZQn">
@@ -56,7 +48,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="W0Z-pp-2il" propertyAccessControl="all">
-                                <rect key="frame" x="38" y="519" width="319" height="30"/>
+                                <rect key="frame" x="38" y="511" width="319" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" name="AccentColor"/>
                                 <menu key="menu" id="t5U-Em-dOs">
@@ -72,15 +64,13 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <connections>
-                        <outlet property="buildingPickerView" destination="fOQ-0z-1fg" id="qLf-jT-SNq"/>
-                        <outlet property="campusPickerView" destination="ace-Rm-j6N" id="IpQ-bp-hex"/>
-                        <!-- categoryButton must connect to the UIButton, not its UIMenu -->
-                        <outlet property="categoryButton" destination="W0Z-pp-2il" id="NG5-O2-rzt"/>
-                        <outlet property="descriptionTextField" destination="maU-Hn-ZQn" id="kY4-O0-GZr"/>
-                        <outlet property="imageView" destination="qgC-ES-J4W" id="QPz-hh-4rB"/>
-                        <outlet property="roomPickerView" destination="inu-F5-q9A" id="Sv5-6I-VAf"/>
-                        <outlet property="submitButton" destination="gLQ-BQ-TZY" id="k0Q-2T-sfn"/>
-                        <outlet property="titleTextField" destination="SNU-gQ-2aK" id="SeZ-EN-KLu"/>
+                        <!-- Fix: connect outlet to the UIButton, not the embedded UIMenu -->
+                        <outlet property="categoryButton" destination="W0Z-pp-2il" id="X0B-Cd-NUz"/>
+                        <outlet property="descriptionTextField" destination="maU-Hn-ZQn" id="0Bu-Ma-oip"/>
+                        <outlet property="imageView" destination="qgC-ES-J4W" id="0gP-pG-Lk8"/>
+                        <outlet property="locationPickerView" destination="inu-F5-q9A" id="jch-EA-f14"/>
+                        <outlet property="submitButton" destination="gLQ-BQ-TZY" id="pcP-Bk-7An"/>
+                        <outlet property="titleTextField" destination="SNU-gQ-2aK" id="FXK-mr-md7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
