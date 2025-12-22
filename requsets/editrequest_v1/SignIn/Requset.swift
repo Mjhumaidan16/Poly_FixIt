@@ -240,6 +240,18 @@ final class RequestManager{
             let updateData = updateDTO.toDictionary()
             try await docRef.updateData(updateData)
         }
+    
+    
+    // MARK: - Delete Request
+     func deleteRequest(requestId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+         db.collection("requests").document(requestId).delete { error in
+             if let error = error {
+                 completion(.failure(error))
+             } else {
+                 completion(.success(()))
+             }
+         }
+     }
 
         // MARK: - Fetch Request
         func fetchRequest(requestId: String, completion: @escaping (Request?) -> Void) {

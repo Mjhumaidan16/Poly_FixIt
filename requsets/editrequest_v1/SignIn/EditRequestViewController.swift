@@ -14,6 +14,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
     @IBOutlet weak var categoryButton: UIButton!
     @IBOutlet weak var locationPickerView: UIPickerView!
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var deleteButton: UIButton! //new delete button
     @IBOutlet weak var submitButton: UIButton!
 
     // MARK: - Properties
@@ -44,7 +45,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
     private var selectedBuilding: String?
     private var selectedRoom: String?
 
-    private var userId: String = "xnPtlNRUYzdPMB5GeXwf"
+    private var userId: String = "KDLMdnh21EPopn274E22"
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -292,6 +293,41 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
                   }
               })
       }
+    
+    // MARK: - delete
+    private func deleteRequestFromManager() {
+        let requestId = userId
+        
+        RequestManager.shared.deleteRequest(requestId: requestId) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self?.showAlert("Request deleted successfully ✅")
+                    self?.navigationController?.popViewController(animated: true)
+                case .failure(let error):
+                    self?.showAlert("Failed to delete request ❌: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+    
+    @IBAction func deleteButtonTapped(_ sender: UIButton) {
+        let alert = UIAlertController(
+            title: "Delete Request",
+            message: "Are you sure you want to delete this request? This action cannot be undone.",
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self] _ in
+            self?.deleteRequestFromManager()
+        }))
+        
+        present(alert, animated: true)
+    }
+
+
+    
 
     // MARK: - Submit
     @IBAction func submitButtonTapped(_ sender: UIButton) {
@@ -357,7 +393,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
 
         Task {
             do {
-                try await RequestManager.shared.updateRequest(requestId: currentRequest?.id ?? userId, updateDTO: updateDTO)
+                try await RequestManager.shared.updateRequest(requestId: userId, updateDTO: updateDTO)
                 showAlert("Request submitted successfully ✅")
             } catch {
                 showAlert("Failed to submit request ❌")
