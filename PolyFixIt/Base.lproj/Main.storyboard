@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lVd-GQ-7yD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="rQv-XW-JZz">
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
@@ -5875,7 +5876,7 @@ Administrative privileges must be used solely for official purposes. Any misuse 
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
                                                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="iyt-jr-nn1">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="282" height="190"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="282" height="189.66666666666666"/>
                                                                             <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                                             <color key="textColor" systemColor="labelColor"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -5956,11 +5957,13 @@ Administrative privileges must be used solely for official purposes. Any misuse 
                                                 <rect key="frame" x="8" y="792.33333333333326" width="377" height="50"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OaW-ZU-U8K">
-                                                        <rect key="frame" x="0.0" y="0.0" width="60" height="50"/>
+                                                        <rect key="frame" x="0.0" y="2.3333333333333321" width="60" height="45.333333333333343"/>
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="OFD-iM-jnl"/>
                                                             <constraint firstAttribute="width" constant="60" id="SKE-Fn-BJE"/>
                                                         </constraints>
+                                                        <imageReference key="image" image="at.circle" catalog="system" symbolScale="small"/>
                                                     </imageView>
                                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Type your message..." borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0JV-B8-6ar">
                                                         <rect key="frame" x="68" y="0.0" width="241" height="50"/>
@@ -5979,12 +5982,14 @@ Administrative privileges must be used solely for official purposes. Any misuse 
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </textField>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Urh-jk-CSm">
-                                                        <rect key="frame" x="317" y="0.0" width="60" height="50"/>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" highlighted="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Urh-jk-CSm">
+                                                        <rect key="frame" x="317" y="2.6666666666666679" width="60" height="45.666666666666657"/>
+                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="50" id="dNa-Qm-ta6"/>
                                                             <constraint firstAttribute="width" constant="60" id="kI8-CD-7rR"/>
                                                         </constraints>
+                                                        <imageReference key="image" image="paperplane.fill" catalog="system" symbolScale="small"/>
                                                     </imageView>
                                                 </subviews>
                                             </stackView>
@@ -6082,6 +6087,7 @@ Administrative privileges must be used solely for official purposes. Any misuse 
         <image name="Image" width="66" height="72"/>
         <image name="arrow.backward" catalog="system" width="128" height="95"/>
         <image name="arrow.forward" catalog="system" width="128" height="95"/>
+        <image name="at.circle" catalog="system" width="128" height="123"/>
         <image name="bell.fill" catalog="system" width="123" height="128"/>
         <image name="document.badge.ellipsis.fill" catalog="system" width="120" height="128"/>
         <image name="envelope.fill" catalog="system" width="128" height="85"/>
@@ -6091,6 +6097,7 @@ Administrative privileges must be used solely for official purposes. Any misuse 
         <image name="list.bullet.rectangle.portrait.fill" catalog="system" width="115" height="128"/>
         <image name="lock.fill" catalog="system" width="111" height="128"/>
         <image name="mappin.and.ellipse.circle.fill" catalog="system" width="128" height="123"/>
+        <image name="paperplane.fill" catalog="system" width="128" height="119"/>
         <image name="person.badge.plus.fill" catalog="system" width="128" height="126"/>
         <image name="person.crop.circle" catalog="system" width="128" height="123"/>
         <image name="person.crop.circle.fill" catalog="system" width="128" height="123"/>
