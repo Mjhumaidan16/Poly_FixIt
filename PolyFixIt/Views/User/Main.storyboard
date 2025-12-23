@@ -23,9 +23,28 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rNy-dW-hVQ">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="800"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dVv-cc-2J7">
-                                                <rect key="frame" x="21" y="107" width="350" height="323"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Filters" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VB4-vV-qjy">
+                                                <rect key="frame" x="150" y="8" width="92" height="40"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="GuW-ul-UAX"/>
+                                                    <constraint firstAttribute="width" constant="92" id="Lsw-bV-SVh"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="33"/>
+                                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ZG-xt-Xu3">
+                                                <rect key="frame" x="21" y="73" width="49" height="27"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="49" id="ngT-ys-Xru"/>
+                                                    <constraint firstAttribute="height" constant="27" id="pqE-YA-CWL"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dVv-cc-2J7">
+                                                <rect key="frame" x="21" y="108" width="350" height="323"/>
                                                 <subviews>
                                                     <datePicker contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" style="inline" translatesAutoresizingMaskIntoConstraints="NO" id="cEg-bU-nNp">
                                                         <rect key="frame" x="10" y="8" width="340" height="315"/>
@@ -33,58 +52,55 @@
                                                     </datePicker>
                                                 </subviews>
                                                 <color key="backgroundColor" red="0.50196078430000002" green="0.55294117649999996" blue="0.64313725489999995" alpha="0.694535236" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="350" id="E4k-oj-U6F"/>
+                                                    <constraint firstAttribute="height" constant="323" id="jg9-F1-QNy"/>
+                                                </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                         <integer key="value" value="10"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HsI-v5-Fdg">
-                                                <rect key="frame" x="21" y="485" width="345" height="38"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="314" id="y5T-oX-8yH"/>
-                                                </constraints>
-                                                <menu key="menu" id="7W7-Tp-9rN">
-                                                    <children>
-                                                        <command title="Choose a category" id="P2J-72-0hH"/>
-                                                        <command title="HVAC" id="adl-r1-VcN" userLabel="Electrical"/>
-                                                        <command title="Furniture" id="8xi-Hb-TU2"/>
-                                                        <command title="Saftey" id="whP-OR-sHO"/>
-                                                        <command title="IT" id="WB4-bn-RKK"/>
-                                                        <command title="Plumbing" id="Qy0-OK-Dyo"/>
-                                                    </children>
-                                                </menu>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="gray" title="RatingDropButton">
-                                                    <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="1"/>
-                                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <color key="baseBackgroundColor" red="0.50196078430000002" green="0.55294117649999996" blue="0.64313725489999995" alpha="0.5" colorSpace="calibratedRGB"/>
-                                                </buttonConfiguration>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WhW-85-GNo">
-                                                <rect key="frame" x="21" y="598" width="350" height="38"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="314" id="9uV-sU-7A9"/>
-                                                </constraints>
-                                                <menu key="menu" id="sxd-DS-qWc">
-                                                    <children>
-                                                        <command title="Choose a status" id="V9R-gf-dQ7"/>
-                                                        <command title="Not Assigned" discoverabilityTitle="none" id="C07-CE-9tx"/>
-                                                        <command title="done" discoverabilityTitle="cleaning" id="Ycd-ml-HmO"/>
-                                                        <command title="in progress" discoverabilityTitle="cleaning" id="CQr-2y-64j"/>
-                                                    </children>
-                                                </menu>
-                                                <state key="normal" title="Button"/>
-                                                <buttonConfiguration key="configuration" style="gray" title="RatingDropButton">
-                                                    <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="1"/>
-                                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <color key="baseBackgroundColor" red="0.50196078430000002" green="0.55294117649999996" blue="0.64313725489999995" alpha="0.5" colorSpace="calibratedRGB"/>
-                                                </buttonConfiguration>
-                                            </button>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iHG-mJ-fDS">
-                                                <rect key="frame" x="21" y="683" width="350" height="40"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kUg-uy-1qA">
+                                                <rect key="frame" x="24" y="543" width="345" height="73"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WhW-85-GNo">
+                                                        <rect key="frame" x="0.0" y="35" width="345" height="38"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="38" id="N9j-g3-82j"/>
+                                                            <constraint firstAttribute="width" constant="345" id="dZv-p6-hlJ"/>
+                                                        </constraints>
+                                                        <menu key="menu" id="sxd-DS-qWc">
+                                                            <children>
+                                                                <command title="Not Assigned" discoverabilityTitle="none" id="C07-CE-9tx"/>
+                                                                <command title="done" discoverabilityTitle="cleaning" id="Ycd-ml-HmO"/>
+                                                                <command title="in progress" discoverabilityTitle="cleaning" id="CQr-2y-64j"/>
+                                                            </children>
+                                                        </menu>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="gray" title="RatingDropButton">
+                                                            <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="1"/>
+                                                            <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <color key="baseBackgroundColor" red="0.50196078430000002" green="0.55294117649999996" blue="0.64313725489999995" alpha="0.5" colorSpace="calibratedRGB"/>
+                                                        </buttonConfiguration>
+                                                    </button>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VDa-sU-7CO">
+                                                        <rect key="frame" x="0.0" y="0.0" width="68" height="27"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </view>
+                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iHG-mJ-fDS">
+                                                <rect key="frame" x="24" y="635" width="345" height="40"/>
                                                 <color key="backgroundColor" red="0.125" green="0.251" blue="0.56100000000000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="40" id="YNZ-bs-w34"/>
+                                                    <constraint firstAttribute="width" constant="345" id="b0b-OX-ecp"/>
+                                                </constraints>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                                 <state key="normal" title="Confirm Changes"/>
                                                 <userDefinedRuntimeAttributes>
@@ -96,40 +112,59 @@
                                                     <segue destination="qDQ-2C-xbt" kind="show" id="oio-7f-5HQ"/>
                                                 </connections>
                                             </button>
+                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gCG-O3-h2J">
+                                                <rect key="frame" x="24" y="450" width="345" height="73"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3wA-nd-m0M">
+                                                        <rect key="frame" x="0.0" y="0.0" width="96" height="27"/>
+                                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HsI-v5-Fdg">
+                                                        <rect key="frame" x="0.0" y="35" width="345" height="38"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="38" id="a5t-Yt-fNy"/>
+                                                            <constraint firstAttribute="width" constant="345" id="tNG-8l-vKh"/>
+                                                        </constraints>
+                                                        <menu key="menu" id="7W7-Tp-9rN">
+                                                            <children>
+                                                                <command title="Choose a category" id="P2J-72-0hH"/>
+                                                                <command title="HVAC" id="adl-r1-VcN" userLabel="Electrical"/>
+                                                                <command title="Furniture" id="8xi-Hb-TU2"/>
+                                                                <command title="Saftey" id="whP-OR-sHO"/>
+                                                                <command title="IT" id="WB4-bn-RKK"/>
+                                                                <command title="Plumbing" id="Qy0-OK-Dyo"/>
+                                                            </children>
+                                                        </menu>
+                                                        <state key="normal" title="Button"/>
+                                                        <buttonConfiguration key="configuration" style="gray" title="RatingDropButton">
+                                                            <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="1"/>
+                                                            <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <color key="baseBackgroundColor" red="0.50196078430000002" green="0.55294117649999996" blue="0.64313725489999995" alpha="0.5" colorSpace="calibratedRGB"/>
+                                                        </buttonConfiguration>
+                                                    </button>
+                                                </subviews>
+                                            </view>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
+                                            <constraint firstItem="2ZG-xt-Xu3" firstAttribute="top" secondItem="rNy-dW-hVQ" secondAttribute="top" constant="73" id="08F-bp-AwJ"/>
+                                            <constraint firstItem="iHG-mJ-fDS" firstAttribute="leading" secondItem="rNy-dW-hVQ" secondAttribute="leading" constant="24" id="0Bi-fj-gF8"/>
+                                            <constraint firstItem="gCG-O3-h2J" firstAttribute="top" secondItem="dVv-cc-2J7" secondAttribute="bottom" constant="20" id="AdM-FG-lki"/>
+                                            <constraint firstItem="VB4-vV-qjy" firstAttribute="leading" secondItem="rNy-dW-hVQ" secondAttribute="leading" constant="150" id="Fd2-gc-pjV"/>
+                                            <constraint firstItem="kUg-uy-1qA" firstAttribute="leading" secondItem="rNy-dW-hVQ" secondAttribute="leading" constant="24" id="Jx2-3P-pho"/>
+                                            <constraint firstItem="VB4-vV-qjy" firstAttribute="top" secondItem="rNy-dW-hVQ" secondAttribute="top" constant="8" id="NA4-k4-tSu"/>
+                                            <constraint firstItem="dVv-cc-2J7" firstAttribute="leading" secondItem="rNy-dW-hVQ" secondAttribute="leading" constant="21" id="X0n-50-wdf"/>
+                                            <constraint firstItem="gCG-O3-h2J" firstAttribute="leading" secondItem="rNy-dW-hVQ" secondAttribute="leading" constant="24" id="YT6-1a-Q0s"/>
+                                            <constraint firstItem="kUg-uy-1qA" firstAttribute="top" secondItem="gCG-O3-h2J" secondAttribute="bottom" constant="20" id="arz-Zb-70m"/>
+                                            <constraint firstItem="dVv-cc-2J7" firstAttribute="top" secondItem="2ZG-xt-Xu3" secondAttribute="bottom" constant="8" id="fbY-O8-z2M"/>
+                                            <constraint firstItem="2ZG-xt-Xu3" firstAttribute="leading" secondItem="rNy-dW-hVQ" secondAttribute="leading" constant="21" id="mXF-bk-7pl"/>
                                             <constraint firstAttribute="height" constant="800" id="nbB-MQ-wq1"/>
+                                            <constraint firstItem="iHG-mJ-fDS" firstAttribute="top" secondItem="kUg-uy-1qA" secondAttribute="bottom" constant="20" id="x7k-qK-ZEf"/>
                                         </constraints>
                                     </view>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Filters" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VB4-vV-qjy">
-                                        <rect key="frame" x="143" y="10" width="92" height="40"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="33"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ZG-xt-Xu3">
-                                        <rect key="frame" x="18" y="62" width="49" height="27"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Category" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3wA-nd-m0M">
-                                        <rect key="frame" x="18" y="442" width="96" height="27"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Status" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VDa-sU-7CO">
-                                        <rect key="frame" x="18" y="555" width="68" height="27"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
-                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                 </subviews>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="rNy-dW-hVQ" secondAttribute="bottom" id="CjS-o9-XPq"/>
@@ -2585,7 +2620,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="aoR-4T-wkE"/>
+        <segue reference="D9J-eh-5dE"/>
         <segue reference="frG-Pn-iOG"/>
         <segue reference="cGO-jG-Ul6"/>
         <segue reference="Msd-Pi-e5b"/>
