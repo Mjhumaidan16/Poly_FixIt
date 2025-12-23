@@ -242,16 +242,6 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </textField>
-                                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="JOg-rK-Wod">
-                                                <rect key="frame" x="60" y="277" width="295" height="35"/>
-                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                <color key="backgroundColor" white="1" alpha="0.41999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                                <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.cornerRadius" value="YES"/>
-                                                </userDefinedRuntimeAttributes>
-                                            </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="w6X-Gn-T2A">
                                                 <rect key="frame" x="60" y="406" width="295" height="78"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -324,6 +314,27 @@
                                                 <rect key="frame" x="47" y="135" width="320" height="98"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             </pickerView>
+                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" showsMenuAsPrimaryAction="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" changesSelectionAsPrimaryAction="YES" translatesAutoresizingMaskIntoConstraints="NO" id="96e-tc-jtx">
+                                                <rect key="frame" x="60" y="270" width="295" height="38.333333333333329"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="295" id="uc8-Eh-dcb"/>
+                                                </constraints>
+                                                <menu key="menu" id="oqz-lB-Ccr">
+                                                    <children>
+                                                        <command title="Plumbing" id="6n9-X7-WqZ"/>
+                                                        <command title="IT" id="m49-lt-4Iv"/>
+                                                        <command title="HVAC" id="w0x-hG-NoO"/>
+                                                        <command title="Furniture" id="z2t-Z4-1T6"/>
+                                                        <command title="Safety" id="7yK-VP-iHa"/>
+                                                    </children>
+                                                </menu>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="gray" title="RatingDropButton">
+                                                    <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="1"/>
+                                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="baseBackgroundColor" red="0.50196078430000002" green="0.55294117649999996" blue="0.64313725489999995" alpha="0.5" colorSpace="calibratedRGB"/>
+                                                </buttonConfiguration>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -1333,7 +1344,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="Email" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jQ5-vw-sZn">
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Email" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jQ5-vw-sZn">
                                 <rect key="frame" x="49" y="295" width="309" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.30980393290000002" green="0.36470589040000001" blue="0.48627454040000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -1756,7 +1767,7 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Vi-eU-Xxl">
+                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Vi-eU-Xxl">
                                                 <rect key="frame" x="109" y="257" width="181" height="39"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 <color key="backgroundColor" red="0.72156864399999998" green="0.18823529780000001" blue="0.1686274707" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -2576,8 +2587,8 @@
     <inferredMetricsTieBreakers>
         <segue reference="aoR-4T-wkE"/>
         <segue reference="frG-Pn-iOG"/>
-        <segue reference="SwZ-K8-pF0"/>
-        <segue reference="eVT-8s-jKi"/>
+        <segue reference="cGO-jG-Ul6"/>
+        <segue reference="Msd-Pi-e5b"/>
         <segue reference="4vh-Jm-0Pi"/>
         <segue reference="N8v-Wo-ZzA"/>
     </inferredMetricsTieBreakers>
