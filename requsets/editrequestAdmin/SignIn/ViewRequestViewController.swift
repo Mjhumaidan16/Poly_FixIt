@@ -6,16 +6,18 @@ import Cloudinary
 private var selectedImage: UIImage?
 private let uploadPreset = "iOS_requests_preset"
 
-final class EditRequestViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+final class ViewRequestViewController: UIViewController{
 
     // MARK: - IBOutlets
-    @IBOutlet weak var titleTextField: UITextField!
-    @IBOutlet weak var descriptionTextField: UITextField!
-    @IBOutlet weak var categoryButton: UIButton!
-    @IBOutlet weak var priorityLevelButton: UIButton! // NEW
-    @IBOutlet weak var locationPickerView: UIPickerView!
+    @IBOutlet weak var titleTextField: UILabel!
+    @IBOutlet weak var descriptionTextField: UILabel!
+    @IBOutlet weak var categoryButton: UILabel!
+    @IBOutlet weak var priorityLevelButton: UILabel! // NEW
+    @IBOutlet weak var locationPickerView: UILabel!
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var deleteButton: UIButton!
+    @IBOutlet weak var acceptButton: UIButton!
+    @IBOutlet weak var EditButton: UIButton!
     @IBOutlet weak var submitButton: UIButton!
 
     // MARK: - Properties
@@ -63,17 +65,12 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
         precondition(imageView != nil, "imageView outlet is not connected")
         precondition(submitButton != nil, "submitButton outlet is not connected")
         
-        setupImageTap()
-        
-        locationPickerView.delegate = self
-        locationPickerView.dataSource = self
         
         campus = Array(buildingsByCampus.keys)
         selectedCampus = campus.first
         if let selectedCampus = selectedCampus {
-            loadBuildingsAndRooms(forCampus: selectedCampus)
+            //loadBuildingsAndRooms(forCampus: selectedCampus)
         }
-        locationPickerView.reloadAllComponents()
         
         fetchRequestDataFromManager(requestId: userId)
 
@@ -90,72 +87,12 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
                 self.selectedCategory = request.selectedCategory
                 self.selectedPriorityLevel = request.selectedPriorityLevel
                 self.prefillFields(with: request)
-                self.enableEditing()
+           
                 print("Fetched categories:", self.categories)
             } else {
                 print("Failed to fetch request.")
             }
         }
-    }
-
-    // MARK: - Setup Category Menu
-    private func setupCategoryMenu() {
-        guard !categories.isEmpty else { return }
-        
-        if selectedCategory == nil {
-            selectedCategory = categories.first
-            if let selectedCategory { categoryButton.setTitle(selectedCategory, for: .normal) }
-        }
-
-        let actions = categories.map { category in
-            UIAction(title: category) { [weak self] _ in
-                self?.selectedCategory = category
-                self?.categoryButton.setTitle(category, for: .normal)
-            }
-        }
-
-        categoryButton.menu = UIMenu(title: "Select Category", children: actions)
-        categoryButton.showsMenuAsPrimaryAction = true
-    }
-    
-    // MARK: - Setup Priority Menu
-    private func setupPriorityMenu() {
-        guard !priorityLevels.isEmpty else { return }
-        
-        if selectedPriorityLevel == nil {
-            selectedPriorityLevel = priorityLevels.first
-            if let selectedPriorityLevel { priorityLevelButton.setTitle(selectedPriorityLevel, for: .normal) }
-        }
-
-        let actions = priorityLevels.map { level in
-            UIAction(title: level.capitalized) { [weak self] _ in
-                self?.selectedPriorityLevel = level
-                self?.priorityLevelButton.setTitle(level.capitalized, for: .normal)
-                print("Priority selected: \(self?.selectedPriorityLevel ?? "None")")
-            }
-        }
-
-        priorityLevelButton.menu = UIMenu(title: "Select Priority", children: actions)
-        priorityLevelButton.showsMenuAsPrimaryAction = true
-    }
-
-    // MARK: - Enable/Disable Editing
-    private func enableEditing() {
-        titleTextField.isEnabled = true
-        descriptionTextField.isEnabled = true
-        categoryButton.isEnabled = true
-        priorityLevelButton.isEnabled = true // NEW
-        locationPickerView.isUserInteractionEnabled = true
-        submitButton.isEnabled = true
-    }
-
-    private func disableEditing() {
-        titleTextField.isEnabled = false
-        descriptionTextField.isEnabled = false
-        categoryButton.isEnabled = false
-        priorityLevelButton.isEnabled = false // NEW
-        locationPickerView.isUserInteractionEnabled = false
-        submitButton.isEnabled = false
     }
 
     // MARK: - Prefill Fields
@@ -165,12 +102,12 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
 
          if let selected = request.selectedCategory, !selected.isEmpty {
              selectedCategory = selected
-             categoryButton.setTitle(selected, for: .normal)
+             //categoryButton.setTitle(selected, for: .normal)
          }
         
         if let selected = request.selectedPriorityLevel, !selected.isEmpty {
             selectedPriorityLevel = selected
-            priorityLevelButton.setTitle(selected, for: .normal)
+            //priorityLevelButton.setTitle(selected, for: .normal)
         }
        
         
@@ -193,89 +130,15 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
          let roomValue = request.location[2]
 
          selectedCampus = campusValue
-         loadBuildingsAndRooms(forCampus: campusValue)
+         //loadBuildingsAndRooms(forCampus: campusValue)
 
          selectedBuilding = buildingValue
          room = classesByBuilding[buildingValue] ?? []
          selectedRoom = roomValue
 
-         locationPickerView.reloadAllComponents()
-
-         if let campusIndex = campus.firstIndex(of: campusValue) {
-             locationPickerView.selectRow(campusIndex, inComponent: 0, animated: false)
          }
-         if let buildingIndex = building.firstIndex(of: buildingValue) {
-             locationPickerView.selectRow(buildingIndex, inComponent: 1, animated: false)
-         }
-         if let roomIndex = room.firstIndex(of: roomValue) {
-             locationPickerView.selectRow(roomIndex, inComponent: 2, animated: false)
-         }
-
-        setupCategoryMenu()
-        setupPriorityMenu() // NEW
-    }
-
-    // MARK: - Picker Handling
-    private func loadBuildingsAndRooms(forCampus campus: String) {
-        building = buildingsByCampus[campus] ?? []
-        selectedBuilding = building.first
-        room = selectedBuilding.flatMap { classesByBuilding[$0] } ?? []
-        selectedRoom = room.first
-
-        DispatchQueue.main.async {
-            self.locationPickerView.reloadAllComponents()
-            self.locationPickerView.selectRow(0, inComponent: 1, animated: true)
-            self.locationPickerView.selectRow(0, inComponent: 2, animated: true)
-        }
-    }
-
-    func numberOfComponents(in pickerView: UIPickerView) -> Int { 3 }
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        switch component {
-        case 0: return campus.count
-        case 1: return building.count
-        case 2: return room.count
-        default: return 0
-        }
-    }
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        switch component {
-        case 0: return campus.indices.contains(row) ? campus[row] : nil
-        case 1: return building.indices.contains(row) ? building[row] : nil
-        case 2: return room.indices.contains(row) ? room[row] : nil
-        default: return nil
-        }
-    }
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        switch component {
-        case 0:
-            selectedCampus = campus.indices.contains(row) ? campus[row] : nil
-            loadBuildingsAndRooms(forCampus: selectedCampus ?? "")
-        case 1:
-            selectedBuilding = building.indices.contains(row) ? building[row] : nil
-            room = selectedBuilding.flatMap { classesByBuilding[$0] } ?? []
-            selectedRoom = room.first
-            pickerView.reloadComponent(2)
-            pickerView.selectRow(0, inComponent: 2, animated: true)
-        case 2:
-            selectedRoom = room.indices.contains(row) ? room[row] : nil
-        default: break
-        }
-    }
 
     // MARK: - Image Handling
-    private func setupImageTap() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
-        imageView.isUserInteractionEnabled = true
-        imageView.addGestureRecognizer(tap)
-    }
-
-    @objc private func imageTapped() {
-        let picker = UIImagePickerController()
-        picker.delegate = self
-        picker.sourceType = .photoLibrary
-        present(picker, animated: true)
-    }
 
     func imagePickerController(_ picker: UIImagePickerController,
                                didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -335,6 +198,48 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
             self?.deleteRequestFromManager()
         }))
         present(alert, animated: true)
+    }
+    
+    
+    // MARK: - Accept Request
+    @IBAction func acceptButtonTapped(_ sender: UIButton) {
+        let alert = UIAlertController(
+            title: "Accept Request",
+            message: "Are you sure you want to accept this request?",
+            preferredStyle: .alert
+        )
+
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+
+        alert.addAction(UIAlertAction(
+            title: "Accept",
+            style: .default,
+            handler: { [weak self] _ in
+                self?.acceptRequestFromManager()
+            }
+        ))
+
+        present(alert, animated: true)
+    }
+
+    private func acceptRequestFromManager() {
+        let requestId = userId
+
+        RequestManager.shared.updateRequestStatusOnly(
+            requestId: requestId,
+            status: "Accepted"
+        ) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self?.showAlert("Request accepted successfully ✅")
+                    self?.navigationController?.popViewController(animated: true)
+
+                case .failure(let error):
+                    self?.showAlert("Failed to accept request ❌: \(error.localizedDescription)")
+                }
+            }
+        }
     }
 
     // MARK: - Submit

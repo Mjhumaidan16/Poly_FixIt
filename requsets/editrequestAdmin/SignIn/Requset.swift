@@ -280,6 +280,30 @@ final class RequestManager{
                 }
             }
         }
+    
+    
+    // MARK: - Update Request Status ONLY
+    func updateRequestStatusOnly(
+        requestId: String,
+        status: String,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        Firestore.firestore()
+            .collection("requests")
+            .document(requestId)
+            .updateData([
+                "status": status,
+                "acceptanceTime": Timestamp(date: Date()) // optional but recommended
+            ]) { error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    completion(.success(()))
+                }
+            }
+    }
+
+    
         
         // MARK: - Fetch Shared Data (Document UID "001")
         func fetchSharedData(completion: @escaping (Result<[String: Any], Error>) -> Void) {
