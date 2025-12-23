@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="rQv-XW-JZz">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="lVd-GQ-7yD">
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
@@ -1090,19 +1091,19 @@
                                 <rect key="frame" x="0.0" y="238" width="393" height="531"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UJ0-LW-YK8">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="273"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="318"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="18" translatesAutoresizingMaskIntoConstraints="NO" id="6zP-12-AlN">
-                                                <rect key="frame" x="16" y="63" width="361" height="210"/>
+                                                <rect key="frame" x="16" y="63" width="361" height="255"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="6ZA-WM-ZeA">
-                                                        <rect key="frame" x="0.0" y="0.0" width="361" height="210"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="361" height="255"/>
                                                         <subviews>
                                                             <view opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="703-c6-ewY">
                                                                 <rect key="frame" x="0.0" y="0.0" width="361" height="120"/>
                                                                 <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Technician: Ethan Carter" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i17-Tn-hz0">
-                                                                        <rect key="frame" x="8" y="65" width="186" height="21"/>
+                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Technician: Ethan Carter / Not Assigned" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i17-Tn-hz0">
+                                                                        <rect key="frame" x="8" y="65" width="302" height="21"/>
                                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <color key="textColor" red="0.33725491169999999" green="0.38823530080000002" blue="0.50196081400000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -1141,16 +1142,16 @@
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K5y-1u-eMs">
                                                                         <rect key="frame" x="0.0" y="0.0" width="361" height="39"/>
-                                                                        <color key="backgroundColor" red="0.16078431369999999" green="0.23921568630000001" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                        <color key="backgroundColor" name="AccentColor"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="39" id="2Nc-AW-j6h"/>
                                                                         </constraints>
                                                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <state key="normal" title="Button"/>
-                                                                        <buttonConfiguration key="configuration" style="plain" title="Edit Request"/>
+                                                                        <buttonConfiguration key="configuration" style="plain" title="Accept Request"/>
                                                                     </button>
-                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="document.badge.ellipsis.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="FCS-Gq-fAx">
-                                                                        <rect key="frame" x="102.66666666666667" y="7.3333333333333339" width="17.333333333333329" height="28"/>
+                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="checkmark" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="FCS-Gq-fAx">
+                                                                        <rect key="frame" x="106" y="9.3333333333333321" width="14" height="21.666666666666668"/>
                                                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="14" id="Ktn-m9-seU"/>
@@ -1167,8 +1168,39 @@
                                                                     <constraint firstAttribute="trailing" secondItem="K5y-1u-eMs" secondAttribute="trailing" id="bjR-Qc-3ey"/>
                                                                 </constraints>
                                                             </view>
-                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hqb-o4-9G2">
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gew-T1-9t5">
                                                                 <rect key="frame" x="0.0" y="171" width="361" height="39"/>
+                                                                <subviews>
+                                                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lBJ-Xh-UiI">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="361" height="39"/>
+                                                                        <color key="backgroundColor" red="0.16078431369999999" green="0.23921568630000001" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="height" constant="39" id="Kdm-Oy-XTl"/>
+                                                                        </constraints>
+                                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                        <state key="normal" title="Button"/>
+                                                                        <buttonConfiguration key="configuration" style="plain" title="Edit Request"/>
+                                                                    </button>
+                                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="document.badge.ellipsis.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="16r-q3-rRd">
+                                                                        <rect key="frame" x="102.66666666666667" y="7.3333333333333339" width="17.333333333333329" height="28"/>
+                                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                        <constraints>
+                                                                            <constraint firstAttribute="height" constant="25.670000000000002" id="Lvp-H4-r9B"/>
+                                                                            <constraint firstAttribute="width" constant="14" id="gKc-8b-qDF"/>
+                                                                        </constraints>
+                                                                    </imageView>
+                                                                </subviews>
+                                                                <constraints>
+                                                                    <constraint firstItem="16r-q3-rRd" firstAttribute="top" secondItem="Gew-T1-9t5" secondAttribute="top" constant="7" id="9HZ-Fq-Rog"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="16r-q3-rRd" secondAttribute="trailing" constant="241" id="NHp-lF-zXl"/>
+                                                                    <constraint firstItem="lBJ-Xh-UiI" firstAttribute="leading" secondItem="Gew-T1-9t5" secondAttribute="leading" id="QUO-OT-JzQ"/>
+                                                                    <constraint firstAttribute="trailing" secondItem="lBJ-Xh-UiI" secondAttribute="trailing" id="dpI-mt-F2i"/>
+                                                                    <constraint firstItem="16r-q3-rRd" firstAttribute="leading" secondItem="Gew-T1-9t5" secondAttribute="leading" constant="106" id="pLT-7w-Zh2"/>
+                                                                    <constraint firstAttribute="bottom" secondItem="16r-q3-rRd" secondAttribute="bottom" constant="6.3300000000000001" id="yxD-2h-3Vd"/>
+                                                                </constraints>
+                                                            </view>
+                                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hqb-o4-9G2">
+                                                                <rect key="frame" x="0.0" y="216" width="361" height="39"/>
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="87e-eO-FVX">
                                                                         <rect key="frame" x="0.0" y="0.0" width="361" height="39"/>
@@ -1181,7 +1213,7 @@
                                                                         <buttonConfiguration key="configuration" style="plain" title="    Delete Duplicate"/>
                                                                     </button>
                                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="trash.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="etU-HQ-kwp">
-                                                                        <rect key="frame" x="104" y="8.0000000000000195" width="19" height="21"/>
+                                                                        <rect key="frame" x="104" y="7.9999999999999627" width="19" height="21"/>
                                                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="width" constant="19" id="gG6-17-jm9"/>
@@ -6089,6 +6121,7 @@ Administrative privileges must be used solely for official purposes. Any misuse 
         <image name="arrow.forward" catalog="system" width="128" height="95"/>
         <image name="at.circle" catalog="system" width="128" height="123"/>
         <image name="bell.fill" catalog="system" width="123" height="128"/>
+        <image name="checkmark" catalog="system" width="128" height="114"/>
         <image name="document.badge.ellipsis.fill" catalog="system" width="120" height="128"/>
         <image name="envelope.fill" catalog="system" width="128" height="85"/>
         <image name="eye.slash" catalog="system" width="128" height="97"/>
@@ -6104,6 +6137,9 @@ Administrative privileges must be used solely for official purposes. Any misuse 
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="shippingbox.fill" catalog="system" width="128" height="123"/>
         <image name="trash.fill" catalog="system" width="117" height="128"/>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
