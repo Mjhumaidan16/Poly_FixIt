@@ -123,7 +123,7 @@
                         <viewLayoutGuide key="safeArea" id="T75-gI-IK6"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="jhh-bn-6UC"/>
+                    <tabBarItem key="tabBarItem" title="Item" image="plus.circle" catalog="system" id="jhh-bn-6UC"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vR6-H2-mgD" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -384,7 +384,7 @@
         <scene sceneID="GB5-3T-JDS">
             <objects>
                 <navigationController modalTransitionStyle="crossDissolve" navigationBarHidden="YES" id="iCp-vl-Zj6" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Dashboard" id="vx9-JJ-hnn"/>
+                    <tabBarItem key="tabBarItem" title="Dashboard" image="AdminDashboard" id="vx9-JJ-hnn"/>
                     <navigationItem key="navigationItem" id="4KA-lw-7gs"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="jov-dg-pCn">
                         <rect key="frame" x="0.0" y="-69" width="0.0" height="0.0"/>
@@ -1398,12 +1398,13 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AsA-BG-1QA">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="684"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ida-QT-dyt">
-                                                <rect key="frame" x="14" y="637" width="363" height="39"/>
+                                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ida-QT-dyt">
+                                                <rect key="frame" x="46" y="637" width="300" height="39"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="39" id="qTX-sv-ehD"/>
-                                                    <constraint firstAttribute="width" constant="363" id="qmI-Bb-ayX"/>
+                                                    <constraint firstAttribute="width" constant="300" id="qmI-Bb-ayX"/>
                                                 </constraints>
+                                                <color key="tintColor" red="0.15686274509803921" green="0.24705882352941178" blue="0.54117647058823526" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="filled" title="Account Modification"/>
                                             </button>
@@ -1838,7 +1839,7 @@
                             <constraint firstItem="Iha-AM-X7x" firstAttribute="top" secondItem="kku-8A-hE7" secondAttribute="top" id="w4t-gW-Ggy"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Technicians" id="q3t-Wr-iIv"/>
+                    <tabBarItem key="tabBarItem" title="Technicians" image="AdminTechnician" id="q3t-Wr-iIv"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9Tw-8C-yy4" sceneMemberID="firstResponder"/>
             </objects>
@@ -1897,7 +1898,7 @@
                                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qt5-rV-OL8">
                                                                 <rect key="frame" x="225" y="42" width="96" height="26"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                                <color key="backgroundColor" red="0.15686275059999999" green="0.2470588088" blue="0.5411764979" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                                <color key="backgroundColor" red="0.15686274509803921" green="0.24705882352941178" blue="0.54117647058823526" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <state key="normal" title="Button"/>
                                                                 <buttonConfiguration key="configuration" style="plain" title="Edit"/>
@@ -3874,6 +3875,7 @@
                                                     <constraint firstAttribute="width" constant="300" id="aFd-FS-xbx"/>
                                                     <constraint firstAttribute="height" constant="39" id="iyF-an-Bxb"/>
                                                 </constraints>
+                                                <color key="tintColor" red="0.15686274509803921" green="0.24705882352941178" blue="0.54117647058823526" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="filled" title="Submit"/>
                                             </button>
@@ -3959,7 +3961,7 @@
                             <constraint firstItem="tkc-xf-AKr" firstAttribute="leading" secondItem="yV3-lY-MPL" secondAttribute="leading" id="sdh-MO-One"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Room" id="1TN-k6-uPX"/>
+                    <tabBarItem key="tabBarItem" title="Room" image="RoomIcon" id="1TN-k6-uPX"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4tJ-hL-k9r" sceneMemberID="firstResponder"/>
             </objects>
@@ -4987,7 +4989,10 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
         </scene>
     </scenes>
     <resources>
+        <image name="AdminDashboard" width="20" height="18.666666030883789"/>
+        <image name="AdminTechnician" width="21.333333969116211" height="24"/>
         <image name="Image" width="66" height="72"/>
+        <image name="RoomIcon" width="18.666666030883789" height="22"/>
         <image name="arrow.backward" catalog="system" width="128" height="95"/>
         <image name="arrow.clockwise.square" catalog="system" width="128" height="114"/>
         <image name="arrow.forward" catalog="system" width="128" height="95"/>
@@ -5006,6 +5011,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
         <image name="person.crop.circle" catalog="system" width="128" height="123"/>
         <image name="person.crop.circle.fill" catalog="system" width="128" height="123"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
+        <image name="plus.circle" catalog="system" width="128" height="123"/>
         <image name="shippingbox.fill" catalog="system" width="128" height="123"/>
         <image name="trash.fill" catalog="system" width="117" height="128"/>
         <systemColor name="labelColor">
