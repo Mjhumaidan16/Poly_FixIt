@@ -6,11 +6,13 @@ import Cloudinary
 private var selectedImage: UIImage?
 private let uploadPreset = "iOS_requests_preset"
 
-final class EditRequestViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
+final class EditRequestViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    // MARK: - Passed in    
+    var userId: String = "xnPtlNRUYzdPMB5GeXwf"
     // MARK: - IBOutlets
     @IBOutlet weak var titleTextField: UITextField!
-    @IBOutlet weak var descriptionTextField: UILabel!
+    @IBOutlet weak var descriptionTextView: UITextView!
     @IBOutlet var CategoryButton:UIButton!
     @IBOutlet var PriorityLevelButton: UIButton! // NEW
     @IBOutlet weak var LocationPickerView: UIPickerView!
@@ -46,7 +48,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
     private var selectedBuilding: String?
     private var selectedRoom: String?
 
-    private var userId: String = "xnPtlNRUYzdPMB5GeXwf"
+
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -54,7 +56,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
         print("viewDidLoad called")
         
         precondition(titleTextField != nil, "titleTextField outlet is not connected")
-        //precondition(descriptionTextField != nil, "descriptionTextField outlet is not connected")
+        precondition(descriptionTextView != nil, "descriptionTextField outlet is not connected")
         precondition(CategoryButton != nil, "categoryButton outlet is not connected")
         precondition(PriorityLevelButton != nil, "priorityLevelButton outlet is not connected") // NEW
         precondition(LocationPickerView != nil, "locationPickerView outlet is not connected")
@@ -146,7 +148,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
     // MARK: - Enable/Disable Editing
     private func enableEditing() {
         titleTextField.isEnabled = true
-        descriptionTextField.isEnabled = true
+        descriptionTextView.isEditable = true
         CategoryButton.isEnabled = true
         PriorityLevelButton.isEnabled = true // NEW
         LocationPickerView.isUserInteractionEnabled = true
@@ -155,7 +157,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
 
     private func disableEditing() {
         titleTextField.isEnabled = false
-        descriptionTextField.isEnabled = false
+        descriptionTextView.isEditable = false
         CategoryButton.isEnabled = false
         PriorityLevelButton.isEnabled = false // NEW
         LocationPickerView.isUserInteractionEnabled = false
@@ -165,7 +167,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
     // MARK: - Prefill Fields
     private func prefillFields(with request: Request) {
          titleTextField.text = request.title
-         //descriptionTextField.text = request.description
+         descriptionTextView.text = request.description
 
         if let selected = request.selectedCategory, !selected.isEmpty {
             selectedCategory = selected
@@ -293,7 +295,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
 
     private func validateFields() -> Bool {
         guard let title = titleTextField.text, !title.isEmpty,
-              let description = descriptionTextField.text, !description.isEmpty,
+              let description = descriptionTextView.text, !description.isEmpty,
               selectedCategory != nil,
               selectedPriorityLevel != nil, // NEW
               selectedCampus != nil,
@@ -320,7 +322,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
 
         let updateDTO = RequestUpdateDTO(
             title: titleTextField.text,
-            description: descriptionTextField.text,
+            description: descriptionTextView.text,
             location: ["campus": [selectedCampus],
                        "building": [selectedBuilding],
                        "room": [selectedRoom]],
