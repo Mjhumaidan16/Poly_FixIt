@@ -1894,10 +1894,10 @@
                                                 </subviews>
                                             </stackView>
                                             <searchBar contentMode="redraw" barStyle="black" showsSearchResultsButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xpl-U9-0le">
-                                                <rect key="frame" x="59" y="8" width="302" height="44"/>
+                                                <rect key="frame" x="59" y="8" width="280" height="44"/>
                                                 <color key="backgroundColor" red="0.33725491169999999" green="0.38823530080000002" blue="0.50196081400000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="302" id="Ooz-Mk-nMQ"/>
+                                                    <constraint firstAttribute="width" constant="280" id="Ooz-Mk-nMQ"/>
                                                     <constraint firstAttribute="height" constant="44" id="obQ-L6-EJe"/>
                                                 </constraints>
                                                 <color key="tintColor" red="0.33725491169999999" green="0.38823530080000002" blue="0.50196081400000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -1917,6 +1917,16 @@
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="person.badge.plus.fill" catalog="system"/>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EiJ-zW-7UH">
+                                                <rect key="frame" x="339" y="11" width="54" height="37"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="37" id="2f1-ql-tWo"/>
+                                                    <constraint firstAttribute="width" constant="54" id="WlB-t6-bkj"/>
+                                                </constraints>
+                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <state key="normal" title="Button"/>
+                                                <buttonConfiguration key="configuration" style="plain" image="arrow.clockwise.square" catalog="system"/>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -1924,9 +1934,11 @@
                                             <constraint firstItem="xpl-U9-0le" firstAttribute="top" secondItem="3GW-qu-fD3" secondAttribute="top" constant="8" id="9Ma-je-cLe"/>
                                             <constraint firstItem="Sh1-SW-Sue" firstAttribute="leading" secondItem="3GW-qu-fD3" secondAttribute="leading" constant="2" id="BII-X1-F4E"/>
                                             <constraint firstItem="xpl-U9-0le" firstAttribute="leading" secondItem="Sh1-SW-Sue" secondAttribute="trailing" constant="3" id="P8g-c7-417"/>
+                                            <constraint firstItem="EiJ-zW-7UH" firstAttribute="top" secondItem="3GW-qu-fD3" secondAttribute="top" constant="11" id="RWT-lI-mP3"/>
                                             <constraint firstItem="WHV-h6-pNR" firstAttribute="leading" secondItem="3GW-qu-fD3" secondAttribute="leading" constant="32" id="S5b-h2-Pvb"/>
                                             <constraint firstItem="Sh1-SW-Sue" firstAttribute="top" secondItem="3GW-qu-fD3" secondAttribute="top" constant="12" id="eFc-7W-1nl"/>
                                             <constraint firstAttribute="bottom" secondItem="WHV-h6-pNR" secondAttribute="bottom" constant="8" id="ffj-Ti-OfT"/>
+                                            <constraint firstAttribute="trailing" secondItem="EiJ-zW-7UH" secondAttribute="trailing" id="kjE-GL-RXc"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -4545,7 +4557,6 @@ Administrative privileges must be used solely for official purposes. Any misuse 
         <!--Technician View-->
         <scene sceneID="4pr-ae-nmA">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="9e0-gS-GAk" sceneMemberID="firstResponder"/>
                 <viewController title="Rating Frame" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="cqU-f4-Muy" userLabel="Technician View" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jcZ-Oz-MVU">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
@@ -4829,6 +4840,7 @@ Administrative privileges must be used solely for official purposes. Any misuse 
                     <tabBarItem key="tabBarItem" title="Item" id="5eb-VP-3Ix"/>
                     <navigationItem key="navigationItem" id="6Fy-AH-GbW"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9e0-gS-GAk" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="11054" y="49"/>
         </scene>
@@ -5209,6 +5221,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
     <resources>
         <image name="Image" width="66" height="72"/>
         <image name="arrow.backward" catalog="system" width="128" height="95"/>
+        <image name="arrow.clockwise.square" catalog="system" width="128" height="114"/>
         <image name="arrow.forward" catalog="system" width="128" height="95"/>
         <image name="at.circle" catalog="system" width="128" height="123"/>
         <image name="bell.fill" catalog="system" width="123" height="128"/>
@@ -5243,7 +5256,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tableCellBlueTextColor">
-            <color red="0.039215686274509803" green="0.51764705882352946" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
