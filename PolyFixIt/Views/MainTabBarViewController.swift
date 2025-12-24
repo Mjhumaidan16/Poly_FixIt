@@ -22,8 +22,8 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
                 customMenuView.layer.borderWidth = 0.5
                 customMenuView.layer.borderColor = UIColor.separator.cgColor
 
-                let btn1 = createMenuButton(title: "Inventory", icon: "star.fill", tag: 4)
-                let btn2 = createMenuButton(title: "Settings", icon: "gearshape.fill", tag: 5)
+                let btn1 = createMenuButton(title: "Settings", icon: "gearshape.fill", tag: 5)
+                let btn2 = createMenuButton(title: "Inventory", icon: "AdminTechnician", tag: 4)
                 
                 let stack = UIStackView(arrangedSubviews: [btn1, btn2])
                 stack.axis = .vertical
