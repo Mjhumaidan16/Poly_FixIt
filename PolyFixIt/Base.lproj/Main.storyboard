@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="MOK-cy-oQn">
     <device id="retina6_12" orientation="portrait" appearance="dark"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
-        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="UIMenu" message="Requires Xcode 11 or later." minToolsVersion="11.0" requiredIntegratedClassName="UICommandDiff"/>
@@ -40,7 +39,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </label>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="Email" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yEs-Oh-fwe">
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Email" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yEs-Oh-fwe">
                                 <rect key="frame" x="42" y="289" width="335" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.30980393290000002" green="0.36470589040000001" blue="0.48627454040000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -48,7 +47,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <textInputTraits key="textInputTraits" keyboardType="emailAddress"/>
                             </textField>
-                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" text="Password" placeholder="Password" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w7z-Yv-SIS">
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" placeholder="Password" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w7z-Yv-SIS">
                                 <rect key="frame" x="44" y="342" width="333" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.30980393290000002" green="0.36470589040000001" blue="0.48627454040000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -62,9 +61,6 @@
                                 <color key="backgroundColor" red="0.125" green="0.251" blue="0.56100000000000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Continue"/>
-                                <connections>
-                                    <segue destination="cfd-Qe-AYk" kind="showDetail" id="T0o-6k-NQ9"/>
-                                </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="lock.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="0g0-Ex-oIh">
                                 <rect key="frame" x="14" y="342" width="30" height="34"/>
@@ -91,7 +87,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9SR-9F-XdJ" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1802" y="64"/>
+            <point key="canvasLocation" x="-2389" y="-82"/>
+        </scene>
+        <!--Main Tab Bar View Controller-->
+        <scene sceneID="ybZ-0o-QqO">
+            <objects>
+                <tabBarController id="2Vm-R9-0fc" customClass="MainTabBarViewController" customModule="PolyFixIt" customModuleProvider="target" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="F64-wT-O7Z"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Iba-Sm-yIK">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="iCp-vl-Zj6" kind="relationship" relationship="viewControllers" id="9qZ-DQ-7er"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Doo-9e-qQU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2448" y="625"/>
         </scene>
         <!--Admin View-->
         <scene sceneID="ADm-qr-Pei">
@@ -102,7 +116,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" delaysContentTouches="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cf3-Gz-iNt">
-                                <rect key="frame" x="0.0" y="179" width="393" height="590"/>
+                                <rect key="frame" x="0.0" y="282" width="393" height="487"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jMr-Ku-pR7">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="732"/>
@@ -338,10 +352,29 @@
                             <constraint firstItem="ffc-uV-ILP" firstAttribute="leading" secondItem="uQr-Ih-PyW" secondAttribute="leading" id="xKX-84-RpP"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="5xd-8A-lko"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XTT-9o-dDh" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-40.458015267175568" y="48.591549295774648"/>
+        </scene>
+        <!--Item-->
+        <scene sceneID="GB5-3T-JDS">
+            <objects>
+                <navigationController id="iCp-vl-Zj6" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="vx9-JJ-hnn"/>
+                    <navigationItem key="navigationItem" id="4KA-lw-7gs"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="jov-dg-pCn">
+                        <rect key="frame" x="0.0" y="118" width="393" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="cfd-Qe-AYk" kind="relationship" relationship="rootViewController" id="0Hg-L3-XsD"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="H7y-ry-Hco" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1088" y="49"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="C9P-ga-Vig">
@@ -1140,7 +1173,7 @@
                                                                 <subviews>
                                                                     <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K5y-1u-eMs">
                                                                         <rect key="frame" x="0.0" y="0.0" width="361" height="39"/>
-                                                                        <color key="backgroundColor" name="AccentColor"/>
+                                                                        <color key="backgroundColor" red="0.34086809117049321" green="0.63019000959326421" blue="0.19383342886935409" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="39" id="2Nc-AW-j6h"/>
                                                                         </constraints>
@@ -1327,7 +1360,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="drT-bu-Vmj" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="733.58778625954199" y="48.591549295774648"/>
+            <point key="canvasLocation" x="760" y="59"/>
         </scene>
         <!--Admin View-->
         <scene sceneID="el4-Ld-Qgd">
@@ -5240,9 +5273,6 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="shippingbox.fill" catalog="system" width="128" height="123"/>
         <image name="trash.fill" catalog="system" width="117" height="128"/>
-        <namedColor name="AccentColor">
-            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </namedColor>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
