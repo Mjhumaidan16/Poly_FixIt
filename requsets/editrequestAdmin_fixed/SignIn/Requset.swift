@@ -22,6 +22,7 @@ struct Request {
     let selectedPriorityLevel: String?
     let submittedBy: DocumentReference?
     let assignedTechnician: DocumentReference?
+    let assignedAdmin: DocumentReference?
     let relatedTickets: [DocumentReference]?
     let status: String
     let acceptanceTime: Timestamp?
@@ -57,6 +58,7 @@ struct Request {
         let submittedBy = data["submittedBy"] as? DocumentReference
         let category = (data["category"] as? [String]) ?? []
         let assignedTechnician = data["assignedTechnician"] as? DocumentReference
+        let assignedAdmin = data["assignedAdmin"] as?DocumentReference
         let acceptanceTime = data["acceptanceTime"] as? Timestamp
         let duplicateFlag = data["duplicateFlag"] as? Bool ?? false
         let relatedTickets = data["relatedTickets"] as? [DocumentReference] ?? []
@@ -109,6 +111,7 @@ struct Request {
         self.priorityLevel = priorityLevel  // PriorityLevel is now directly mapped as an array
         self.submittedBy = submittedBy
         self.assignedTechnician = assignedTechnician
+        self.assignedAdmin = assignedAdmin
         self.relatedTickets = relatedTickets
         self.status = status
         self.acceptanceTime = acceptanceTime
@@ -139,6 +142,7 @@ struct RequestCreateDTO{
     let imageUrl: String?
     let submittedBy: DocumentReference
     let assignedTechnician: DocumentReference?
+    let assignedAdmin: DocumentReference?
     let relatedTickets: [DocumentReference]?
     let status: String?
     let acceptanceTime: Timestamp?
@@ -160,6 +164,7 @@ struct RequestCreateDTO{
         if let imageUrl { dict["imageUrl"] = imageUrl }
         dict["submittedBy"] = submittedBy
         dict["assignedTechnician"] = assignedTechnician ?? NSNull()
+        dict["assignedAdmin"] = assignedAdmin ?? NSNull()
         if let relatedTickets { dict["relatedTickets"] = relatedTickets }
         if let status { dict["status"] = status }
         dict["acceptanceTime"] = acceptanceTime ?? NSNull()  // Optional fields
@@ -184,6 +189,7 @@ struct RequestUpdateDTO{
     let imageUrl: String?
     let submittedBy: DocumentReference?
     let assignedTechnician: DocumentReference?
+    let assignedAdmin: DocumentReference?
     let relatedTickets: [DocumentReference]?
     let status: String?
     let acceptanceTime: Timestamp?
@@ -203,6 +209,7 @@ struct RequestUpdateDTO{
         if let selectedPriorityLevel { dict["selectedPriorityLevel"] = selectedPriorityLevel }
         if let imageUrl { dict["imageUrl"] = imageUrl }
         if let assignedTechnician { dict["assignedTechnician"] = assignedTechnician }
+        if let assignedAdmin { dict["assignedAdmin"] = assignedAdmin }
         if let relatedTickets { dict["relatedTickets"] = relatedTickets }
         if let status { dict["status"] = status }
         if let acceptanceTime { dict["acceptanceTime"] = acceptanceTime }

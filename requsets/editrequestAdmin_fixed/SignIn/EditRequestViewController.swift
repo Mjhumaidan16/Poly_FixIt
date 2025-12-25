@@ -9,11 +9,11 @@ private let uploadPreset = "iOS_requests_preset"
 
 final class EditRequestViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     // MARK: - Passed in    
-    var userId: String = "xnPtlNRUYzdPMB5GeXwf"
+    var userId: String!
     // MARK: - IBOutlets
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var descriptionTextView: UITextView!
-    @IBOutlet var CategoryButton:UIButton!
+    @IBOutlet weak var CategoryButton: UIButton!
     @IBOutlet var PriorityLevelButton: UIButton! // NEW
     @IBOutlet weak var LocationPickerView: UIPickerView!
     @IBOutlet weak var submitButton: UIButton!
@@ -74,7 +74,15 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
         }
         LocationPickerView.reloadAllComponents()
         
-        fetchRequestDataFromManager(requestId: userId)
+        // Prevent a crash if this screen is opened without a request id.
+        guard let requestId = userId, !requestId.isEmpty else {
+            print("❌ EditRequestViewController opened without userId/requestId")
+            disableEditing()
+            showAlert("Missing request id. Please open this screen from a request.")
+            return
+        }
+
+        fetchRequestDataFromManager(requestId: requestId)
 
         
     }
@@ -172,7 +180,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
         if let selected = request.selectedCategory, !selected.isEmpty {
             selectedCategory = selected
             // Only set the visible title here. The dropdown menu is configured later in setupCategoryMenu().
-            CategoryButton.setTitle(selected, for: .normal)
+            CategoryButton.setTitle(selected.capitalized, for: .normal)
         }
 
         if let selected = request.selectedPriorityLevel, !selected.isEmpty {
@@ -263,7 +271,10 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
 
     // MARK: - Delete
     private func deleteRequestFromManager() {
-        let requestId = userId
+        guard let requestId = userId, !requestId.isEmpty else {
+            showAlert("Missing request id")
+            return
+        }
         RequestManager.shared.deleteRequest(requestId: requestId) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
@@ -333,6 +344,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
             imageUrl: imageUrl,
             submittedBy: nil,
             assignedTechnician: nil,
+            assignedAdmin: nil,
             relatedTickets: nil,
             status: nil,
             acceptanceTime: nil,
