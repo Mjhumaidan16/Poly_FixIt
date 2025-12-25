@@ -22,8 +22,8 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
                 customMenuView.layer.borderWidth = 0.5
                 customMenuView.layer.borderColor = UIColor.separator.cgColor
 
-                let btn1 = createMenuButton(title: "Settings", icon: "gearshape.fill", tag: 5)
-                let btn2 = createMenuButton(title: "Inventory", icon: "AdminTechnician", tag: 4)
+                let btn1 = createMenuButton(title: "Settings", icon: "SettingsIcon", tag: 5)
+                let btn2 = createMenuButton(title: "Inventory", icon: "AdminInventory", tag: 4)
                 
                 let stack = UIStackView(arrangedSubviews: [btn1, btn2])
                 stack.axis = .vertical
@@ -53,7 +53,8 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
                 titleAttr.font = .systemFont(ofSize: 11, weight: .regular)
                 config.attributedTitle = titleAttr
                 
-                config.image = UIImage(systemName: icon, withConfiguration: UIImage.SymbolConfiguration(pointSize: 17))
+                config.image = UIImage(named: icon)
+                config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 17)
                 config.imagePlacement = .top // Places image above text
                 config.imagePadding = 6      // Space between image and text
                 
@@ -98,22 +99,23 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
             // Use the tag to determine which screen to load
             switch sender.tag {
             case 5:
-                nextVC = storyboard.instantiateViewController(withIdentifier: "SettingsAccount")
+                nextVC = storyboard.instantiateViewController(withIdentifier: "SettingPageAdmin")
             case 4:
-                nextVC = storyboard.instantiateViewController(withIdentifier: "InventoryView")
+                nextVC = storyboard.instantiateViewController(withIdentifier: "Inventory")
             default:
                 return
             }
 
             if let vc = nextVC {
-                // Option A: Push (If inside a Navigation Controller)
-                if let nav = storyboard.instantiateViewController(withIdentifier: "mainNavController") as? UINavigationController {
-                    nav.pushViewController(vc, animated: true)
-                }
-                // Option B: Present (Fallback if no nav controller exists)
-                else {
-                    self.present(vc, animated: true)
-                }
+                self.present(vc, animated: true)
+//                // Option A: Push (If inside a Navigation Controller)
+//                if let nav = storyboard.instantiateViewController(withIdentifier: "mainNavController") as? UINavigationController {
+//                    nav.pushViewController(vc, animated: true)
+//                }
+//                // Option B: Present (Fallback if no nav controller exists)
+//                else {
+//                    self.present(vc, animated: true)
+//                }
             }
     }
 }
