@@ -89,11 +89,31 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     }
 
     @objc private func menuButtonTapped(_ sender: UIButton) {
-        print("Tapped Option \(sender.tag)")
         toggleMenu() // Hide menu after selection
         
         // Handle your navigation here, e.g.:
-        // let detailVC = DetailViewController()
-        // self.selectedViewController?.present(detailVC, animated: true)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let nextVC: UIViewController?
+
+            // Use the tag to determine which screen to load
+            switch sender.tag {
+            case 5:
+                nextVC = storyboard.instantiateViewController(withIdentifier: "SettingsAccount")
+            case 4:
+                nextVC = storyboard.instantiateViewController(withIdentifier: "InventoryView")
+            default:
+                return
+            }
+
+            if let vc = nextVC {
+                // Option A: Push (If inside a Navigation Controller)
+                if let nav = storyboard.instantiateViewController(withIdentifier: "mainNavController") as? UINavigationController {
+                    nav.pushViewController(vc, animated: true)
+                }
+                // Option B: Present (Fallback if no nav controller exists)
+                else {
+                    self.present(vc, animated: true)
+                }
+            }
     }
 }
