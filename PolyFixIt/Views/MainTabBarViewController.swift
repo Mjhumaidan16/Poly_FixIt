@@ -2,7 +2,6 @@ import UIKit
 
 class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
 
-    // The custom menu view
     private let customMenuView = UIVisualEffectView(effect: UIBlurEffect(style: .systemThinMaterial))
     private let dimmingView = UIView()
     private var isMenuVisible = false
@@ -15,7 +14,7 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
 
     private func setupCustomMenu() {
                 customMenuView.layer.cornerRadius = 16
-                customMenuView.layer.masksToBounds = true // Required for corner radius on blur
+                customMenuView.layer.masksToBounds = true
                 customMenuView.translatesAutoresizingMaskIntoConstraints = false
                 customMenuView.alpha = 0
                 
@@ -55,8 +54,8 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
                 
                 config.image = UIImage(named: icon)
                 config.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(pointSize: 17)
-                config.imagePlacement = .top // Places image above text
-                config.imagePadding = 6      // Space between image and text
+                config.imagePlacement = .top
+                config.imagePadding = 6
                 
                 config.baseForegroundColor = .label
                 config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0)
@@ -90,13 +89,11 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
     }
 
     @objc private func menuButtonTapped(_ sender: UIButton) {
-        toggleMenu() // Hide menu after selection
+        toggleMenu() //hide menu or open it
         
-        // Handle your navigation here, e.g.:
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let nextVC: UIViewController?
 
-            // Use the tag to determine which screen to load
             switch sender.tag {
             case 5:
                 nextVC = storyboard.instantiateViewController(withIdentifier: "SettingPageAdmin")
@@ -108,14 +105,6 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
 
             if let vc = nextVC {
                 self.present(vc, animated: true)
-//                // Option A: Push (If inside a Navigation Controller)
-//                if let nav = storyboard.instantiateViewController(withIdentifier: "mainNavController") as? UINavigationController {
-//                    nav.pushViewController(vc, animated: true)
-//                }
-//                // Option B: Present (Fallback if no nav controller exists)
-//                else {
-//                    self.present(vc, animated: true)
-//                }
             }
     }
 }
