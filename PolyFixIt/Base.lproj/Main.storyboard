@@ -158,7 +158,6 @@
                                                 </constraints>
                                                 <segments>
                                                     <segment title="Main"/>
-                                                    <segment title="Requests"/>
                                                     <segment title="Escalation"/>
                                                 </segments>
                                                 <color key="selectedSegmentTintColor" red="0.1647058874" green="0.22745099660000001" blue="0.37254902719999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -970,7 +969,7 @@
         <!--Admin View-->
         <scene sceneID="b9R-LR-csr">
             <objects>
-                <viewController storyboardIdentifier="AdminDuplicates" title="Admin Duplicates" id="lVd-GQ-7yD" userLabel="Admin View" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AdminRequestList" title="Admin Request List" id="lVd-GQ-7yD" userLabel="Admin View" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="3B1-LG-muv">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1194,6 +1193,9 @@
                                             <navigationItem id="9hc-QD-6Mx">
                                                 <barButtonItem key="leftBarButtonItem" image="arrow.backward" catalog="system" id="8Qd-kO-9CW">
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <connections>
+                                                        <segue destination="2Vm-R9-0fc" kind="show" id="dWL-pP-XbP"/>
+                                                    </connections>
                                                 </barButtonItem>
                                                 <barButtonItem key="rightBarButtonItem" image="bell.fill" catalog="system" id="VNb-uv-Rr8">
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1237,7 +1239,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="drT-bu-Vmj" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1169" y="49"/>
+            <point key="canvasLocation" x="-1089" y="1548"/>
         </scene>
         <!--Admin View-->
         <scene sceneID="el4-Ld-Qgd">
@@ -1859,7 +1861,7 @@
                                         <color key="barTintColor" red="0.1450980392" green="0.23137254900000001" blue="0.38431372549999998" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                         <items>
                                             <navigationItem id="iKl-CR-oTJ">
-                                                <barButtonItem key="leftBarButtonItem" image="arrow.backward" catalog="system" id="BXu-6s-wsR">
+                                                <barButtonItem key="leftBarButtonItem" image="arrow.backward" catalog="system" hidden="YES" id="BXu-6s-wsR">
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </barButtonItem>
                                                 <barButtonItem key="rightBarButtonItem" image="bell.fill" catalog="system" id="HOq-jK-XHt">
@@ -1930,15 +1932,6 @@
                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <searchBar contentMode="redraw" barStyle="black" searchBarStyle="minimal" text="Search by ID or category or location type" translatesAutoresizingMaskIntoConstraints="NO" id="ZpB-lL-eWI">
-                                                <rect key="frame" x="12" y="55" width="370" height="56"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="56" id="BdO-m8-HQg"/>
-                                                    <constraint firstAttribute="width" constant="370" id="PA7-Qh-ZIW"/>
-                                                </constraints>
-                                                <color key="barTintColor" red="0.1647058874" green="0.22745099660000001" blue="0.37254902719999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                            </searchBar>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="9kk-NA-4md">
                                                 <rect key="frame" x="17" y="126" width="361" height="202"/>
                                                 <subviews>
@@ -2039,17 +2032,27 @@
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" title="Confirm task assigning"/>
                                             </button>
+                                            <searchBar contentMode="redraw" barStyle="black" searchBarStyle="minimal" text="Search" translatesAutoresizingMaskIntoConstraints="NO" id="42U-Dd-BTS">
+                                                <rect key="frame" x="11.666666666666657" y="56" width="370" height="56"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="56" id="sFh-rZ-VCo"/>
+                                                    <constraint firstAttribute="width" constant="370" id="vSx-PP-wne"/>
+                                                </constraints>
+                                                <color key="barTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                            </searchBar>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
-                                            <constraint firstItem="ZpB-lL-eWI" firstAttribute="top" secondItem="t2J-Bp-dXH" secondAttribute="bottom" constant="8" id="HNH-di-4hr"/>
+                                            <constraint firstAttribute="trailing" secondItem="42U-Dd-BTS" secondAttribute="trailing" constant="11.5" id="AVG-fZ-tUA"/>
                                             <constraint firstItem="t2J-Bp-dXH" firstAttribute="leading" secondItem="bUF-ba-tdB" secondAttribute="leading" constant="72" id="JSW-Sv-9HD"/>
-                                            <constraint firstItem="ZpB-lL-eWI" firstAttribute="leading" secondItem="bUF-ba-tdB" secondAttribute="leading" constant="12" id="Rek-kF-UvO"/>
+                                            <constraint firstItem="9kk-NA-4md" firstAttribute="top" secondItem="42U-Dd-BTS" secondAttribute="bottom" constant="14" id="Ovf-TQ-whp"/>
+                                            <constraint firstItem="42U-Dd-BTS" firstAttribute="leading" secondItem="bUF-ba-tdB" secondAttribute="leading" constant="11.5" id="Qq5-dV-i8F"/>
                                             <constraint firstItem="9kk-NA-4md" firstAttribute="leading" secondItem="bUF-ba-tdB" secondAttribute="leading" constant="17" id="aJL-ZD-7mo"/>
                                             <constraint firstItem="5jf-Pm-Akg" firstAttribute="top" secondItem="9kk-NA-4md" secondAttribute="bottom" constant="15" id="d3j-vA-YgK"/>
-                                            <constraint firstItem="9kk-NA-4md" firstAttribute="top" secondItem="ZpB-lL-eWI" secondAttribute="bottom" constant="15" id="eK1-Mp-L7B"/>
                                             <constraint firstAttribute="bottom" secondItem="5jf-Pm-Akg" secondAttribute="bottom" constant="8" id="ebJ-VO-D4j"/>
                                             <constraint firstItem="t2J-Bp-dXH" firstAttribute="top" secondItem="bUF-ba-tdB" secondAttribute="top" constant="8" id="keg-Ai-7Ym"/>
+                                            <constraint firstItem="42U-Dd-BTS" firstAttribute="top" secondItem="t2J-Bp-dXH" secondAttribute="bottom" constant="9" id="qvG-vN-kRb"/>
                                         </constraints>
                                     </view>
                                 </subviews>
@@ -3809,7 +3812,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4tJ-hL-k9r" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1089" y="1553"/>
+            <point key="canvasLocation" x="-1089" y="2292"/>
         </scene>
         <!--Admin View-->
         <scene sceneID="VMf-oh-8B0">
@@ -4837,7 +4840,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="lWs-ce-jKG"/>
+        <segue reference="dWL-pP-XbP"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AdminDashboard" width="20" height="18.666666030883789"/>

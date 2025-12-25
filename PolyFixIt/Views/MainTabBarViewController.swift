@@ -21,8 +21,9 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
                 customMenuView.layer.borderWidth = 0.5
                 customMenuView.layer.borderColor = UIColor.separator.cgColor
 
-                let btn1 = createMenuButton(title: "Settings", icon: "SettingsIcon", tag: 5)
-                let btn2 = createMenuButton(title: "Inventory", icon: "AdminInventory", tag: 4)
+                let btn1 = createMenuButton(title: "Settings", icon: "SettingsIcon", tag: 4)
+                let btn2 = createMenuButton(title: "Inventory", icon: "AdminInventory", tag: 5)
+                let btn3 = createMenuButton(title: "Admin Request List", icon: "TaskIcon", tag: 6)
                 
                 let stack = UIStackView(arrangedSubviews: [btn1, btn2])
                 stack.axis = .vertical
@@ -95,10 +96,12 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
             let nextVC: UIViewController?
 
             switch sender.tag {
+            case 6:
+                nextVC = storyboard.instantiateViewController(withIdentifier: "AdminRequestList")
             case 5:
-                nextVC = storyboard.instantiateViewController(withIdentifier: "SettingPageAdmin")
-            case 4:
                 nextVC = storyboard.instantiateViewController(withIdentifier: "Inventory")
+            case 4:
+                nextVC = storyboard.instantiateViewController(withIdentifier: "SettingPageAdmin")
             default:
                 return
             }
