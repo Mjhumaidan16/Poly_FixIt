@@ -23,9 +23,9 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
 
                 let btn1 = createMenuButton(title: "Settings", icon: "SettingsIcon", tag: 4)
                 let btn2 = createMenuButton(title: "Inventory", icon: "AdminInventory", tag: 5)
-                let btn3 = createMenuButton(title: "Admin Request List", icon: "TaskIcon", tag: 6)
+                let btn3 = createMenuButton(title: "Request List", icon: "TaskIcon", tag: 6)
                 
-                let stack = UIStackView(arrangedSubviews: [btn1, btn2])
+                let stack = UIStackView(arrangedSubviews: [btn1, btn2, btn3])
                 stack.axis = .vertical
                 stack.distribution = .fillEqually
                 stack.translatesAutoresizingMaskIntoConstraints = false
@@ -36,8 +36,8 @@ class MainTabBarViewController: UITabBarController, UITabBarControllerDelegate {
                 NSLayoutConstraint.activate([
                     customMenuView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
                     customMenuView.bottomAnchor.constraint(equalTo: tabBar.topAnchor, constant: -12),
-                    customMenuView.widthAnchor.constraint(equalToConstant: 70),
-                    customMenuView.heightAnchor.constraint(equalToConstant: 120),
+                    customMenuView.widthAnchor.constraint(equalToConstant: 75),
+                    customMenuView.heightAnchor.constraint(equalToConstant: 170),
                     
                     stack.topAnchor.constraint(equalTo: customMenuView.contentView.topAnchor),
                     stack.bottomAnchor.constraint(equalTo: customMenuView.contentView.bottomAnchor),
