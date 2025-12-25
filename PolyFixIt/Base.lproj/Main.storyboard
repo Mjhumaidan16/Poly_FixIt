@@ -18,23 +18,23 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" fixedFrame="YES" image="Image" translatesAutoresizingMaskIntoConstraints="NO" id="Zex-sy-YAs">
-                                <rect key="frame" x="151" y="44" width="65" height="72"/>
+                                <rect key="frame" x="164" y="44" width="65" height="72"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <label opaque="NO" contentMode="scaleToFill" fixedFrame="YES" text="PolyFixIT" textAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TcG-ZP-ubG">
-                                <rect key="frame" x="132" y="103" width="111" height="36"/>
+                                <rect key="frame" x="141" y="103" width="111" height="36"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="24"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </label>
                             <label opaque="NO" contentMode="scaleToFill" fixedFrame="YES" text="Sign in" textAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="irO-LZ-XGi">
-                                <rect key="frame" x="2" y="183" width="375" height="48"/>
+                                <rect key="frame" x="2" y="183" width="391" height="48"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="32"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </label>
                             <label opaque="NO" contentMode="scaleToFill" fixedFrame="YES" text="Enter your email and password to sign in for this app" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" translatesAutoresizingMaskIntoConstraints="NO" id="Pc4-YV-Y4i">
-                                <rect key="frame" x="40" y="239" width="295" height="42"/>
+                                <rect key="frame" x="49" y="239" width="295" height="42"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -61,6 +61,11 @@
                                 <color key="backgroundColor" red="0.125" green="0.251" blue="0.56100000000000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="Continue"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <segue destination="2Vm-R9-0fc" kind="show" id="6X6-ix-H04"/>
                                 </connections>
@@ -90,7 +95,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9SR-9F-XdJ" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2389" y="-82"/>
+            <point key="canvasLocation" x="-2390.0763358778627" y="-82.394366197183103"/>
         </scene>
         <!--Main Tab Bar View Controller-->
         <scene sceneID="ybZ-0o-QqO">
@@ -275,6 +280,11 @@
                                                             <color key="tintColor" red="0.15686275059999999" green="0.2470588088" blue="0.5411764979" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                             <state key="normal" title="Button"/>
                                                             <buttonConfiguration key="configuration" style="filled" title="view"/>
+                                                            <userDefinedRuntimeAttributes>
+                                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                    <integer key="value" value="10"/>
+                                                                </userDefinedRuntimeAttribute>
+                                                            </userDefinedRuntimeAttributes>
                                                         </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Potential Duplicate Requests" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KnQ-yF-7Sk">
                                                             <rect key="frame" x="8" y="0.0" width="187" height="61"/>
@@ -299,7 +309,9 @@
                                             <constraint firstItem="cUe-kC-5d3" firstAttribute="top" secondItem="oNd-Vl-FLh" secondAttribute="bottom" constant="9" id="6Kc-Vk-Xim"/>
                                             <constraint firstItem="RfM-zg-Xqg" firstAttribute="leading" secondItem="jMr-Ku-pR7" secondAttribute="leading" constant="8" id="CXP-xl-JDo"/>
                                             <constraint firstItem="cUe-kC-5d3" firstAttribute="leading" secondItem="jMr-Ku-pR7" secondAttribute="leading" constant="8" id="GBw-CK-lXb"/>
+                                            <constraint firstAttribute="trailing" secondItem="zjo-Zg-MWl" secondAttribute="trailing" constant="8" id="Kwi-Pz-c5X"/>
                                             <constraint firstAttribute="trailing" secondItem="cUe-kC-5d3" secondAttribute="trailing" constant="8" id="MMx-N0-Xdw"/>
+                                            <constraint firstAttribute="trailing" secondItem="RfM-zg-Xqg" secondAttribute="trailing" constant="8" id="RMw-Wo-VGf"/>
                                             <constraint firstItem="oNd-Vl-FLh" firstAttribute="leading" secondItem="jMr-Ku-pR7" secondAttribute="leading" constant="10" id="WFE-mk-xnR"/>
                                             <constraint firstItem="zjo-Zg-MWl" firstAttribute="leading" secondItem="jMr-Ku-pR7" secondAttribute="leading" constant="8" id="ZDP-Hu-34h"/>
                                             <constraint firstItem="RfM-zg-Xqg" firstAttribute="top" secondItem="cUe-kC-5d3" secondAttribute="bottom" constant="11.67" id="an3-hp-g3k"/>
@@ -592,6 +604,9 @@
                                                                         <integer key="value" value="10"/>
                                                                     </userDefinedRuntimeAttribute>
                                                                 </userDefinedRuntimeAttributes>
+                                                                <connections>
+                                                                    <segue destination="9ey-Is-hpE" kind="show" id="p9b-y4-2I9"/>
+                                                                </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="222 Units" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ufy-VT-rk1">
                                                                 <rect key="frame" x="236" y="14" width="74" height="21"/>
@@ -630,6 +645,9 @@
                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="shippingbox.fill" catalog="system"/>
+                                                <connections>
+                                                    <segue destination="fGK-ec-aPS" kind="show" id="Ea2-FH-ubt"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -722,7 +740,7 @@
         <!--Admin View-->
         <scene sceneID="mO5-S9-pZG">
             <objects>
-                <viewController storyboardIdentifier="SettingPageAdmin" title="Setting Page Admin" id="YAO-cZ-xJq" userLabel="Admin View" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SettingPageAdmin" title="Setting Page Admin" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="YAO-cZ-xJq" userLabel="Admin View" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="dKD-fM-fVu">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -901,6 +919,9 @@
                                             <navigationItem id="BGv-Qh-d0z">
                                                 <barButtonItem key="leftBarButtonItem" image="arrow.backward" catalog="system" id="Gq1-Sc-MeY">
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <connections>
+                                                        <segue destination="2Vm-R9-0fc" kind="show" id="lWs-ce-jKG"/>
+                                                    </connections>
                                                 </barButtonItem>
                                                 <barButtonItem key="rightBarButtonItem" image="bell.fill" catalog="system" id="m0i-8l-I5k">
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -3793,7 +3814,7 @@
         <!--Admin View-->
         <scene sceneID="VMf-oh-8B0">
             <objects>
-                <viewController storyboardIdentifier="EditItemInInventory" title="Edit Item In Inventory" id="9ey-Is-hpE" userLabel="Admin View" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EditItemInInventory" title="Edit Item In Inventory" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="9ey-Is-hpE" userLabel="Admin View" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qG5-bD-8bY">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -4040,15 +4061,16 @@
                             <constraint firstItem="xYw-FU-J0e" firstAttribute="leading" secondItem="Jgk-7B-pWX" secondAttribute="leading" id="wfe-XA-Euj"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="oe9-Et-t9u"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MfY-4I-1zY" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10210" y="49"/>
+            <point key="canvasLocation" x="-4497" y="835"/>
         </scene>
         <!--Admin View-->
         <scene sceneID="s7W-Ja-jpX">
             <objects>
-                <viewController storyboardIdentifier="AddItemtoInventory" title="Add Item to Inventory" id="fGK-ec-aPS" userLabel="Admin View" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AddItemtoInventory" title="Add Item to Inventory" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="fGK-ec-aPS" userLabel="Admin View" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1nd-vN-cwC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -4295,10 +4317,11 @@
                             <constraint firstItem="GCA-lV-FPA" firstAttribute="leading" secondItem="oeX-Vg-9cD" secondAttribute="leading" id="lcE-Q1-bnd"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="NyR-Yh-3Om"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="59b-F2-vff" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="10967" y="49"/>
+            <point key="canvasLocation" x="-3654" y="175"/>
         </scene>
         <!--Admin View-->
         <scene sceneID="sUb-FT-QoM">
@@ -4814,7 +4837,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="2qM-J5-SVt"/>
+        <segue reference="lWs-ce-jKG"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AdminDashboard" width="20" height="18.666666030883789"/>
