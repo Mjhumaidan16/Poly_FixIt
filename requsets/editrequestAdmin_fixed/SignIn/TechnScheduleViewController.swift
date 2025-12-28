@@ -220,9 +220,13 @@ final class TechnScheduleViewController: UIViewController {
         let locationText = readLocationString(data)
         setLabelText(in: card, atIndex: 1, text: locationText)
 
-        // --- Priority ---
-        let priority = (data["priority"] as? String) ?? "normal"
-        setLabelText(in: card, atIndex: 2, text: "Priority: \(priority)")
+        // --- Priority (COLOR RULE) ---
+        let priorityRaw = (data["selectedPriorityLevel"] as? String) ?? "normal"
+        let priorityText = "Priority: \(priorityRaw)"
+        setLabelText(in: card, atIndex: 2, text: priorityText)
+
+        // If priority == "high" -> red, else white
+        applyPriorityColor(in: card, priority: priorityRaw)
 
         // --- Created / Date ---
         let dateText = formatDateFromAnyKnownField(data)
@@ -251,6 +255,19 @@ final class TechnScheduleViewController: UIViewController {
             return nil
         }
     }
+    
+    private func applyPriorityColor(in card: UIView, priority: String) {
+        let labels = allLabels(in: card)
+        guard labels.indices.contains(2) else { return }   // index 2 is your priority label
+        let priorityLabel = labels[2]
+
+        if priority.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == "high" {
+            priorityLabel.textColor = .red
+        } else {
+            priorityLabel.textColor = .white
+        }
+    }
+
 
 
 

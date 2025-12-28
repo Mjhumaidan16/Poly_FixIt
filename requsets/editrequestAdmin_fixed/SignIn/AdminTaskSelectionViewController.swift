@@ -108,7 +108,7 @@ final class AdminTaskSelectionViewController: UIViewController {
                 let locationText = self.buildLocationText(from: data["location"] as? [String: Any])
 
                 let priority = (data["selectedPriorityLevel"] as? String)
-                    ?? ((data["priorityLevel"] as? [String])?.first ?? "—")
+                    ?? ((data["selectedPriorityLevel"] as? [String])?.first ?? "—")
 
                 let createdAt: Date?
                 if let ts = data["createdAt"] as? Timestamp {
@@ -176,7 +176,10 @@ final class AdminTaskSelectionViewController: UIViewController {
         // Fill the remaining labels with location / priority / created
         // (Order doesn’t need to be perfect; it just needs to show correctly)
         if other.count > 0 { other[0].text = item.locationText }
-        if other.count > 1 { other[1].text = "Priority: \(item.priority)" }
+        if other.count > 1 {
+            other[1].text = "Priority: \(item.priority)"
+            applyPriorityColor(other[1], priority: item.priority)   // ✅ color rule
+        }
         if other.count > 2 {
             if let d = item.createdAt {
                 other[2].text = "Created: \(formatShortDate(d))"
@@ -208,6 +211,17 @@ final class AdminTaskSelectionViewController: UIViewController {
             selectedRequestIDs.remove(requestID)
         }
     }
+    
+    private func applyPriorityColor(_ label: UILabel?, priority: String) {
+        guard let label else { return }
+
+        if priority.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == "high" {
+            label.textColor = .red
+        } else {
+            label.textColor = .white
+        }
+    }
+
 
     // MARK: - Confirm
     @objc private func didTapConfirm() {
