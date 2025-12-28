@@ -2,7 +2,11 @@
 //  TechListViewController.swift
 //  SignIn
 //
-//  Created by BP-36-212-19 on 24/12/2025.
+//  Reused + updated for Technician Dashboard storyboard:
+//  - Top counters: total technicians, currently free, currently busy, ongoing tasks, upcoming tasks
+//  - List in stack view: tap busy -> schedule screen, tap free -> assignment screen
+//  - Filters: search + segmented (All / Free / Busy)
+//  - Busy/free derived from `requests` collection by matching `assignedTechnician` document reference
 //
 
 import UIKit
@@ -10,309 +14,585 @@ import FirebaseFirestore
 
 final class TechListViewController: UIViewController {
 
+    // MARK: - Firestored
     private let db = Firestore.firestore()
 
-    // Connect storyboard "Refreash" button to this outlet
-    @IBOutlet weak var refreshButton: UIButton!
+    // MARK: - Navigation (Storyboard IDs)
+    // Update these to match your storyboard IDs.
+    private let scheduleStoryboardID = "TechnScheduleViewController"
+    private let assignStoryboardID   = "AdminTaskSelectionViewController"
 
-    // Prevent duplicate renders when refresh is tapped multiple times quickly
+    // MARK: - UI (found dynamically from storyboard)
+    @IBOutlet weak var techniciansStackView: UIStackView?
+    @IBOutlet weak var templateCardBusy: UIView?
+    @IBOutlet weak var templateCardFree: UIView?
+
+    @IBOutlet weak var segmentedControl: UISegmentedControl?
+    @IBOutlet weak var searchBar: UISearchBar?
+
+    // Metric value labels (numbers)
+    @IBOutlet weak var totalTechValueLabel: UILabel?
+    @IBOutlet weak var freeValueLabel: UILabel?
+    @IBOutlet weak var busyValueLabel: UILabel?
+    @IBOutlet weak var ongoingValueLabel: UILabel?
+    @IBOutlet weak var upcomingValueLabel: UILabel?
+    @IBOutlet weak var modificationButton: UIButton!
+
+    private var generatedCards: [UIView] = []
+
+    // MARK: - Data
     private var renderToken = UUID()
 
+    private struct TechnicianVM {
+        let uid: String
+        let fullName: String
+        let department: String
+        let isActive: Bool
+
+        // Derived from requests
+        let isBusy: Bool
+        let activeAssignedCount: Int
+        let ongoingTitle: String?
+        let upcomingTitle: String?
+    }
+
+    private var allTech: [TechnicianVM] = []
+    private var filteredTech: [TechnicianVM] = []
+    
+    // MARK: - need to be changed for technician acount modidification
+    @IBAction func modififcationButtonTapped(_ sender: UIButton) {
+
+           let sb = self.storyboard ?? UIStoryboard(name: "Main", bundle: nil)
+           guard let editVC = sb.instantiateViewController(withIdentifier: "PendingRequestsViewController")
+                   as? PendingRequestsViewController else {
+               print("❌ Could not instantiate PendingRequestsViewController. Check Storyboard ID + Custom Class.")
+               return
+           }
+
+
+           if let nav = self.navigationController {
+               nav.pushViewController(editVC, animated: true)
+           } else {
+               editVC.modalPresentationStyle = .fullScreen
+               self.present(editVC, animated: true)
+           }
+       }
+
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        refreshButton.addTarget(self, action: #selector(handleRefreshTapped), for: .touchUpInside)
-        loadTechniciansAndRender()
+        wireDashboardControlsIfNeeded()
+        loadAndRender()
     }
+}
 
-    @objc private func handleRefreshTapped() {
-        loadTechniciansAndRender()
-    }
+// MARK: - Load + Render
+private extension TechListViewController {
 
-    // MARK: - Main render
-    private func loadTechniciansAndRender() {
+    
+    
+     func extractTechnicianId(from data: [String: Any]) -> String? {
+         if let ref = data["assignedTechnician"] as? DocumentReference {
+             return ref.documentID
+         }
+         if let s = data["assignedTechnician"] as? String {
+             return s
+         }
+         if let s = data["assignedTechnicianId"] as? String { // optional support
+             return s
+         }
+         return nil
+     }
+
+ 
+     func isOpenRequest(_ data: [String: Any]) -> Bool {
+         let completion = data["completionTime"]
+         return completion == nil || completion is NSNull
+     }
+
+     func normalizedStatus(_ data: [String: Any]) -> String {
+         return ((data["status"] as? String) ?? "")
+             .trimmingCharacters(in: .whitespacesAndNewlines)
+             .lowercased()
+     }
+
+    func loadAndRender() {
         let myToken = UUID()
         renderToken = myToken
-        refreshButton.isEnabled = false
 
-        guard let stackView = findTechStackView(),
-              let templateCard = stackView.arrangedSubviews.first(where: { $0.tag == 1 }) else {
-            print("❌ Could not find stackView or template card (tag=1).")
-            refreshButton.isEnabled = true
+        // Find UI anchors
+        guard let stack = findTechniciansStackView() else {
+            print("❌ Could not find technicians stack view.")
+            return
+        }
+        techniciansStackView = stack
+
+        // Use the two storyboard outlets if connected; otherwise discover from stack
+        if templateCardBusy == nil || templateCardFree == nil {
+            let pair = findTemplateCards(in: stack)
+            templateCardBusy = templateCardBusy ?? pair.busy
+            templateCardFree = templateCardFree ?? pair.free
+        }
+
+        guard let busyTemplate = templateCardBusy,
+              let freeTemplate = templateCardFree else {
+            print("❌ Could not find BOTH template cards (busy + free) inside stack view.")
             return
         }
 
-        templateCard.isHidden = true
+        busyTemplate.isHidden = true
+        freeTemplate.isHidden = true
 
-        // Clear previous generated cards
-        for v in stackView.arrangedSubviews where v !== templateCard {
-            stackView.removeArrangedSubview(v)
-            v.removeFromSuperview()
+        // Clear previously generated cards (keep both templates)
+        clearGeneratedCards(keepingTemplates: [busyTemplate, freeTemplate], in: stack)
+
+        // Fetch technicians + open requests (completionTime == null) in parallel
+        let group = DispatchGroup()
+
+        var techDocs: [QueryDocumentSnapshot] = []
+        var openRequestDocs: [QueryDocumentSnapshot] = []
+        var techError: Error?
+        var reqError: Error?
+
+        group.enter()
+        db.collection("technicians").getDocuments { snapshot, error in
+            techDocs = snapshot?.documents ?? []
+            techError = error
+            group.leave()
         }
+/*
+        group.enter()
+        db.collection("requests")
+            .whereField("completionTime", isEqualTo: NSNull()) // "open" (not completed)
+            .getDocuments { snapshot, error in
+                openRequestDocs = snapshot?.documents ?? []
+                reqError = error
+                group.leave()
+            }
+        */
+        group.enter()
+         
+              db.collection("requests").getDocuments { snapshot, error in
+                  openRequestDocs = snapshot?.documents ?? []
+                  reqError = error
+                  group.leave()
+              }
 
-        // ✅ Fetch ALL technicians (active + inactive)
-        db.collection("technicians").getDocuments { [weak self] snapshot, error in
-            guard let self = self else { return }
+        group.notify(queue: .main) { [weak self] in
+            guard let self else { return }
             guard self.renderToken == myToken else { return }
 
-            DispatchQueue.main.async {
-                self.refreshButton.isEnabled = true
+            if let techError {
+                print("❌ Firestore technicians error:", techError)
+                return
             }
-
-            if let error = error {
-                print("❌ Firestore error:", error)
+            if let reqError {
+                print("❌ Firestore requests error:", reqError)
                 return
             }
 
-            let docs = snapshot?.documents ?? []
-
-            // Sort by createdAt if exists, else by fullName
-            let sorted = docs.sorted { a, b in
-                let aDate = (a.data()["createdAt"] as? Timestamp)?.dateValue()
-                let bDate = (b.data()["createdAt"] as? Timestamp)?.dateValue()
-                if let aDate, let bDate { return aDate < bDate }
-
-                let aName = (a.data()["fullName"] as? String) ?? ""
-                let bName = (b.data()["fullName"] as? String) ?? ""
-                return aName.localizedCaseInsensitiveCompare(bName) == .orderedAscending
+            
+    
+            let openRequestDocs = openRequestDocs.filter { doc in
+                self.isOpenRequest(doc.data())
             }
 
-            DispatchQueue.main.async {
-                guard self.renderToken == myToken else { return }
+            
+            // Build request map by technician *ID* (doc id), not by full path
+            let assignedOpen = openRequestDocs.compactMap { doc -> (techId: String, title: String)? in
+                let data = doc.data()
 
-                for (index, doc) in sorted.enumerated() {
-                    let data = doc.data()
+                let status = (data["status"] as? String)?
+                    .trimmingCharacters(in: .whitespacesAndNewlines)
+                    .lowercased() ?? ""
 
-                    let techUID = doc.documentID
-                    let fullName = (data["fullName"] as? String) ?? "Unknown"
-                    let department = (data["Department"] as? String) ?? "—"
-                    let isActive = (data["isActive"] as? Bool) ?? true
+                guard status == "accepted" else { return nil }
+                guard data["acceptanceTime"] as? Timestamp != nil else { return nil }
+                guard let techRef = data["assignedTechnician"] as? DocumentReference else { return nil }
 
-                    guard let card = templateCard.cloneView() else { continue }
+                print("assignedTechnician ref path:", techRef.path, "docID:", techRef.documentID)
 
-                    card.isHidden = false
-                    card.tag = 0
-
-                    self.configureTechCard(
-                        card,
-                        techUID: techUID,
-                        fullName: fullName,
-                        department: department,
-                        isActive: isActive,
-                        number: index + 1
-                    )
-
-                    stackView.addArrangedSubview(card)
-                }
+                let title = (data["title"] as? String) ?? "Untitled"
+                return (techRef.documentID, title)
             }
+
+            var openByTechId: [String: [String]] = [:]
+            for item in assignedOpen {
+                openByTechId[item.techId, default: []].append(item.title)
+            }
+
+            // Prepare technicians list
+            let techVMs: [TechnicianVM] = techDocs.map { doc in
+                let data = doc.data()
+                let uid = doc.documentID
+
+                let fullName = (data["fullName"] as? String) ?? "Unknown"
+                let department = (data["Department"] as? String) ?? "—"
+                let isActive = (data["isActive"] as? Bool) ?? true
+
+             
+                let openTasks = openByTechId[uid] ?? []
+
+                let isBusy = !openTasks.isEmpty
+                let activeAssignedCount = openTasks.count
+
+                // Titles (optional UI)
+                let ongoingTitle = openTasks.first
+                let upcomingTitle: String? = nil   // not tracked per-tech yet
+
+                return TechnicianVM(
+                    uid: uid,
+                    fullName: fullName,
+                    department: department,
+                    isActive: isActive,
+                    isBusy: isBusy,
+                    activeAssignedCount: activeAssignedCount,
+                    ongoingTitle: ongoingTitle,
+                    upcomingTitle: upcomingTitle
+                )
+            }
+            .sorted {
+                $0.fullName.localizedCaseInsensitiveCompare($1.fullName) == .orderedAscending
+            }
+
+
+            self.allTech = techVMs
+            self.applyFiltersAndRender()
+            self.updateTopCounters(from: techVMs, openRequestDocs: openRequestDocs)
         }
     }
 
-    // MARK: - Find stackView without an outlet
-    private func findTechStackView() -> UIStackView? {
+    func applyFiltersAndRender() {
+        let searchText = (searchBar?.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+        let segmentIndex = segmentedControl?.selectedSegmentIndex ?? 0 // 0 all, 1 free, 2 busy
+
+        let base: [TechnicianVM] = allTech.filter { $0.isActive } // show active only
+
+        let byStatus: [TechnicianVM] = base.filter { vm in
+            switch segmentIndex {
+            case 1: return vm.isBusy == false
+            case 2: return vm.isBusy == true
+            default: return true
+            }
+        }
+
+        if searchText.isEmpty {
+            filteredTech = byStatus
+        } else {
+            let needle = searchText.lowercased()
+            filteredTech = byStatus.filter { vm in
+                vm.fullName.lowercased().contains(needle) ||
+                vm.department.lowercased().contains(needle) ||
+                vm.uid.lowercased().contains(needle)
+            }
+        }
+
+        renderCards(filteredTech)
+    }
+
+    private func renderCards(_ list: [TechnicianVM]) {
+        guard let stack = techniciansStackView,
+              let busyTemplate = templateCardBusy,
+              let freeTemplate = templateCardFree else { return }
+
+        clearGeneratedCards(keepingTemplates: [busyTemplate, freeTemplate], in: stack)
+
+        for (index, vm) in list.enumerated() {
+            let templateToClone = vm.isBusy ? busyTemplate : freeTemplate
+            guard let card = templateToClone.cloneView() else { continue }
+
+            card.isHidden = false
+            card.tag = 0
+
+            configureTechCard(card, vm: vm, number: index + 1)
+            stack.addArrangedSubview(card)
+        }
+    }
+
+    func clearGeneratedCards(keepingTemplates templates: [UIView], in stack: UIStackView) {
+        for v in stack.arrangedSubviews {
+            if templates.contains(where: { $0 === v }) { continue }
+            stack.removeArrangedSubview(v)
+            v.removeFromSuperview()
+        }
+    }
+}
+
+// MARK: - UI Wiring (search + segmented + counters)
+extension TechListViewController {
+
+    func wireDashboardControlsIfNeeded() {
+        // segmented
+        if let seg: UISegmentedControl = view.findSubview(ofType: UISegmentedControl.self) {
+            segmentedControl = seg
+            seg.removeTarget(self, action: #selector(handleSegmentChanged(_:)), for: .valueChanged)
+            seg.addTarget(self, action: #selector(handleSegmentChanged(_:)), for: .valueChanged)
+        }
+
+        // search bar
+        if let sb: UISearchBar = view.findSubview(ofType: UISearchBar.self) {
+            searchBar = sb
+            sb.delegate = self
+            sb.autocapitalizationType = .none
+        }
+
+        // metric value labels (found by title labels)
+        totalTechValueLabel = findMetricValueLabel(titleText: "Total Technician")
+        freeValueLabel = findMetricValueLabel(titleText: "Currently Free")
+        busyValueLabel = findMetricValueLabel(titleText: "Currently Busy")
+        ongoingValueLabel = findMetricValueLabel(titleText: "Ongoing Tasks")
+        upcomingValueLabel = findMetricValueLabel(titleText: "Upcoming Tasks")
+    }
+
+    func findMetricValueLabel(titleText: String) -> UILabel? {
+        // Find the title label first
+        guard let titleLabel = view.findSubview(ofType: UILabel.self, where: { $0.text == titleText }) else {
+            return nil
+        }
+        // In that container view, the other label is the value
+        let container = titleLabel.superview
+        let siblings = container?.subviews.compactMap { $0 as? UILabel } ?? []
+        return siblings.first(where: { $0 !== titleLabel })
+    }
+
+    @objc func handleSegmentChanged(_ sender: UISegmentedControl) {
+        applyFiltersAndRender()
+    }
+
+    private func updateTopCounters(from techVMs: [TechListViewController.TechnicianVM],
+                                      openRequestDocs: [QueryDocumentSnapshot]) {
+        let activeTechs = techVMs.filter { $0.isActive }
+        let totalTech = activeTechs.count
+        let busyTech = activeTechs.filter { $0.isBusy }.count
+        let freeTech = activeTechs.filter { !$0.isBusy }.count
+
+        // Only "accepted" requests count toward ongoing/upcoming
+        // Ongoing  = accepted + assignedTechnician != nil
+        // Upcoming = accepted + assignedTechnician == nil
+        var ongoing = 0
+        var upcoming = 0
+
+        for doc in openRequestDocs {
+            let data = doc.data()
+
+            // status must be accepted
+            let status = (data["status"] as? String)?
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .lowercased() ?? ""
+            guard status == "accepted" else { continue }
+
+            let assigned = data["assignedTechnician"] as? DocumentReference
+            if assigned != nil {
+                ongoing += 1
+            } else {
+                upcoming += 1
+            }
+        }
+
+        totalTechValueLabel?.text = "\(totalTech)"
+        freeValueLabel?.text = "\(freeTech)"
+        busyValueLabel?.text = "\(busyTech)"
+        ongoingValueLabel?.text = "\(ongoing)"
+        upcomingValueLabel?.text = "\(upcoming)"
+    }
+}
+
+// MARK: - Card Configuration + Navigation
+private extension TechListViewController {
+
+    func findTechniciansStackView() -> UIStackView? {
+        // Prefer the vertical stack view that contains a "card-like" subview with 112 height constraint
+        // (matches your storyboard cards)
         return view.findSubview(ofType: UIStackView.self) { stack in
-            stack.axis == .vertical && stack.arrangedSubviews.contains(where: { $0.tag == 1 })
+            guard stack.axis == .vertical else { return false }
+            return stack.arrangedSubviews.contains(where: { v in
+                // heuristic: has a big name label (21pt)
+                v.findSubview(ofType: UILabel.self, where: { abs($0.font.pointSize - 21) < 0.5 }) != nil
+            })
         }
     }
 
-    // MARK: - Card UI
-    private func configureTechCard(_ card: UIView,
-                                   techUID: String,
-                                   fullName: String,
-                                   department: String,
-                                   isActive: Bool,
-                                   number: Int) {
+    func findTemplateCards(in stack: UIStackView) -> (busy: UIView?, free: UIView?) {
+        // Prefer explicit tags if you set them (recommended):
+        // busy template tag = 2, free template tag = 1
+        let busyByTag = stack.arrangedSubviews.first(where: { $0.tag == 2 })
+        let freeByTag = stack.arrangedSubviews.first(where: { $0.tag == 1 })
 
-        let (firstNameLabel, secondNameLabel, deptLabel) = findFirstSecondDeptLabels(in: card)
-        let badgeButton = findBadgeButton(in: card)
+        if busyByTag != nil || freeByTag != nil {
+            return (busyByTag, freeByTag)
+        }
 
-        // We will reuse the same storyboard button (it was "Delete") and switch its title to Activate when needed
-        let actionButton = findDeleteOrActivateButton(in: card)
-
-        // ✅ NEW: Edit button
-        let editButton = findEditButton(in: card)
-
-        // Name split
-        let parts = fullName.split(whereSeparator: { $0.isWhitespace }).map(String.init)
-        if parts.isEmpty {
-            firstNameLabel?.text = "Unknown"
-            secondNameLabel?.text = ""
-        } else if parts.count == 1 {
-            firstNameLabel?.text = parts[0]
-            secondNameLabel?.text = ""
+        // Fallback: first two arranged subviews
+        let views = stack.arrangedSubviews
+        if views.count >= 2 {
+            return (views[0], views[1])
+        } else if views.count == 1 {
+            return (views[0], nil)
         } else {
-            firstNameLabel?.text = parts[0]
-            secondNameLabel?.text = parts.dropFirst().joined(separator: " ")
-        }
-
-        deptLabel?.text = department
-
-        // Badge
-        let badge = String(format: "#%03d", number)
-        badgeButton?.setTitle(badge, for: .normal)
-        badgeButton?.configuration?.title = badge
-
-        // Action button: Delete (deactivate) vs Activate
-        if let actionButton {
-            let title = isActive ? "Delete" : "Activate"
-            actionButton.configuration?.title = title
-            actionButton.setTitle(title, for: .normal)
-
-            // Store uid + state on the button
-            actionButton.accessibilityIdentifier = techUID
-            actionButton.tag = isActive ? 1 : 0  // 1=active -> delete, 0=inactive -> activate
-
-            actionButton.removeTarget(self, action: #selector(handleActionTapped(_:)), for: .touchUpInside)
-            actionButton.addTarget(self, action: #selector(handleActionTapped(_:)), for: .touchUpInside)
-        }
-
-        // ✅ NEW: Wire Edit -> open edit screen + pass UID
-        if let editButton {
-            editButton.accessibilityIdentifier = techUID
-            editButton.removeTarget(self, action: #selector(handleEditTapped(_:)), for: .touchUpInside)
-            editButton.addTarget(self, action: #selector(handleEditTapped(_:)), for: .touchUpInside)
+            return (nil, nil)
         }
     }
 
-    // MARK: - Delete/Activate logic
-    @objc private func handleActionTapped(_ sender: UIButton) {
+    private func configureTechCard(_ card: UIView, vm: TechnicianVM, number: Int) {
+        let nameLabel = card.findSubview(ofType: UILabel.self, where: { abs($0.font.pointSize - 21) < 0.5 })
+        let idLabel = card.findSubview(ofType: UILabel.self, where: { ($0.text ?? "").lowercased().hasPrefix("id:") })
+        let statusLabel = findStatusBadgeLabel(in: card)
+        let deptLabel = findDepartmentLabel(in: card)
+        let tasksAssignedLabel = card.findSubview(ofType: UILabel.self, where: { label in
+            let t = (label.text ?? "").lowercased()
+            return t.contains("tasks") && t.contains("assigned")
+        })
+        tasksAssignedLabel?.text = "\(vm.activeAssignedCount) Tasks Assigned"
+
+        let detailLabel = card.findSubview(ofType: UILabel.self, where: { ($0.text ?? "").localizedCaseInsensitiveContains("Ongoing:") || ($0.text ?? "").localizedCaseInsensitiveContains("Upcoming:") })
+
+        // Arrow button
+        let arrowButton = findArrowButton(in: card)
+
+        nameLabel?.text = vm.fullName
+        idLabel?.text = "ID: \(vm.uid)"
+        deptLabel?.text = vm.department
+
+        // Status
+        statusLabel?.text = vm.isBusy ? "Busy" : "Free"
+
+        // Assigned tasks count (active assigned)
+        tasksAssignedLabel?.text = "\(vm.activeAssignedCount) Tasks Assigned"
+
+        // Detail line (prefer ongoing, else upcoming, else empty)
+        if let ongoing = vm.ongoingTitle {
+            detailLabel?.text = "Ongoing: \(ongoing)"
+        } else if let upcoming = vm.upcomingTitle {
+            detailLabel?.text = "Upcoming: \(upcoming)"
+        } else {
+            detailLabel?.text = ""
+        }
+
+        // Tap handling (arrow button + whole card)
+        arrowButton?.accessibilityIdentifier = vm.uid
+        arrowButton?.removeTarget(self, action: #selector(handleCardTapped(_:)), for: .touchUpInside)
+        arrowButton?.addTarget(self, action: #selector(handleCardTapped(_:)), for: .touchUpInside)
+
+        // Whole card tap
+        card.isUserInteractionEnabled = true
+        card.gestureRecognizers?.forEach { card.removeGestureRecognizer($0) }
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleCardTapGesture(_:)))
+        tap.cancelsTouchesInView = false
+        card.addGestureRecognizer(tap)
+        card.accessibilityIdentifier = vm.uid
+
+        // Store status in tag so we can decide navigation fast
+        card.tag = vm.isBusy ? 2 : 1 // 2 busy, 1 free
+    }
+
+    func findDepartmentLabel(in card: UIView) -> UILabel? {
+        // Dept label is 12pt and NOT ID, NOT Tasks, NOT status badge (11pt)
+        let labels = card.allSubviews.compactMap { $0 as? UILabel }
+        let cands = labels.filter { abs($0.font.pointSize - 12) < 0.5 }
+        return cands.first(where: { lbl in
+            let t = (lbl.text ?? "").lowercased()
+            return !t.hasPrefix("id:") && !t.contains("tasks assigned") && !t.contains("ongoing:") && !t.contains("upcoming:")
+        })
+    }
+
+    func findStatusBadgeLabel(in card: UIView) -> UILabel? {
+        // Status badge in storyboard is 11pt and says "Busy"/"Free"
+        let labels = card.allSubviews.compactMap { $0 as? UILabel }
+        let cands = labels.filter { abs($0.font.pointSize - 11) < 0.5 }
+        return cands.first
+    }
+
+    func findArrowButton(in card: UIView) -> UIButton? {
+        let buttons = card.allSubviews.compactMap { $0 as? UIButton }
+        // Heuristic: configuration image is system "arrow.forward"
+        if let b = buttons.first(where: { $0.configuration?.image?.accessibilityIdentifier == "arrow.forward" }) {
+            return b
+        }
+        // Fallback: any button with SF symbol name "arrow.forward" in current image
+        return buttons.first(where: { button in
+            if let img = button.configuration?.image { return img.isSymbolImage }
+            if let img = button.image(for: .normal) { return img.isSymbolImage }
+            return false
+        })
+    }
+
+    @objc func handleCardTapGesture(_ gr: UITapGestureRecognizer) {
+        guard let card = gr.view else { return }
+        let uid = card.accessibilityIdentifier ?? ""
+        if uid.isEmpty { return }
+        navigateForTechnician(uid: uid)
+    }
+
+    @objc func handleCardTapped(_ sender: UIButton) {
         guard let uid = sender.accessibilityIdentifier, !uid.isEmpty else { return }
-
-        let isCurrentlyActive = (sender.tag == 1)
-
-        if isCurrentlyActive {
-            // Delete => isActive = false
-            showProceedCancelAlert(
-                title: "Deactivate Technician?",
-                message: "This technician will be deactivated.",
-                proceedTitle: "Proceed"
-            ) { [weak self] in
-                self?.setTechnicianActive(uid: uid, active: false)
-            }
-        } else {
-            // Activate => isActive = true
-            showProceedCancelAlert(
-                title: "Activate Technician?",
-                message: "This technician will be activated.",
-                proceedTitle: "Proceed"
-            ) { [weak self] in
-                self?.setTechnicianActive(uid: uid, active: true)
-            }
-        }
+        navigateForTechnician(uid: uid)
     }
 
-    private func setTechnicianActive(uid: String, active: Bool) {
-        db.collection("technicians").document(uid).updateData([
-            "isActive": active
-        ]) { [weak self] error in
-            guard let self = self else { return }
-
-            if let error = error {
-                self.showSimpleAlert(title: "Error", message: error.localizedDescription)
+    func navigateForTechnician(uid: String) {
+        guard let vm = allTech.first(where: { $0.uid == uid }) else { return }
+        
+        let sb = self.storyboard ?? UIStoryboard(name: "Main", bundle: nil)
+        
+        if vm.isBusy {
+            guard let scheduleVC = sb.instantiateViewController(withIdentifier: scheduleStoryboardID) as? TechnScheduleViewController else {
+                showSimpleAlert(title: "Missing Screen", message: "Could not open schedule screen. Check storyboard ID: \(scheduleStoryboardID)")
                 return
             }
-
-            // ✅ auto refresh
-            self.loadTechniciansAndRender()
-        }
-    }
-
-    private func showProceedCancelAlert(title: String,
-                                       message: String,
-                                       proceedTitle: String,
-                                       onProceed: @escaping () -> Void) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-        alert.addAction(UIAlertAction(title: proceedTitle, style: .destructive) { _ in
-            onProceed()
-        })
-        present(alert, animated: true)
-    }
-
-    private func showSimpleAlert(title: String, message: String) {
-        DispatchQueue.main.async {
-            let a = UIAlertController(title: title, message: message, preferredStyle: .alert)
-            a.addAction(UIAlertAction(title: "OK", style: .default))
-            self.present(a, animated: true)
-        }
-    }
-
-    // ✅ NEW: Open edit screen + pass UID
-    @objc private func handleEditTapped(_ sender: UIButton) {
-        guard let uid = sender.accessibilityIdentifier, !uid.isEmpty else { return }
-
-        // Use the current storyboard when possible (safer than hardcoding "Main").
-        let sb = self.storyboard ?? UIStoryboard(name: "Main", bundle: nil)
-        guard let editVC = sb.instantiateViewController(withIdentifier: "TechListViewController")
-                as? TechListViewController else {
-            print("❌ Could not instantiate AdminEditTechnicianViewController. Check Storyboard ID + Custom Class.")
-            return
-        }
-
-        //editVC.technicianUID = uid
-
-        // If this screen isn't embedded in a UINavigationController, push will do nothing.
-        // Present modally as a fallback.
-        if let nav = self.navigationController {
-            nav.pushViewController(editVC, animated: true)
+            
+            // ✅ PASS DATA
+            scheduleVC.technicianUID = vm.uid
+            scheduleVC.technicianFullName = vm.fullName
+            
+            pushOrPresent(scheduleVC)
         } else {
-            editVC.modalPresentationStyle = .fullScreen
-            self.present(editVC, animated: true)
+            // Technician is free -> go to assignment screen and PASS DATA
+            guard let assignVC = sb.instantiateViewController(withIdentifier: assignStoryboardID) as? AdminTaskSelectionViewController else {
+                showSimpleAlert(title: "Missing Screen",
+                                message: "Could not open assignment screen. Check storyboard ID: \(assignStoryboardID)")
+                return
+            }
+            
+            // ✅ PASS DATA
+            assignVC.technicianUID = vm.uid
+            
+            pushOrPresent(assignVC)
         }
     }
 
-    // MARK: - Find labels/buttons
 
-    private func findFirstSecondDeptLabels(in card: UIView) -> (UILabel?, UILabel?, UILabel?) {
-        let labels = card.allSubviews.compactMap { $0 as? UILabel }
-
-        // Two name labels are ~21pt
-        let nameLabels = labels.filter { abs($0.font.pointSize - 21) < 0.5 }
-        let sortedByY = nameLabels.sorted { $0.frame.minY < $1.frame.minY }
-        let firstNameLabel = sortedByY.first
-        let secondNameLabel = sortedByY.dropFirst().first
-
-        // Dept label is ~14pt
-        let deptLabel = labels.first(where: { abs($0.font.pointSize - 14) < 0.5 })
-
-        return (firstNameLabel, secondNameLabel, deptLabel)
+    func pushOrPresent(_ vc: UIViewController) {
+        if let nav = navigationController {
+            nav.pushViewController(vc, animated: true)
+        } else {
+            vc.modalPresentationStyle = .fullScreen
+            present(vc, animated: true)
+        }
     }
 
-    private func findBadgeButton(in card: UIView) -> UIButton? {
-        let buttons = card.allSubviews.compactMap { $0 as? UIButton }
-        return buttons.first(where: { button in
-            let configTitle = button.configuration?.title ?? ""
-            if configTitle.hasPrefix("#") { return true }
+    func showSimpleAlert(title: String, message: String) {
+        let a = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        a.addAction(UIAlertAction(title: "OK", style: .default))
+        present(a, animated: true)
+    }
+}
 
-            let current = button.currentTitle ?? ""
-            if current.hasPrefix("#") { return true }
 
-            let normal = button.title(for: .normal) ?? ""
-            return normal.hasPrefix("#")
-        })
+
+// MARK: - UISearchBarDelegate
+extension TechListViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        applyFiltersAndRender()
     }
 
-    // Finds the action button (starts as "Delete" in storyboard; we may change it to "Activate")
-    private func findDeleteOrActivateButton(in card: UIView) -> UIButton? {
-        let buttons = card.allSubviews.compactMap { $0 as? UIButton }
-        return buttons.first(where: { button in
-            let t1 = (button.configuration?.title ?? "").lowercased()
-            let t2 = (button.currentTitle ?? "").lowercased()
-            let t3 = (button.title(for: .normal) ?? "").lowercased()
-            return t1 == "delete" || t2 == "delete" || t3 == "delete" ||
-                   t1 == "activate" || t2 == "activate" || t3 == "activate"
-        })
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        applyFiltersAndRender()
     }
 
-    // ✅ NEW: Find Edit button
-    private func findEditButton(in card: UIView) -> UIButton? {
-        let buttons = card.allSubviews.compactMap { $0 as? UIButton }
-        return buttons.first(where: { button in
-            let t1 = (button.configuration?.title ?? "").lowercased()
-            let t2 = (button.currentTitle ?? "").lowercased()
-            let t3 = (button.title(for: .normal) ?? "").lowercased()
-            return t1 == "edit" || t2 == "edit" || t3 == "edit"
-        })
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
+        applyFiltersAndRender()
     }
 }
 

@@ -233,6 +233,7 @@ final class RequestSelectionViewController: UIViewController{
             imageUrl: imageUrl,
             submittedBy: nil,
             assignedTechnician: nil,
+            assignedAdmin: nil,
             relatedTickets: nil,
             status: nil,
             acceptanceTime: nil,
