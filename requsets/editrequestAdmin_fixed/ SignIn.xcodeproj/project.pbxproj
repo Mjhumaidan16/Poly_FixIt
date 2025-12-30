@@ -12,6 +12,7 @@
 		50EFBA0D2EEDDC5000C9E637 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = 50EFBA0C2EEDDC5000C9E637 /* FirebaseDatabase */; };
 		D87763822EF6A6B300960CB2 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = D87763812EF6A6B300960CB2 /* FirebaseFirestore */; };
 		D87763852EF6A6DA00960CB2 /* Cloudinary in Frameworks */ = {isa = PBXBuildFile; productRef = D87763842EF6A6DA00960CB2 /* Cloudinary */; };
+		DBCB04282F03F33500BD2E29 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = DBCB04272F03F33500BD2E29 /* FSCalendar */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				50EFBA0D2EEDDC5000C9E637 /* FirebaseDatabase in Frameworks */,
+				DBCB04282F03F33500BD2E29 /* FSCalendar in Frameworks */,
 				D87763822EF6A6B300960CB2 /* FirebaseFirestore in Frameworks */,
 				D87763852EF6A6DA00960CB2 /* Cloudinary in Frameworks */,
 				50EFBA092EEDDC5000C9E637 /* FirebaseAuth in Frameworks */,
@@ -104,6 +106,7 @@
 				50EFBA0C2EEDDC5000C9E637 /* FirebaseDatabase */,
 				D87763812EF6A6B300960CB2 /* FirebaseFirestore */,
 				D87763842EF6A6DA00960CB2 /* Cloudinary */,
+				DBCB04272F03F33500BD2E29 /* FSCalendar */,
 			);
 			productName = SignIn;
 			productReference = 50028F4F2EEDD6F2001FD73E /*  SignIn.app */;
@@ -136,6 +139,7 @@
 			packageReferences = (
 				50EFBA072EEDDC5000C9E637 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				D87763832EF6A6DA00960CB2 /* XCRemoteSwiftPackageReference "cloudinary_ios" */,
+				DBCB04262F03F33500BD2E29 /* XCRemoteSwiftPackageReference "FSCalendar" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 50028F502EEDD6F2001FD73E /* Products */;
@@ -381,6 +385,14 @@
 				minimumVersion = 5.2.4;
 			};
 		};
+		DBCB04262F03F33500BD2E29 /* XCRemoteSwiftPackageReference "FSCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/WenchaoD/FSCalendar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -408,6 +420,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = D87763832EF6A6DA00960CB2 /* XCRemoteSwiftPackageReference "cloudinary_ios" */;
 			productName = Cloudinary;
+		};
+		DBCB04272F03F33500BD2E29 /* FSCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DBCB04262F03F33500BD2E29 /* XCRemoteSwiftPackageReference "FSCalendar" */;
+			productName = FSCalendar;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
