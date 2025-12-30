@@ -231,6 +231,7 @@ final class RequestSelectionViewController: UIViewController{
             selectedCategory: selectedCategory,
             selectedPriorityLevel: selectedPriorityLevel, // UPDATED
             imageUrl: imageUrl,
+            imageProof: nil,
             submittedBy: nil,
             assignedTechnician: nil,
             assignedAdmin: nil,
@@ -238,6 +239,7 @@ final class RequestSelectionViewController: UIViewController{
             status: nil,
             acceptanceTime: nil,
             completionTime: nil,
+            completionNotes: nil,
             assignedAt: nil,
             duplicateFlag: nil
         )

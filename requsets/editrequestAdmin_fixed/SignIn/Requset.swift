@@ -27,9 +27,11 @@ struct Request {
     let status: String
     let acceptanceTime: Timestamp?
     let completionTime: Timestamp?
+    let completionNotes: String?
     let assignedAt: Timestamp?
     let duplicateFlag: Bool
     let imageUrl: String?
+    let imageProof: String?
     let createdAt: Timestamp
     
     // Modify init for category and priority to handle array data properly
@@ -63,10 +65,13 @@ struct Request {
         let duplicateFlag = data["duplicateFlag"] as? Bool ?? false
         let relatedTickets = data["relatedTickets"] as? [DocumentReference] ?? []
         let completionTime = data["completionTime"] as? Timestamp
+        let completionNotes = data["completionNotes"] as? String
         let assignedAt = data["assignedAt"] as? Timestamp
+        
         // Some older writes used the key `image` instead of `imageUrl`.
         let imageUrl = (data["imageUrl"] as? String) ?? (data["image"] as? String)
-
+        let imageProof = (data["imageProof"] as? String) ?? (data["image"] as? String)
+        
         let selectedCategory = data["selectedCategory"] as? String
         let selectedPriorityLevel = data["selectedPriorityLevel"] as? String
 
@@ -116,9 +121,11 @@ struct Request {
         self.status = status
         self.acceptanceTime = acceptanceTime
         self.completionTime = completionTime
+        self.completionNotes = completionNotes
         self.assignedAt = assignedAt
         self.duplicateFlag = duplicateFlag
         self.imageUrl = imageUrl
+        self.imageProof = imageProof
         self.selectedCategory = selectedCategory
         self.selectedPriorityLevel = selectedPriorityLevel
         self.createdAt = createdAt
@@ -140,6 +147,7 @@ struct RequestCreateDTO{
     let selectedCategory: String?
     let selectedPriorityLevel: String?
     let imageUrl: String?
+    let imageProof: String?
     let submittedBy: DocumentReference
     let assignedTechnician: DocumentReference?
     let assignedAdmin: DocumentReference?
@@ -147,13 +155,14 @@ struct RequestCreateDTO{
     let status: String?
     let acceptanceTime: Timestamp?
     let completionTime: Timestamp?
+    let completionNotes: String?
     let assignedAt: Timestamp?
     let duplicateFlag: Bool?
     let createdAt: Timestamp
 
     func toDictionary() -> [String: Any] {
         var dict: [String: Any] = [:]
-
+        
         if let title { dict["title"] = title }
         if let description { dict["description"] = description }
         if let location { dict["location"] = location }
@@ -162,6 +171,7 @@ struct RequestCreateDTO{
         if let selectedCategory { dict["selectedCategory"] = selectedCategory }
         if let selectedPriorityLevel { dict["selectedPriorityLevel"] = selectedPriorityLevel }
         if let imageUrl { dict["imageUrl"] = imageUrl }
+        if let imageProof { dict["imageProof"] = imageProof }
         dict["submittedBy"] = submittedBy
         dict["assignedTechnician"] = assignedTechnician ?? NSNull()
         dict["assignedAdmin"] = assignedAdmin ?? NSNull()
@@ -169,6 +179,7 @@ struct RequestCreateDTO{
         if let status { dict["status"] = status }
         dict["acceptanceTime"] = acceptanceTime ?? NSNull()  // Optional fields
         dict["completionTime"] = completionTime ?? NSNull()
+        if let completionNotes {dict["completionNotes"] = completionNotes }
         dict["assignedAt"] = assignedAt ?? NSNull()
         if let duplicateFlag { dict["duplicateFlag"] = duplicateFlag }
        dict["createdAt"] = createdAt
@@ -187,6 +198,7 @@ struct RequestUpdateDTO{
     let selectedCategory: String?
     let selectedPriorityLevel: String?
     let imageUrl: String?
+    let imageProof: String?
     let submittedBy: DocumentReference?
     let assignedTechnician: DocumentReference?
     let assignedAdmin: DocumentReference?
@@ -194,6 +206,7 @@ struct RequestUpdateDTO{
     let status: String?
     let acceptanceTime: Timestamp?
     let completionTime: Timestamp?
+    let completionNotes: String?
     let assignedAt: Timestamp?
     let duplicateFlag: Bool?
 
@@ -208,12 +221,14 @@ struct RequestUpdateDTO{
         if let selectedCategory { dict["selectedCategory"] = selectedCategory }
         if let selectedPriorityLevel { dict["selectedPriorityLevel"] = selectedPriorityLevel }
         if let imageUrl { dict["imageUrl"] = imageUrl }
+        if let imageProof { dict["imageProof"] = imageProof }
         if let assignedTechnician { dict["assignedTechnician"] = assignedTechnician }
         if let assignedAdmin { dict["assignedAdmin"] = assignedAdmin }
         if let relatedTickets { dict["relatedTickets"] = relatedTickets }
         if let status { dict["status"] = status }
         if let acceptanceTime { dict["acceptanceTime"] = acceptanceTime }
         if let completionTime { dict["completionTime"] = completionTime }
+        if let completionNotes { dict["completionNotes"] = completionNotes }
         if let assignedAt { dict["assignedAt"] = assignedAt }
         if let duplicateFlag { dict["duplicateFlag"] = duplicateFlag }
 

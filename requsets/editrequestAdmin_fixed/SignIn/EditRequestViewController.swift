@@ -342,6 +342,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
             selectedCategory: selectedCategory,
             selectedPriorityLevel: selectedPriorityLevel, // UPDATED
             imageUrl: imageUrl,
+            imageProof: nil,
             submittedBy: nil,
             assignedTechnician: nil,
             assignedAdmin: nil,
@@ -349,6 +350,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
             status: nil,
             acceptanceTime: nil,
             completionTime: nil,
+            completionNotes: nil,
             assignedAt: nil,
             duplicateFlag: nil
         )
