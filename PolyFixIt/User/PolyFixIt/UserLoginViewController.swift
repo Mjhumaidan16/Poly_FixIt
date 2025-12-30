@@ -61,7 +61,10 @@ class UserLoginViewController: UIViewController {
                 }
                 SessionManager.shared.start()
                 SessionManager.shared.userDidInteract()
-                goToNextScreen()
+                /// i need the app to move to the UserTabController here
+                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "UserTabController")
+
+
             } else {
                 // No saved data? Fetch from Firestore directly
                 fetchUserData(uid: currentUser.uid)
@@ -147,7 +150,7 @@ class UserLoginViewController: UIViewController {
                 self.statusLabel.text = "Logged in as \(fullName)"
                 SessionManager.shared.start()
                 SessionManager.shared.userDidInteract()
-                self.goToNextScreen()
+                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "UserTabController")
             }
         }
     }
@@ -299,6 +302,7 @@ class UserLoginViewController: UIViewController {
         // Navigate to the user's main screen or dashboard
         print("Navigating to next screen")
     }
+
 
     // Check if the email exists in Firestore users collection
     private func checkIfUserExists(email: String, completion: @escaping (Bool) -> Void) {
