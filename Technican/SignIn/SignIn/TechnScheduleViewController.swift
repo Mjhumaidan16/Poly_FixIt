@@ -8,15 +8,16 @@
 import UIKit
 import FirebaseAuth
 import FirebaseFirestore
+import FSCalendar
 
-final class TechnScheduleViewController: UIViewController, UISearchBarDelegate {
+final class TechnScheduleViewController: UIViewController, UISearchBarDelegate, FSCalendarDataSource, FSCalendarDelegate {
 
     // MARK: - Storyboard Outlets (connect these)
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var datePicker: UIDatePicker!          // storyboard: xUg-Qf-ZSc
-    @IBOutlet weak var tasksForLabel: UILabel!            // storyboard: 5g1-pR-eg0
-    @IBOutlet weak var searchBar: UISearchBar!            // storyboard: 7rs-RG-lLR
-    @IBOutlet weak var requestsStackView: UIStackView!    // the vertical list container
+    @IBOutlet weak var datePicker: FSCalendar!          // storyboard: xUg-Qf-ZSc
+    @IBOutlet weak var tasksForLabel: UILabel!          // storyboard: 5g1-pR-eg0
+    @IBOutlet weak var searchBar: UISearchBar!          // storyboard: 7rs-RG-lLR
+    @IBOutlet weak var requestsStackView: UIStackView!  // the vertical list container
 
     // We’ll use the first arranged subview as a template card (your storyboard already has sample cards).
     @IBOutlet var templateCard: UIView?
@@ -32,6 +33,12 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate {
     // Cache docs for search filtering
     private var allDocs: [(id: String, data: [String: Any])] = []
     private var filteredDocs: [(id: String, data: [String: Any])] = []
+
+    // Dates with requests for dot markers (MONTH scope)
+    private var requestDates: [Date] = []
+
+    // Currently selected date on the calendar
+    private var selectedDate: Date = Calendar.current.startOfDay(for: Date())
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
@@ -52,13 +59,22 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate {
             currentTechUID = uid
         #endif
 
+        datePicker.dataSource = self
+        datePicker.delegate = self
+        datePicker.appearance.eventDefaultColor = .red
+        datePicker.appearance.eventSelectionColor = .red
+
         configureUI()
         setupTemplateCard()
         setupDatePicker()
         setupSearchBar()
 
-        // Load initial day (today)
-        loadAndRender(for: datePicker.date)
+        // ✅ Dots for current month
+        loadRequestDots(forMonthContaining: Date())
+
+        // ✅ Load initial day (today start-of-day)
+        selectedDate = Calendar.current.startOfDay(for: Date())
+        loadAndRender(for: selectedDate)
     }
 
     deinit {
@@ -67,32 +83,28 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate {
 
     // MARK: - UI
     private func configureUI() {
-        // Your storyboard label is "Task On: ..."
-        tasksForLabel.text = "Task On: \(formatHeaderDate(datePicker.date))"
+        tasksForLabel.text = "Task On: \(formatHeaderDate(selectedDate))"
     }
 
     private func setupTemplateCard() {
-        // Use the first card in the stack view as a template
         if let first = requestsStackView.arrangedSubviews.first {
             templateCard = first
-            first.isHidden = true // hide template
+            first.isHidden = true
         } else {
             print("❌ No template card found inside requestsStackView.")
         }
     }
 
     private func setupDatePicker() {
-        datePicker.datePickerMode = .date
-        datePicker.preferredDatePickerStyle = .inline
+        datePicker.dataSource  = self
+        datePicker.delegate    = self
+        datePicker.appearance.eventSelectionColor = .red
         datePicker.isUserInteractionEnabled = true
-
-        datePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
-
-        // (Your previous debug/interaction forcing - kept safe)
-        datePicker.superview?.bringSubviewToFront(datePicker)
         view.bringSubviewToFront(datePicker)
-        datePicker.isEnabled = true
-        datePicker.superview?.isUserInteractionEnabled = true
+
+        // ✅ Remove the default "today" circle highlight
+        datePicker.appearance.todayColor = .clear
+        datePicker.appearance.titleTodayColor = datePicker.appearance.titleDefaultColor
     }
 
     private func setupSearchBar() {
@@ -102,28 +114,53 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate {
         searchBar.returnKeyType = .done
     }
 
-    @objc private func dateChanged(_ sender: UIDatePicker) {
-        tasksForLabel.text = "Task On: \(formatHeaderDate(sender.date))"
-        // Clear search text when day changes (so user doesn't think results are missing)
-        searchBar.text = ""
-        searchBar.resignFirstResponder()
+    // MARK: - Month dots loader (IMPORTANT)
+    private func loadRequestDots(forMonthContaining date: Date) {
+        guard let uid = currentTechUID else { return }
 
-        loadAndRender(for: sender.date)
+        let techRef = db.collection("technicians").document(uid)
+        let cal = Calendar.current
+
+        let monthStart = cal.date(from: cal.dateComponents([.year, .month], from: date))!
+        let monthEnd = cal.date(byAdding: .month, value: 1, to: monthStart)!
+
+        db.collection("requests")
+            .whereField("assignedTechnician", isEqualTo: techRef)
+            .whereField("assignedAt", isGreaterThanOrEqualTo: Timestamp(date: monthStart))
+            .whereField("assignedAt", isLessThan: Timestamp(date: monthEnd))
+            .getDocuments { [weak self] snap, err in
+                guard let self else { return }
+                if let err = err {
+                    print("❌ loadRequestDots error:", err)
+                    return
+                }
+
+                let docs = snap?.documents ?? []
+                var days: [Date] = []
+                for d in docs {
+                    if let ts = d.data()["assignedAt"] as? Timestamp {
+                        days.append(cal.startOfDay(for: ts.dateValue()))
+                    }
+                }
+
+                // unique days
+                self.requestDates = Array(Set(days))
+                self.datePicker.reloadData()
+            }
     }
 
     // MARK: - Data + Rendering
-    private func loadAndRender(for selectedDate: Date) {
+    private func loadAndRender(for date: Date) {
         listener?.remove()
         listener = nil
         clearGeneratedCards()
 
         guard let uid = currentTechUID else { return }
 
-        // requests.assignedTechnician is a reference to technicians/<uid>
         let techRef = db.collection("technicians").document(uid)
 
         let cal = Calendar.current
-        let startOfDay = cal.startOfDay(for: selectedDate)
+        let startOfDay = cal.startOfDay(for: date)
         let endOfDay = cal.date(byAdding: .day, value: 1, to: startOfDay)!
 
         let q = db.collection("requests")
@@ -142,22 +179,40 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate {
             let docs = snap?.documents ?? []
             self.allDocs = docs.map { ($0.documentID, $0.data()) }
 
-            // Apply search (if any) then render
-            self.applySearchAndRender()
+            // ✅ DO NOT set requestDates here anymore (this query is only 1 day)
+            // Dots are loaded by loadRequestDots(forMonthContaining:)
+
+            self.applySearchAndRender(for: date)
         }
     }
 
-    private func applySearchAndRender() {
+    private func applySearchAndRender(for selectedDate: Date) {
         clearGeneratedCards()
 
         let term = (searchBar.text ?? "")
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .lowercased()
 
-        if term.isEmpty {
-            filteredDocs = allDocs
-        } else {
-            filteredDocs = allDocs.filter { pair in
+        let cal = Calendar.current
+        let startOfSelectedDay = cal.startOfDay(for: selectedDate)
+
+        // Filter by date (safe even if allDocs already day-filtered)
+        var docsForDate = allDocs.filter { pair in
+            guard
+                let ts = pair.data["assignedAt"] as? Timestamp,
+                let status = (pair.data["status"] as? String)?.lowercased()
+            else { return false }
+
+            let taskDay = cal.startOfDay(for: ts.dateValue())
+            let allowedStatus = status == "accepted" || status == "begin"
+
+            return taskDay == startOfSelectedDay && allowedStatus
+        }
+
+
+        // Filter by search term if any
+        if !term.isEmpty {
+            docsForDate = docsForDate.filter { pair in
                 let data = pair.data
                 let title = ((data["title"] as? String) ?? (data["problemTitle"] as? String) ?? "").lowercased()
                 let loc = readLocationString(data).lowercased()
@@ -169,8 +224,11 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate {
             }
         }
 
+        filteredDocs = docsForDate
+
         if filteredDocs.isEmpty {
             showEmptyStateCard(message: term.isEmpty ? "No tasks found" : "No results for \"\(searchBar.text ?? "")\"")
+            print("Filtered docs for date \(selectedDate):", filteredDocs.map { $0.data })
             return
         }
 
@@ -179,20 +237,43 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate {
         }
     }
 
+    // MARK: - FSCalendarDataSource
+    func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
+        return requestDates.contains(where: { Calendar.current.isDate($0, inSameDayAs: date) }) ? 1 : 0
+    }
+
+    // MARK: - FSCalendarDelegate
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        let normalized = Calendar.current.startOfDay(for: date)
+        selectedDate = normalized
+
+        tasksForLabel.text = "Task On: \(formatHeaderDate(normalized))"
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
+
+        // ✅ Query Firestore for the selected day
+        loadAndRender(for: normalized)
+    }
+
+    // ✅ When user swipes to a new month, refresh dots for that month
+    func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
+        loadRequestDots(forMonthContaining: calendar.currentPage)
+    }
+
     // MARK: - UISearchBarDelegate
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        applySearchAndRender()
+        applySearchAndRender(for: selectedDate)
     }
 
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchBar.resignFirstResponder()
-        applySearchAndRender()
+        applySearchAndRender(for: selectedDate)
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text = ""
         searchBar.resignFirstResponder()
-        applySearchAndRender()
+        applySearchAndRender(for: selectedDate)
     }
 
     // MARK: - Card Rendering
@@ -200,11 +281,6 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate {
         guard let template = templateCard else { return }
         guard let card = cloneView(template) else { return }
 
-        // Your card has 4 labels:
-        // [0] title
-        // [1] location
-        // [2] priority
-        // [3] created
         setLabelText(in: card, atIndex: 0, text: message)
         setLabelText(in: card, atIndex: 1, text: "Pick another day or check assignments")
         setLabelText(in: card, atIndex: 2, text: "")
@@ -224,62 +300,103 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate {
             return
         }
 
-        // --- Title ---
+        // 🔥 FORCE interaction
+        card.isUserInteractionEnabled = true
+        card.translatesAutoresizingMaskIntoConstraints = false
+
+
         let title = (data["title"] as? String) ?? (data["problemTitle"] as? String) ?? "Request"
         setLabelText(in: card, atIndex: 0, text: "\(title):")
 
-        // --- Location ---
         let locationText = readLocationString(data)
         setLabelText(in: card, atIndex: 1, text: locationText)
 
-        // --- Priority (COLOR RULE) ---
         let priorityRaw = (data["selectedPriorityLevel"] as? String) ?? "normal"
         let priorityText = "Priority: \(priorityRaw)"
         setLabelText(in: card, atIndex: 2, text: priorityText)
 
-        // If priority == "high" -> red, else keep white/default
         applyPriorityColor(in: card, priority: priorityRaw)
 
-        // --- Created / Date ---
         let createdText = formatDateFromAnyKnownField(data)
         setLabelText(in: card, atIndex: 3, text: createdText.isEmpty ? "" : "Created: \(createdText)")
-        
-        // ✅ Attach button -> open details, pass requestId
-        if let button = findFirstButton(in: card) {
-            // store requestId on the button
-            button.accessibilityIdentifier = docID
 
-            // prevent duplicates (important when reusing template)
+        //button config for pages switch
+        if let button = findFirstButton(in: card) {
+            let status = (data["status"] as? String)?.lowercased() ?? "unknown"
+
+            // 🔥 FORCE BUTTON TO RECEIVE TOUCHES
+            button.isUserInteractionEnabled = true
+            button.isEnabled = true
+            button.alpha = 1.0
+
+            // Debug (you WILL see this)
+            print("✅ Button wired for request:", docID, "status:", status)
+
+            button.accessibilityIdentifier = docID
+            button.accessibilityHint = status
+
             button.removeTarget(nil, action: nil, for: .allEvents)
-            button.addTarget(self, action: #selector(openTaskDetails(_:)), for: .touchUpInside)
+            button.addTarget(self,
+                             action: #selector(openTaskDetails(_:)),
+                             for: .touchUpInside)
         } else {
-            print("⚠️ No button found inside template card. Add one or check hierarchy.")
+            print("❌ No button found in card")
         }
+
 
         card.isHidden = false
         requestsStackView.addArrangedSubview(card)
     }
 
     @objc private func openTaskDetails(_ sender: UIButton) {
-        guard let requestId = sender.accessibilityIdentifier, !requestId.isEmpty else { return }
+        print("🔥 BUTTON TAP DETECTED")
+        guard
+            let requestId = sender.accessibilityIdentifier,
+            let status = sender.accessibilityHint?.lowercased()
+        else { return }
+        
+        print("➡️ Opening task:", requestId, "status:", status)
 
         let sb = storyboard ?? UIStoryboard(name: "Main", bundle: nil)
-        guard let vc = sb.instantiateViewController(withIdentifier: "TechViewRequestViewController") as? TechViewRequestViewController else {
-            print("❌ Could not instantiate TechViewRequestViewController (check Storyboard ID).")
-            return
+
+        if status == "accepted" {
+            guard let vc = sb.instantiateViewController(
+                withIdentifier: "TechViewRequestViewController"
+            ) as? TechViewRequestViewController else {
+                print("❌ Could not instantiate TechViewRequestViewController")
+                return
+            }
+            
+            vc.requestId = requestId
+            if let nav = navigationController {
+                nav.pushViewController(vc, animated: true)
+            } else {
+                vc.modalPresentationStyle = .fullScreen
+                present(vc, animated: true)
+            }
         }
 
-        vc.requestId = requestId
 
-        if let nav = navigationController {
-            nav.pushViewController(vc, animated: true)
-        } else {
-            vc.modalPresentationStyle = .fullScreen
-            present(vc, animated: true)
+
+        else if status == "begin" {
+            guard let vc = sb.instantiateViewController(
+                withIdentifier: "TechnicianTaskFlowViewController"
+            ) as? TechnicianTaskFlowViewController else {
+                print("❌ Could not instantiate TechBeginTaskViewController")
+                return
+            }
+
+            vc.requestId = requestId
+            if let nav = navigationController {
+                nav.pushViewController(vc, animated: true)
+            } else {
+                vc.modalPresentationStyle = .fullScreen
+                present(vc, animated: true)
+            }
         }
     }
 
-    
+
     private func applyPriorityColor(in card: UIView, priority: String) {
         let labels = allLabels(in: card)
         guard labels.indices.contains(2) else { return }
@@ -288,7 +405,6 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate {
         if priority.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == "high" {
             priorityLabel.textColor = .red
         } else {
-            // Match your storyboard "white" behavior
             priorityLabel.textColor = .white
         }
     }
@@ -301,7 +417,7 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate {
             v.removeFromSuperview()
         }
     }
-    
+
     private func findFirstButton(in root: UIView) -> UIButton? {
         if let b = root as? UIButton { return b }
         for s in root.subviews {
@@ -309,7 +425,6 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate {
         }
         return nil
     }
-
 
     private func cloneView(_ view: UIView) -> UIView? {
         do {
