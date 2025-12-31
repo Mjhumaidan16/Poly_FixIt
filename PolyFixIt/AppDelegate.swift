@@ -6,17 +6,23 @@
 //
 
 import UIKit
+import UIKit
+import FirebaseCore // 1. تأكد من وجود هذا الاستيراد
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        // 2. هذا هو السطر السحري الذي يحل المشكلة
+        FirebaseApp.configure()
+        
         return true
     }
 
+
+
+ 
     // MARK: UISceneSession Lifecycle
 
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {

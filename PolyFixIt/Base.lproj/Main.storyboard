@@ -699,9 +699,6 @@
                                                 </barButtonItem>
                                                 <barButtonItem key="rightBarButtonItem" image="bell.fill" catalog="system" id="m0i-8l-I5k">
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <connections>
-                                                        <segue destination="Eke-Lc-SuK" kind="showDetail" id="Gvw-JO-6HS"/>
-                                                    </connections>
                                                 </barButtonItem>
                                             </navigationItem>
                                         </items>
@@ -744,10 +741,10 @@
             </objects>
             <point key="canvasLocation" x="-3654" y="1542"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Notification Table View Controller-->
         <scene sceneID="NYt-A2-eeW">
             <objects>
-                <tableViewController modalPresentationStyle="fullScreen" id="Eke-Lc-SuK" sceneMemberID="viewController">
+                <tableViewController modalPresentationStyle="fullScreen" id="Eke-Lc-SuK" customClass="NotificationTableViewController" customModule="PolyFixIt" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="CHg-3b-GFy">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -760,6 +757,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="393" height="47.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <color key="backgroundColor" red="0.1647058874" green="0.22745099660000001" blue="0.37254902719999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -770,7 +768,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="If2-6N-264" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3409" y="2179"/>
+            <point key="canvasLocation" x="-3407" y="2271"/>
         </scene>
         <!--Admin View-->
         <scene sceneID="b9R-LR-csr">
@@ -4031,6 +4029,9 @@
                                                 </barButtonItem>
                                                 <barButtonItem key="rightBarButtonItem" image="bell.fill" catalog="system" id="vHA-Zp-1Qn">
                                                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <connections>
+                                                        <segue destination="Eke-Lc-SuK" kind="showDetail" id="0MR-6e-oJJ"/>
+                                                    </connections>
                                                 </barButtonItem>
                                             </navigationItem>
                                         </items>
@@ -4402,7 +4403,7 @@
                                                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6xd-TF-gw5">
                                                                 <rect key="frame" x="54" y="15.666666666666686" width="285" height="194.66666666666666"/>
                                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="hh8-N2-aIi">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="285" height="194"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="285" height="194.66666666666666"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
                                                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="vdf-pI-1wx">
@@ -4483,7 +4484,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XJj-T4-wVI">
                                                                 <rect key="frame" x="0.0" y="15.666666666666742" width="282" height="189.66666666666666"/>
                                                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="0OL-FR-weS">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="282" height="190"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="282" height="189.66666666666666"/>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
                                                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="ohs-hN-o55">
@@ -5148,7 +5149,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
         <segue reference="8Kk-Xf-wGx"/>
         <segue reference="Dma-gT-fTK"/>
         <segue reference="C0U-Mf-Ggw"/>
-        <segue reference="66J-v4-fZe"/>
+        <segue reference="FUo-6S-0Zm"/>
         <segue reference="lWs-ce-jKG"/>
     </inferredMetricsTieBreakers>
     <resources>
