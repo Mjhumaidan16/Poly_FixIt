@@ -87,7 +87,7 @@ final class UserSettingViewController: UIViewController {
             setEditing(enabled: true)
             passwordTextField.text = ""
             passwordTextField.isSecureTextEntry = false
-            statusLabel?.text = "Editing Mode"
+            statusLabel?.text = "Editing enabled"
             changeButton.setTitle("Submit", for: .normal)
         } else {
             submitProfileChangesAndLogout()
@@ -113,7 +113,7 @@ final class UserSettingViewController: UIViewController {
 
     private func fetchAndPopulateProfile() {
         guard let uid = Auth.auth().currentUser?.uid else {
-            //statusLabel?.text = "No user logged in"
+            statusLabel?.text = "No user logged in"
             return
         }
 
@@ -159,7 +159,7 @@ final class UserSettingViewController: UIViewController {
                 self.nameTextField.text = name
                 self.emailTextField.text = email
                 self.phoneTextField.text = phone
-                self.statusLabel?.text = "View Mode"
+                self.statusLabel?.text = ""
             }
         }
     }
@@ -190,7 +190,7 @@ final class UserSettingViewController: UIViewController {
         let trimmedPassword = password.trimmingCharacters(in: .whitespacesAndNewlines)
         if !trimmedPassword.isEmpty {
             guard isValidPassword(trimmedPassword) else {
-                showAlert(message: "Password must meet the requirments.")
+                showAlert(message: "Password must be at least 8 characters and include 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.")
                 return
             }
         }

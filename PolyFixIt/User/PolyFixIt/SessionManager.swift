@@ -12,7 +12,7 @@ final class SessionManager {
 
     static let shared = SessionManager()
 
-    private let timeoutSeconds: TimeInterval = 3000000
+    private let timeoutSeconds: TimeInterval = 30
     private let checkIntervalSeconds: TimeInterval = 1
 
     // Use a GCD timer instead of Foundation.Timer.
