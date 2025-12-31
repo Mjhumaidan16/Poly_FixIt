@@ -130,17 +130,35 @@ final class TechViewRequestViewController: UIViewController {
     @IBAction func BeginButtonTapped(_ sender: UIButton) {
         let alert = UIAlertController(
             title: "Begin Request",
-            message: "Are you sure you want to cancel this request?",
+            message: "Are you sure you want to begin this request?",
             preferredStyle: .alert
         )
 
         alert.addAction(UIAlertAction(title: "No", style: .cancel))
+
         alert.addAction(UIAlertAction(title: "Yes", style: .destructive) { [weak self] _ in
-            self?.updateRequestStatus("Begin")
+            guard let self = self else { return }
+
+            self.updateRequestStatus("Begin") {
+                self.navigateToBeginScreen()
+            }
         })
 
         present(alert, animated: true)
     }
+
+    private func navigateToBeginScreen() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "TechCompViewController")
+
+        if let nav = navigationController {
+            nav.pushViewController(vc, animated: true)
+        } else {
+            vc.modalPresentationStyle = .fullScreen
+            present(vc, animated: true)
+        }
+    }
+
 /*
     @IBAction func chatButtonTapped(_ sender: UIButton) {
         guard let uid = sender.accessibilityIdentifier, !uid.isEmpty else { return }
@@ -168,7 +186,7 @@ final class TechViewRequestViewController: UIViewController {
     
     // MARK: - Firestore Helpers
 
-    private func updateRequestStatus(_ status: String) {
+    private func updateRequestStatus(_ status: String, completion: @escaping () -> Void) {
         guard let requestId = currentRequest?.id else { return }
 
         RequestManager.shared.updateRequestStatusOnly(
@@ -178,8 +196,8 @@ final class TechViewRequestViewController: UIViewController {
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    self?.statusLabel.text = status
-                    self?.showAlert("Request updated to \(status) ✅")
+                    self?.statusLabel.text = "Status:\(status)"
+                    completion()
 
                 case .failure(let error):
                     self?.showAlert("Failed ❌: \(error.localizedDescription)")
@@ -187,6 +205,7 @@ final class TechViewRequestViewController: UIViewController {
             }
         }
     }
+
 
     private func downloadImage(from urlString: String) {
         guard let url = URL(string: urlString) else { return }

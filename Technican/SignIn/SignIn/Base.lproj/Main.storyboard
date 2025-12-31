@@ -464,6 +464,9 @@
                                                         <integer key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="BeginButtonTapped:" destination="hlj-y4-orM" eventType="touchUpInside" id="wDZ-Lw-fqp"/>
+                                                </connections>
                                             </button>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="O7Q-lc-Aqp">
                                                 <rect key="frame" x="24" y="598" width="345" height="32"/>
@@ -780,10 +783,10 @@
             </objects>
             <point key="canvasLocation" x="1768.7022900763359" y="-4.2253521126760569"/>
         </scene>
-        <!--Technician View-->
+        <!--TechCompViewController-->
         <scene sceneID="Uu7-cL-D2Z">
             <objects>
-                <viewController storyboardIdentifier="TechnicianTaskFlow2" title="Technician Task Flow 2" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="eB9-H1-bLD" userLabel="Technician View" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TechCompViewController" title="Technician Task Flow 2" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="eB9-H1-bLD" userLabel="TechCompViewController" customClass="TechCompViewController" customModule="SignIn" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="sSz-K0-40X">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -946,6 +949,11 @@ issues, or add recommendations...</string>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Nhy-ec-Cc9"/>
+                    <connections>
+                        <outlet property="descriptionView" destination="Xh4-q3-SnA" id="c4X-HR-Sbh"/>
+                        <outlet property="imageView" destination="RCn-ak-x8A" id="pu8-ve-kFi"/>
+                        <outlet property="submitButton" destination="BlM-EO-cRc" id="LEp-Eh-kuS"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oA6-Wa-cq6" sceneMemberID="firstResponder"/>
             </objects>
@@ -1114,6 +1122,9 @@ issues, or add recommendations...</string>
                                                         <integer key="value" value="8"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <segue destination="eB9-H1-bLD" kind="show" id="Ykk-Qz-ayN"/>
+                                                </connections>
                                             </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Parts needed for fixing" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yxc-8x-V2d">
                                                 <rect key="frame" x="96" y="8" width="224" height="28"/>
