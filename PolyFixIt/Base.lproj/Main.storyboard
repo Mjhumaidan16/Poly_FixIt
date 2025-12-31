@@ -660,6 +660,11 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </button>
+                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="IYk-S2-sUg">
+                                                <rect key="frame" x="-43" y="146" width="240" height="128"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            </tableView>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
@@ -740,6 +745,21 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zLA-MT-RGK" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3654" y="1542"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="JY6-6H-EJb">
+            <objects>
+                <viewController id="WuR-fO-zdR" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="1Rx-W3-gqm">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="63J-JT-Wli"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hDd-EE-guF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-3321" y="2195"/>
         </scene>
         <!--Admin View-->
         <scene sceneID="b9R-LR-csr">
@@ -3790,7 +3810,7 @@
         <!--Admin View-->
         <scene sceneID="VMf-oh-8B0">
             <objects>
-                <viewController storyboardIdentifier="EditItemInInventory" title="Edit Item In Inventory" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="9ey-Is-hpE" userLabel="Admin View" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="EditItemInInventory" title="Edit Item In Inventory" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="9ey-Is-hpE" userLabel="Admin View" customClass="ViewController" customModule="PolyFixIt" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="qG5-bD-8bY">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -5118,7 +5138,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
         <segue reference="Dma-gT-fTK"/>
         <segue reference="C0U-Mf-Ggw"/>
         <segue reference="66J-v4-fZe"/>
-        <segue reference="EUr-bi-4ZV"/>
+        <segue reference="2qM-J5-SVt"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AdminDashboard" width="20" height="18.666666030883789"/>
