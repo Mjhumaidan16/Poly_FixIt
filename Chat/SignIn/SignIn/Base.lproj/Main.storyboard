@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Sic-HJ-DG9">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="eXQ-Wz-Xrk">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
@@ -833,7 +833,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="31" translatesAutoresizingMaskIntoConstraints="NO" id="9ZO-lq-Izu" userLabel="Message Content Stack">
                                                 <rect key="frame" x="27" y="153" width="339" height="584.33333333333337"/>
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LTn-xq-Yuj">
+                                                    <view tag="100" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LTn-xq-Yuj">
                                                         <rect key="frame" x="0.0" y="0.0" width="339" height="276.66666666666669"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Max Thomson (Technician)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="49r-kJ-H6v">
@@ -849,7 +849,7 @@
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
                                                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="6Vb-pL-4mp">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="285" height="194.66666666666666"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="285" height="194"/>
                                                                             <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
@@ -906,7 +906,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                             <constraint firstAttribute="trailing" secondItem="chC-Rn-5CJ" secondAttribute="trailing" constant="236" id="zDw-IG-kjL"/>
                                                         </constraints>
                                                     </view>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mmy-5j-ud9">
+                                                    <view tag="100" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mmy-5j-ud9">
                                                         <rect key="frame" x="0.0" y="307.66666666666663" width="339" height="276.66666666666663"/>
                                                         <subviews>
                                                             <visualEffectView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e5x-xb-8Xt">
@@ -916,7 +916,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                                     <subviews>
                                                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="7Ih-p4-ufa">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="282" height="189.66666666666666"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="282" height="190"/>
                                                                             <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
@@ -1032,7 +1032,7 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                         </constraints>
                                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" returnKeyType="send"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                 <integer key="value" value="20"/>
@@ -1048,6 +1048,9 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" image="paperplane.fill" catalog="system"/>
+                                        <connections>
+                                            <action selector="sendTapped:" destination="eXQ-Wz-Xrk" eventType="touchUpInside" id="raS-qN-u8i"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -1115,8 +1118,8 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                     <navigationItem key="navigationItem" id="BG4-tC-G7z"/>
                     <connections>
                         <outlet property="changeModeToTechnician" destination="G9g-CP-AlN" id="b3i-du-vnu"/>
-                        <outlet property="messageRecevierTemplate" destination="LTn-xq-Yuj" id="teq-jO-5w2"/>
-                        <outlet property="messageSenderTemplate" destination="mmy-5j-ud9" id="uel-uI-AEA"/>
+                        <outlet property="messageRecvierrTemplate" destination="LTn-xq-Yuj" id="en1-xs-xz6"/>
+                        <outlet property="messageSenderTemplate" destination="mmy-5j-ud9" id="Qem-WT-hwh"/>
                         <outlet property="messageStackView" destination="9ZO-lq-Izu" id="RAx-w2-z5t"/>
                         <outlet property="messageTextField" destination="frG-T7-NbV" id="a75-1R-x6B"/>
                         <outlet property="sendButton" destination="SkH-Ys-pk1" id="aof-Ca-hf4"/>

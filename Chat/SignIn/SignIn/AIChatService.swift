@@ -1,51 +1,81 @@
-//
-//  AIChatService.swift
-//  SignIn
-//
-//  Created by BP-19-131-12 on 29/12/2025.
-//
-
 import Foundation
-import OpenAI
 
 final class AIChatService {
 
-    private let client: OpenAIProtocol
+    // MARK: - API Key
+    private let apiKey: String = {
+        guard let key = Bundle.main.object(
+            forInfoDictionaryKey: "GEMINI_API_KEY"
+        ) as? String else {
+            fatalError("❌ GEMINI_API_KEY missing in Info.plist")
+        }
+        return key
+    }()
 
-    init() {
-        // ⚠️ FOR THESIS / DEMO ONLY
-        // In production → proxy through backend
-        let config = OpenAI.Configuration(
-            token: "YOUR_API_KEY",
-            timeoutInterval: 60
-        )
-        self.client = OpenAI(configuration: config)
-    }
+    // MARK: - Endpoint
+    private let endpoint =
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent"
 
-    func sendMessage(
-        conversation: [ChatMessage]
-    ) async throws -> String {
+    // MARK: - Send Message
+    func sendMessage(conversation: [ChatMessage]) async -> String {
+        print("📤 Sending message to Gemini...")
+        print("🧠 Conversation count:", conversation.count)
+        print("🗨️ Conversation texts:", conversation.map{$0.text})
 
-        let chatMessages: [ChatQuery.Message] = conversation.compactMap { message in
-            switch message.sender {
-            case .user:
-                return .user(.init(content: .string(message.text)))
-            case .ai:
-                return .assistant(.init(content: .string(message.text)))
-            case .system:
-                return .system(.init(content: .string(message.text)))
-            default:
-                return nil // technician/admin not sent to AI
-            }
+        let contents: [[String: Any]] = conversation.map {
+            [
+                "role": $0.sender == .user ? "user" : "model",
+                "parts": [["text": $0.text]]
+            ]
         }
 
-        let query = ChatQuery(
-            messages: chatMessages,
-            model: .gpt4_o_mini
-        )
+        let body: [String: Any] = ["contents": contents]
 
-        let result = try await client.chats(query: query)
+        guard let url = URL(string: "\(endpoint)?key=\(apiKey)") else {
+            print("❌ Invalid URL")
+            return "⚠️ Invalid URL"
+        }
 
-        return result.choices.first?.message.content ?? "No response"
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        do {
+            request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        } catch {
+            print("❌ Failed to encode request body:", error)
+            return "⚠️ Failed to encode request"
+        }
+
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+
+            if let http = response as? HTTPURLResponse {
+                print("📥 HTTP Status Code:", http.statusCode)
+            }
+
+            let raw = String(data: data, encoding: .utf8) ?? ""
+            print("📥 Raw Response:", raw)
+
+            let json = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+
+            guard
+                let candidates = json?["candidates"] as? [[String: Any]],
+                let firstCandidate = candidates.first,
+                let content = firstCandidate["content"] as? [String: Any],
+                let parts = content["parts"] as? [[String: Any]],
+                let firstPart = parts.first,
+                let reply = firstPart["text"] as? String
+            else {
+                print("⚠️ Failed to parse response")
+                return "⚠️ AI returned no response"
+            }
+
+            print("✅ AI Reply:", reply)
+            return reply
+
+        } catch {
+            print("❌ Network / JSON error:", error)
+            return "⚠️ AI service error"
+        }
     }
 }

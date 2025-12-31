@@ -1,29 +1,8 @@
-//
-//  ChatMode.swift
-//  SignIn
-//
-//  Created by BP-19-131-12 on 29/12/2025.
-//
-
-
 import Foundation
 
-// MARK: - Chat Mode
-enum ChatMode {
-    case ai
-    case technicianChat
-}
+enum ChatMode { case ai, technicianChat }
+enum SenderType { case user, ai, technician, admin, system }
 
-// MARK: - Sender Type
-enum SenderType {
-    case user
-    case ai
-    case technician
-    case admin
-    case system
-}
-
-// MARK: - Chat Message Model
 struct ChatMessage {
     let id: String
     let sender: SenderType
@@ -31,24 +10,19 @@ struct ChatMessage {
     let timestamp: Date
 }
 
-// MARK: - Chat ViewModel (Thesis Core Logic)
-
+@MainActor
 final class ChatViewModel {
 
     private(set) var messages: [ChatMessage] = []
-    private let aiService = AIChatService()
-
+    let aiService = AIChatService()
     private(set) var chatMode: ChatMode
 
-    // 🔐 Request State
     var requestAccepted: Bool = false
     var assignedTechnicianID: String?
 
-    init(mode: ChatMode) {
-        self.chatMode = mode
-    }
+    var onMessagesUpdated: (() -> Void)?
 
-    // MARK: - Mode Control
+    init(mode: ChatMode) { self.chatMode = mode }
 
     func canSwitchToTechnicianChat() -> Bool {
         requestAccepted && assignedTechnicianID != nil
@@ -56,60 +30,38 @@ final class ChatViewModel {
 
     func switchToTechnicianChat() {
         guard canSwitchToTechnicianChat() else { return }
-
         chatMode = .technicianChat
-
-        messages.append(
-            ChatMessage(
-                id: UUID().uuidString,
-                sender: .system,
-                text: "You are now connected to a technician.",
-                timestamp: Date()
-            )
-        )
+        addSystemMessage("You are now connected to a technician.")
     }
 
-    // MARK: - Messaging
-
-    func sendUserMessage(
-        _ text: String,
-        completion: @escaping () -> Void
-    ) {
-
+    @MainActor
+    func sendUserMessage(_ text: String) async {
         let userMessage = ChatMessage(
             id: UUID().uuidString,
             sender: .user,
             text: text,
             timestamp: Date()
         )
-
         messages.append(userMessage)
-        completion()
+        onMessagesUpdated?() // refresh UI
 
-        guard chatMode == .ai else {
-            // 🔧 Technician chat (Firebase/WebSocket later)
-            return
-        }
+        guard chatMode == .ai else { return }
 
-        Task {
-            do {
-                let reply = try await aiService.sendMessage(conversation: messages)
+        let reply = await aiService.sendMessage(conversation: messages)
+        addAIMessage(reply)
+        onMessagesUpdated?()
+    }
 
-                let aiMessage = ChatMessage(
-                    id: UUID().uuidString,
-                    sender: .ai,
-                    text: reply,
-                    timestamp: Date()
-                )
 
-                DispatchQueue.main.async {
-                    self.messages.append(aiMessage)
-                    completion()
-                }
+    func addAIMessage(_ text: String) {
+        messages.append(
+            ChatMessage(id: UUID().uuidString, sender: .ai, text: text, timestamp: Date())
+        )
+    }
 
-            } catch {
-                print("AI Error:", error)
-            }
-        }
+    func addSystemMessage(_ text: String) {
+        messages.append(
+            ChatMessage(id: UUID().uuidString, sender: .system, text: text, timestamp: Date())
+        )
     }
 }
