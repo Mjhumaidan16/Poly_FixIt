@@ -3,26 +3,20 @@ import UIKit
 
 // MARK: - 1. Building Definitions
 enum CampusBuilding: String, CaseIterable {
-    // Format: "Display Name, X_Percentage, Y_Percentage"
-    case engineering = "Engineering Wing, 25, 35"
+    case engineering = "Building 19, 10, 35"
     case library     = "Central Library, 60, 20"
     case cafeteria   = "Student Cafe, 45, 75"
     case adminOffice = "Admin Block, 80, 50"
 
-    // This function extracts the data from the string automatically
     var data: (name: String, x: CGFloat, y: CGFloat) {
         let components = self.rawValue.components(separatedBy: ", ")
-        
-        // Extract Name (Index 0)
         let name = components[0]
-        
-        // Extract X and Y, convert from String to Double, then to CGFloat
-        let xValue = CGFloat(Double(components[1]) ?? 0) / 100.0 // Converting 25 to 0.25
+        let xValue = CGFloat(Double(components[1]) ?? 0) / 100.0
         let yValue = CGFloat(Double(components[2]) ?? 0) / 100.0
-        
         return (name, xValue, yValue)
     }
 }
+
 // MARK: - 2. Data Model
 struct FacilityIssue: Identifiable {
     let id = UUID()
@@ -33,27 +27,37 @@ struct FacilityIssue: Identifiable {
 // MARK: - 3. SwiftUI Overlay
 struct PinOverlayView: View {
     var issues: [FacilityIssue]
+    var onTap: (FacilityIssue) -> Void
     
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .topLeading) {
-                Color.clear
+                Color.clear // Non-interactive background
                 
                 ForEach(issues) { issue in
-                    VStack(spacing: 2) {
-                        // Optional: Small label showing the building name
-                        Text(issue.building.data.name)
-                            .font(.system(size: 8, weight: .bold))
-                            .padding(2)
-                            .background(.white.opacity(0.8))
-                            .cornerRadius(4)
+                    // THE FIX: Move the Button inside a container and
+                    // force a small frame on the button itself.
+                    Button(action: { }) {
+                        VStack(spacing: 2) {
+                            Text(issue.building.data.name)
+                                .font(.system(size: 8, weight: .bold))
+                                .padding(.horizontal, 4)
+                                .padding(.vertical, 2)
+                                .background(Color.white.opacity(0.8))
+                                .cornerRadius(3)
 
-                        Circle()
-                            .fill(issue.color)
-                            .frame(width: 12, height: 12)
-                            .overlay(Circle().stroke(.white, lineWidth: 2))
+                            Circle()
+                                .fill(issue.color)
+                                .frame(width: 12, height: 12)
+                                .overlay(Circle().stroke(.white, lineWidth: 1.5))
+                        }
                     }
-                    // Positioning using the extracted data
+                    // 1. Use PlainButtonStyle to stop the system from adding extra "room"
+                    .buttonStyle(PlainButtonStyle())
+                    // 2. Explicitly frame the button to a small size
+                    .frame(width: 60, height: 40)
+                    // 3. Ensure hit testing only happens where content is
+                    .contentShape(Rectangle())
                     .position(
                         x: issue.building.data.x * geometry.size.width,
                         y: issue.building.data.y * geometry.size.height
@@ -63,15 +67,18 @@ struct PinOverlayView: View {
         }
     }
 }
+
 // MARK: - 4. UIKit ViewController
 class FacilityMapViewController: UIViewController {
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var imageView: UIImageView!
     
-    // Now you just specify the building name, and the code finds the X,Y automatically
     let activeIssues = [
         FacilityIssue(building: .engineering, color: .red),
-        FacilityIssue(building: .cafeteria, color: .red)
+        FacilityIssue(building: .cafeteria, color: .orange),
+        FacilityIssue(building: .library, color: .blue),
+        FacilityIssue(building: .adminOffice, color: .red)
     ]
 
     override func viewDidLayoutSubviews() {
@@ -80,24 +87,28 @@ class FacilityMapViewController: UIViewController {
     }
 
     private func setupOverlay() {
-        // 1. Remove old overlay if it exists
         view.subviews.filter { $0.accessibilityLabel == "Overlay" }.forEach { $0.removeFromSuperview() }
 
-        let overlay = PinOverlayView(issues: activeIssues)
+        let overlay = PinOverlayView(issues: activeIssues) { [weak self] issue in
+            self?.handlePinTap(issue)
+        }
+        
         let hostingController = UIHostingController(rootView: overlay)
         hostingController.view.backgroundColor = .clear
         hostingController.view.accessibilityLabel = "Overlay"
         
+        // Critical for precise hit testing
+        hostingController.view.isUserInteractionEnabled = true
+        
         addChild(hostingController)
-        
-        // CRITICAL FIX: Add to the scroll view, not the main view
-        // Replace 'yourScrollView' with the name of your UIScrollView outlet
-        yourScrollView.addSubview(hostingController.view)
-        
-        // 2. Align the frame exactly to the ImageView's frame
-        // This ensures that as the Image expands/moves, the pin layer follows
+        scrollView.addSubview(hostingController.view)
         hostingController.view.frame = imageView.frame
-        
         hostingController.didMove(toParent: self)
+    }
+
+    private func handlePinTap(_ issue: FacilityIssue) {
+        let alert = UIAlertController(title: "Precise Tap", message: issue.building.data.name, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 }
