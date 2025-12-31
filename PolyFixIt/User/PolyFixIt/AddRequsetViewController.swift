@@ -7,16 +7,20 @@ private var uploadedImageUrl: String?
 private var selectedImage: UIImage?
 private let uploadPreset = "iOS_requests_preset" // Cloudinary upload preset
 
-final class AddRequsetViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+final class AddRequsetViewController: UIViewController,
+                                     UIPickerViewDelegate,
+                                     UIPickerViewDataSource,
+                                     UIImagePickerControllerDelegate,
+                                     UINavigationControllerDelegate {
 
     // MARK: - IBOutlets
     @IBOutlet weak var titleTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
-    @IBOutlet  var categoryButton: UIButton!
+    @IBOutlet var categoryButton: UIButton!
     /// Single picker with 3 components: Campus / Building / Room (Room = Class)
     @IBOutlet weak var locationPickerView: UIPickerView!
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet  var submitButton: UIButton!
+    @IBOutlet var submitButton: UIButton!
 
     // MARK: - Properties
     private let db = Firestore.firestore()
@@ -31,8 +35,8 @@ final class AddRequsetViewController: UIViewController, UIPickerViewDelegate, UI
 
     // ✅ Campus -> Buildings
     private let buildingsByCampus: [String: [String]] = [
-        "CampusA": ["19", "36", "25"],
-        "CampusB": ["20", "25"]
+        "CampA": ["19", "36", "5"],
+        "CampB": ["20", "25"]
     ]
 
     // ✅ Building -> 4 Classes (edit these names as you want)
@@ -40,6 +44,7 @@ final class AddRequsetViewController: UIViewController, UIPickerViewDelegate, UI
         "19": ["01", "02", "03", "04"],
         "36": ["101", "102", "103", "104"],
         "25": ["313", "314", "315", "316"],
+        "5": ["21", "20", "19", "19"],
         "20": ["98", "99", "100", "101"]
     ]
 
@@ -73,10 +78,15 @@ final class AddRequsetViewController: UIViewController, UIPickerViewDelegate, UI
         // Reload picker initially
         locationPickerView.reloadAllComponents()
 
-        // ✅ Default selections + menus (NO FIRESTORE)
-        selectedCategory = categories.first
+        // ✅ Default selections (NO FIRESTORE)
+       
         selectedPriorityLevel = priorityLevels.first
-        setupCategoryMenu()
+
+        // ✅ Set default button title
+        categoryButton.setTitle(selectedCategory ?? "Select Category", for: .normal)
+        selectedCategory = categories.first
+        // ✅ Category dropdown menu (UIMenu)
+        setupCategoryDropdownMenu()
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
         imageView.addGestureRecognizer(tapGesture)
@@ -91,6 +101,25 @@ final class AddRequsetViewController: UIViewController, UIPickerViewDelegate, UI
             }
         }
     }
+
+    
+    // MARK: - Category Dropdown (Native iOS menu)
+    private func setupCategoryDropdownMenu() {
+
+        let actions = categories.map { (category) in
+            UIAction(title: category) { [weak self] _ in
+                self?.selectedCategory = category
+                self?.categoryButton.setTitle(category, for: .normal)
+                guard let self = self else { return }
+                self.selectedCategory = category
+                self.categoryButton.setTitle(category, for: .normal)
+            }
+        }
+
+        categoryButton.menu = UIMenu(title: "Select Category", children: actions)
+        categoryButton.showsMenuAsPrimaryAction = true
+    }
+
 
     // MARK: - Load buildings and classes based on selected campus
     private func loadBuildingsAndRooms(forCampus campus: String) {
@@ -302,42 +331,14 @@ final class AddRequsetViewController: UIViewController, UIPickerViewDelegate, UI
             do {
                 let requestId = try await RequestManager.shared.addRequest(request)
                 print("Request submitted with ID: \(requestId)")
-                showAlert("Request submitted successfully ✅")
+                //showAlert("Request submitted successfully ✅")
                 clearFields()
+                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "UserTabController")
             } catch {
                 showAlert("Failed to submit request ❌")
             }
         }
     }
-
-    // MARK: - Category Menu (Hardcoded, Single Selection)
-    private func setupCategoryMenu() {
-        // ✅ Ensure we have a default selection
-        if selectedCategory == nil || !(categories.contains(selectedCategory!)) {
-            selectedCategory = categories.first
-        }
-
-        let actions: [UIAction] = categories.map { category in
-            UIAction(
-                title: category,
-                state: (category == selectedCategory) ? .on : .off
-            ) { [weak self] _ in
-                guard let self = self else { return }
-                self.selectedCategory = category
-                self.categoryButton.setTitle(category, for: .normal)
-                self.setupCategoryMenu() // refresh checkmark
-            }
-        }
-
-        categoryButton.menu = UIMenu(
-            title: "Select Category",
-            options: [.singleSelection],
-            children: actions
-        )
-        categoryButton.showsMenuAsPrimaryAction = true
-        categoryButton.setTitle(selectedCategory ?? "Select Category", for: .normal)
-    }
-
 
     // MARK: - Helpers
     private func validateFields() -> Bool {
@@ -366,7 +367,8 @@ final class AddRequsetViewController: UIViewController, UIPickerViewDelegate, UI
         selectedRoom = nil
         uploadedImageUrl = nil
 
-        setupCategoryMenu()
+        categoryButton.setTitle(selectedCategory ?? "Select Category", for: .normal)
+        setupCategoryDropdownMenu() // ✅ refresh checkmarks + default state
         locationPickerView.reloadAllComponents()
     }
 

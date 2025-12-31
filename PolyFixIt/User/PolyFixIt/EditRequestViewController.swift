@@ -301,7 +301,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    self?.showAlert("Request deleted successfully ✅")
+                    //self?.showAlert("Request deleted successfully ✅")
                     self?.navigationController?.popViewController(animated: true)
                     (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "UserTabController")
                 case .failure(let error):
@@ -396,7 +396,8 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
         Task {
             do {
                 try await RequestManager.shared.updateRequest(requestId: userId, updateDTO: updateDTO)
-                showAlert("Request submitted successfully ✅")
+                //showAlert("Request submitted successfully ✅")
+                (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "UserTabController")
             } catch {
                 showAlert("Failed to submit request ❌")
             }
