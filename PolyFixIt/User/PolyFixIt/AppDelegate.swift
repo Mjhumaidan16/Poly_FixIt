@@ -1,5 +1,6 @@
 import UIKit
 import Firebase
+import FirebaseFirestore
 import GoogleSignIn
 import Cloudinary
 // NOTE: @main is intentionally removed because the project now uses main.swift

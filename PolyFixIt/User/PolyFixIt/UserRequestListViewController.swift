@@ -307,6 +307,11 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
         // 779 = action button (Edit -> Chat / Rate) that should COPY theme from 777
         guard let statusButton = card.viewWithTag(777) as? UIButton else { return }
         guard let actionButton = card.viewWithTag(779) as? UIButton else { return }
+        guard let chatButton = card.viewWithTag(780) as? UIButton else { return }
+
+             //chat button is hidden
+             chatButton.isHidden = true
+             chatButton.isEnabled = false
 
         // Capture 777 theme BEFORE we change anything
         let masterTheme = ButtonTheme.capture(from: statusButton)
@@ -345,10 +350,19 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
 
         // Action button behavior + theme source = 777
         if assignedRef == nil {
-            // Not assigned: keep storyboard title ("Edit"), enforce font
-            applyFontAndTitleToButton(actionButton, title: actionButton.currentTitle ?? "Edit", fontSize: 11.0)
+                // Edit button
+                applyFontAndTitleToButton(actionButton, title: "Edit", fontSize: 11.0)
+                masterTheme.apply(to: actionButton)
 
-        } else if status == "accepted" || status == "begin" {
+                // Chat button (below Edit)
+                chatButton.isHidden = false
+                chatButton.isEnabled = true
+                applyFontAndTitleToButton(chatButton, title: "Chat", fontSize: 11.0)
+                masterTheme.apply(to: chatButton)
+
+                wireChatButton(chatButton, docID: docID)
+                
+            } else if status == "accepted" || status == "begin" {
             // In progress: Chat styled like 777
             actionButton.isHidden = false
             actionButton.isEnabled = true
@@ -402,6 +416,32 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
         // Ensure it can be tapped
         button.isUserInteractionEnabled = true
     }
+    
+    private func wireChatButton(_ button: UIButton, docID: String) {
+         actionButtonDocID[ObjectIdentifier(button)] = docID
+
+         button.removeTarget(self, action: #selector(chatButtonTapped(_:)), for: .touchUpInside)
+         button.addTarget(self, action: #selector(chatButtonTapped(_:)), for: .touchUpInside)
+
+         button.isUserInteractionEnabled = true
+     }
+
+     @objc private func chatButtonTapped(_ sender: UIButton) {
+         let key = ObjectIdentifier(sender)
+         guard let docID = actionButtonDocID[key] else {
+             print("❌ No docID for chat button")
+             return
+         }
+
+         let storyboard = self.storyboard ?? UIStoryboard(name: "Main", bundle: nil)
+         let vc = storyboard.instantiateViewController(withIdentifier: "ChatViewController")
+
+         // pass request id if needed later
+         vc.setValue(docID, forKey: "requestId")
+
+         navigationController?.pushViewController(vc, animated: true)
+     }
+
 
     @objc private func actionButtonTapped(_ sender: UIButton) {
         let key = ObjectIdentifier(sender)
