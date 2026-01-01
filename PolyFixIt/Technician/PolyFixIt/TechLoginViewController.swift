@@ -73,12 +73,14 @@ class TechLoginViewController: UIViewController {
                     
                     SessionManager.shared.start()
                     SessionManager.shared.userDidInteract()
-                    //goToNextScreen()
+                    self.goToNextScreen()
                 }
             } else {
                 // If no UserDefaults stored, fetch from Firestore
                 print("No saved technician data, fetching from Firestore")
                 fetchTechData(uid: currentUser.uid)
+                //this will nav user to the root page if not logout
+                self.goToNextScreen()
             }
         } else {
             print("No Firebase user, please log in manually")
