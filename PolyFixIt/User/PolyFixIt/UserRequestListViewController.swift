@@ -434,12 +434,13 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
          }
 
          let storyboard = self.storyboard ?? UIStoryboard(name: "Main", bundle: nil)
-         let vc = storyboard.instantiateViewController(withIdentifier: "ChatViewController")
-
-         // pass request id if needed later
-         vc.setValue(docID, forKey: "requestId")
-
+         guard let vc = storyboard.instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController else {
+             print("❌ ChatViewController storyboard scene is not set to class ChatViewController")
+             return
+         }
+         vc.requestId = docID
          navigationController?.pushViewController(vc, animated: true)
+
      }
 
 
@@ -464,7 +465,7 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
         let storyboard = self.storyboard ?? UIStoryboard(name: "Main", bundle: nil)
 
         if title == "chat" {
-            let vc = storyboard.instantiateViewController(withIdentifier: "UserChatViewController")
+            let vc = storyboard.instantiateViewController(withIdentifier: "ChatViewController")
             self.navigationController?.pushViewController(vc, animated: true)
 
         } else if title == "rate" {
