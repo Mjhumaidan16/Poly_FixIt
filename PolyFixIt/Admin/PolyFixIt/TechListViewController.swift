@@ -434,6 +434,7 @@ private extension TechListViewController {
     }
 
     private func configureTechCard(_ card: UIView, vm: TechnicianVM, number: Int) {
+        // Set up the name, ID, and status labels using tags to uniquely identify them
         let nameLabel = card.findSubview(ofType: UILabel.self, where: { abs($0.font.pointSize - 21) < 0.5 })
         let idLabel = card.findSubview(ofType: UILabel.self, where: { ($0.text ?? "").lowercased().hasPrefix("id:") })
         let statusLabel = findStatusBadgeLabel(in: card)
@@ -449,6 +450,7 @@ private extension TechListViewController {
         // Arrow button
         let arrowButton = findArrowButton(in: card)
 
+        // Set Text for Labels
         nameLabel?.text = vm.fullName
         idLabel?.text = "ID: \(vm.uid)"
         deptLabel?.text = vm.department
@@ -468,12 +470,21 @@ private extension TechListViewController {
             detailLabel?.text = ""
         }
 
-        // Tap handling (arrow button + whole card)
+        // Assign tags to elements for easier access later
+        nameLabel?.tag = 101 // Name Label
+        idLabel?.tag = 102   // ID Label
+        deptLabel?.tag = 103 // Department Label
+        statusLabel?.tag = 104 // Status Label
+        tasksAssignedLabel?.tag = 105 // Tasks Assigned Label
+        detailLabel?.tag = 106 // Detail Label (Ongoing/Upcoming)
+        arrowButton?.tag = 107 // Arrow Button (tap action)
+
+        // Arrow Button Tap Handling
         arrowButton?.accessibilityIdentifier = vm.uid
         arrowButton?.removeTarget(self, action: #selector(handleCardTapped(_:)), for: .touchUpInside)
         arrowButton?.addTarget(self, action: #selector(handleCardTapped(_:)), for: .touchUpInside)
 
-        // Whole card tap
+        // Whole Card Tap Gesture
         card.isUserInteractionEnabled = true
         card.gestureRecognizers?.forEach { card.removeGestureRecognizer($0) }
         let tap = UITapGestureRecognizer(target: self, action: #selector(handleCardTapGesture(_:)))
@@ -482,8 +493,9 @@ private extension TechListViewController {
         card.accessibilityIdentifier = vm.uid
 
         // Store status in tag so we can decide navigation fast
-        card.tag = vm.isBusy ? 2 : 1 // 2 busy, 1 free
+        card.tag = vm.isBusy ? 2 : 1 // 2 = busy, 1 = free
     }
+
 
     func findDepartmentLabel(in card: UIView) -> UILabel? {
         // Dept label is 12pt and NOT ID, NOT Tasks, NOT status badge (11pt)
@@ -539,7 +551,7 @@ private extension TechListViewController {
                 return
             }
             
-            // ✅ PASS DATA
+            //PASS DATA
             scheduleVC.technicianUID = vm.uid
             scheduleVC.technicianFullName = vm.fullName
             
@@ -552,7 +564,7 @@ private extension TechListViewController {
                 return
             }
             
-            // ✅ PASS DATA
+            //PASS DATA
             assignVC.technicianUID = vm.uid
             
             pushOrPresent(assignVC)
@@ -619,5 +631,10 @@ private extension UIView {
 
     var allSubviews: [UIView] {
         subviews + subviews.flatMap { $0.allSubviews }
+    }
+    
+    private func applyCardCornerRadius(_ card: UIView) {
+        card.layer.cornerRadius = 10
+        card.layer.masksToBounds = true   // or: card.clipsToBounds = true
     }
 }

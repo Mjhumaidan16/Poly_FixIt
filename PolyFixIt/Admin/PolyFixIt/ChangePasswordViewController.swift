@@ -94,12 +94,12 @@ class AdminChangePasswordViewController: UIViewController {
         // Logout Button Action
         // =============================
         @IBAction func logoutButtonTapped(_ sender: UIButton) {
-            print("Logout button tapped")
-    
             UserDefaults.standard.removeObject(forKey: "loggedInAdmin")
     
             do {
                 try Auth.auth().signOut()
+                goToLogin()
+                print("Logout button tapped")
             } catch {
                 print("Firebase sign out error:", error.localizedDescription)
             }
@@ -118,5 +118,18 @@ class AdminChangePasswordViewController: UIViewController {
         } catch {
             print("Firebase sign out error:", error.localizedDescription)
         }
+    }
+    
+    
+    private func goToLogin() {
+        guard
+            let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+            let window = windowScene.windows.first(where: { $0.isKeyWindow })
+        else { return }
+
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let loginVC = storyboard.instantiateViewController(withIdentifier: "AdminLoginViewController")
+        window.rootViewController = loginVC
+        window.makeKeyAndVisible()
     }
 }
