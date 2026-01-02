@@ -91,7 +91,7 @@ final class ChatViewController: UIViewController {
             guard let self = self else { return }
 
             if let error = error {
-                print("❌ Failed to fetch request data:", error)
+                print(" Failed to fetch request data:", error)
                 return
             }
 
@@ -165,7 +165,7 @@ final class ChatViewController: UIViewController {
     // MARK: - Reload UI
     private func reloadMessages() {
         guard let stack = messageStackView else {
-            print("❌ messageStackView outlet not connected")
+            print(" messageStackView outlet not connected")
             return
         }
 
@@ -293,7 +293,7 @@ extension UIView {
 
             return unarchiver.decodeObject(forKey: NSKeyedArchiveRootObjectKey) as? UIView
         } catch {
-            print("❌ Failed to deep copy view:", error)
+            print(" Failed to deep copy view:", error)
             return nil
         }
     }

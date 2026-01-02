@@ -262,7 +262,7 @@ final class AddRequsetViewController: UIViewController,
 
             switch result {
             case .failure:
-                self.showAlert("Image upload failed ❌")
+                self.showAlert("Image upload failed ")
             case .success(let imageUrl):
                 self.submitRequest(with: imageUrl)
             }
@@ -318,7 +318,7 @@ final class AddRequsetViewController: UIViewController,
                         UIStoryboard(name: "Main", bundle: nil)
                             .instantiateViewController(withIdentifier: "UserTabController")
             } catch {
-                showAlert("Failed to submit request ❌")
+                showAlert("Failed to submit request ")
             }
         }
     }

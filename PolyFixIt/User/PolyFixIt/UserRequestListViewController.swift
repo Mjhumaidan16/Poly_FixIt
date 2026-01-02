@@ -14,7 +14,7 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
     // MARK: - Outlets
     @IBOutlet private weak var requestsStackView: UIStackView!
     @IBOutlet private weak var scrollView: UIScrollView!
-    @IBOutlet private weak var searchBar: UISearchBar!   // ✅ connect to NgM-Mc-Brh
+    @IBOutlet private weak var searchBar: UISearchBar!   //  connect to NgM-Mc-Brh
 
     // MARK: - Firestore
     private let db = Firestore.firestore()
@@ -24,7 +24,7 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
             let data = UserDefaults.standard.data(forKey: "loggedInUser"),
             let user = try? JSONDecoder().decode(AppUser.self, from: data)
         else {
-            assertionFailure("❌ No loggedInUser found in UserDefaults")
+            assertionFailure(" No loggedInUser found in UserDefaults")
             return ""
         }
         print("/users/\(user.uid)")
@@ -40,7 +40,7 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
     private var docsRef: [QueryDocumentSnapshot] = []
     private var docsString: [QueryDocumentSnapshot] = []
 
-    // ✅ master + filtered lists
+    //  master + filtered lists
     private var allMergedDocs: [QueryDocumentSnapshot] = []
     private var filteredDocs: [QueryDocumentSnapshot] = []
 
@@ -50,7 +50,7 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
     // current query
     private var currentSearchText: String = ""
 
-    // ✅ map: action button instance -> request docID
+    //  map: action button instance -> request docID
     private var actionButtonDocID: [ObjectIdentifier: String] = [:]
 
     // MARK: - Filters coming from Filters screen (optional)
@@ -91,7 +91,7 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
         if let t = templateCard {
             t.isHidden = true
         } else {
-            print("❌ Template card not found. Set template card Tag = 1 in storyboard.")
+            print(" Template card not found. Set template card Tag = 1 in storyboard.")
         }
     }
 
@@ -124,7 +124,7 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
             .addSnapshotListener { [weak self] snap, err in
                 guard let self = self else { return }
                 if let err = err {
-                    print("❌ listen(ref) error:", err.localizedDescription)
+                    print(" listen(ref) error:", err.localizedDescription)
                     return
                 }
                 self.docsRef = snap?.documents ?? []
@@ -137,7 +137,7 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
             .addSnapshotListener { [weak self] snap, err in
                 guard let self = self else { return }
                 if let err = err {
-                    print("❌ listen(string) error:", err.localizedDescription)
+                    print(" listen(string) error:", err.localizedDescription)
                     return
                 }
                 self.docsString = snap?.documents ?? []
@@ -277,7 +277,7 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
 
         for (idx, doc) in docs.enumerated() {
             guard let card: UIView = template.deepCopyView() else {
-                print("❌ deepCopy failed at index:", idx)
+                print(" deepCopy failed at index:", idx)
                 continue
             }
             card.isHidden = false
@@ -332,7 +332,7 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
         titleLabel?.text = data["title"] as? String
         categoryLabel?.text = (data["selectedCategory"] as? String) ?? (data["category"] as? String)
 
-        // ✅ Submitted / createdAt
+        //  Submitted / createdAt
         let createdAtDate = (data["createdAt"] as? Timestamp)?.dateValue()
         submittedLabel?.text = "Submitted \(formatDate(createdAtDate))"
 
@@ -387,7 +387,7 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
             applyFontAndTitleToButton(actionButton, title: actionButton.currentTitle ?? "Edit", fontSize: 11.0)
         }
 
-        // ✅ IMPORTANT: wire action button (tag 779) to navigate based on its title
+        //  IMPORTANT: wire action button (tag 779) to navigate based on its title
         wireActionButton(actionButton, docID: docID)
 
         // Image
@@ -433,13 +433,13 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
      @objc private func chatButtonTapped(_ sender: UIButton) {
          let key = ObjectIdentifier(sender)
          guard let docID = actionButtonDocID[key] else {
-             print("❌ No docID for chat button")
+             print(" No docID for chat button")
              return
          }
 
          let storyboard = self.storyboard ?? UIStoryboard(name: "Main", bundle: nil)
          guard let vc = storyboard.instantiateViewController(withIdentifier: "ChatViewController") as? ChatViewController else {
-             print("❌ ChatViewController storyboard scene is not set to class ChatViewController")
+             print(" ChatViewController storyboard scene is not set to class ChatViewController")
              return
          }
          vc.requestId = docID
@@ -451,7 +451,7 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
     @objc private func actionButtonTapped(_ sender: UIButton) {
         let key = ObjectIdentifier(sender)
         guard let docID = actionButtonDocID[key] else {
-            print("❌ No docID mapped for tapped action button.")
+            print(" No docID mapped for tapped action button.")
             return
         }
 
@@ -477,7 +477,7 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
             guard let rateVC = storyboard.instantiateViewController(
                 withIdentifier: "RateTechnicianViewController"
             ) as? RateTechnicianViewController else {
-                print("❌ Could not instantiate RateTechnicianViewController (check Storyboard ID + Custom Class)")
+                print(" Could not instantiate RateTechnicianViewController (check Storyboard ID + Custom Class)")
                 return
             }
 
@@ -488,7 +488,7 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
             guard let editVC = storyboard.instantiateViewController(
                 withIdentifier: "EditRequestViewController"
             ) as? EditRequestViewController else {
-                print("❌ Could not instantiate EditRequestViewController (check Storyboard ID + Custom Class)")
+                print(" Could not instantiate EditRequestViewController (check Storyboard ID + Custom Class)")
                 return
             }
 
@@ -496,7 +496,7 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
             self.navigationController?.pushViewController(editVC, animated: true)
         }
 
-        print("✅ Action '\(rawTitle)' tapped for docID:", docID)
+        print(" Action '\(rawTitle)' tapped for docID:", docID)
     }
 
     // MARK: - Helpers
@@ -625,7 +625,7 @@ private extension UIView {
             defer { unarchiver.finishDecoding() }
             return unarchiver.decodeObject(forKey: NSKeyedArchiveRootObjectKey) as? T
         } catch {
-            print("❌ deepCopyView failed:", error)
+            print(" deepCopyView failed:", error)
             return nil
         }
     }
