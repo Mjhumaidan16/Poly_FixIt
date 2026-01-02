@@ -42,7 +42,7 @@ class AdminLoginViewController: UIViewController {
         super.viewDidLoad()
         
         // Clear any previous warning messages
-        clearWarnings()
+//        clearWarnings()
 
         // -----------------------------
         // AUTO-LOGIN CHECK
