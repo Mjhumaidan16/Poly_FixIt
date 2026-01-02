@@ -117,10 +117,10 @@
             </objects>
             <point key="canvasLocation" x="-2390" y="-64"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Main Tab Bar View Controller-->
         <scene sceneID="e7l-HV-wbG">
             <objects>
-                <tabBarController storyboardIdentifier="AdminTabBarViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="PiJ-2p-uGM" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="AdminTabBarViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="PiJ-2p-uGM" customClass="MainTabBarViewController" customModule="PolyFixIt" customModuleProvider="target" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="OMF-RT-0t9"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" id="ANS-ml-GxU">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
@@ -155,10 +155,10 @@
             </objects>
             <point key="canvasLocation" x="-2390" y="1548"/>
         </scene>
-        <!--Admin View-->
+        <!--AdminDashboardViewController-->
         <scene sceneID="Flb-yd-JtW">
             <objects>
-                <viewController modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="2xv-Ch-RBg" userLabel="Admin View" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AdminDashboardViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="2xv-Ch-RBg" userLabel="AdminDashboardViewController" customClass="AdminDashboardViewController" customModule="PolyFixIt" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="S0b-O2-TxT">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="783"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -749,36 +749,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jHP-wN-1E3" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-3654.1984732824426" y="1541.549295774648"/>
-        </scene>
-        <!--Notification Table View Controller-->
-        <scene sceneID="J7a-qH-DkO">
-            <objects>
-                <tableViewController id="B3b-8U-m0w" customClass="NotificationTableViewController" customModule="PolyFixIt" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="iub-iU-6Od">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" rowHeight="90" id="ICK-Cu-BXo">
-                                <rect key="frame" x="0.0" y="50" width="393" height="90"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ICK-Cu-BXo" id="1S4-Rj-j2f">
-                                    <rect key="frame" x="0.0" y="0.0" width="393" height="90"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                                <color key="backgroundColor" red="0.1647058874" green="0.22745099660000001" blue="0.37254902719999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                            </tableViewCell>
-                        </prototypes>
-                        <sections/>
-                        <connections>
-                            <outlet property="dataSource" destination="B3b-8U-m0w" id="iCY-Xw-wCP"/>
-                            <outlet property="delegate" destination="B3b-8U-m0w" id="dX3-dl-TOb"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="SiD-lq-pqp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-3387" y="2291"/>
         </scene>
         <!--PendingRequestsViewController-->
         <scene sceneID="hPe-ik-ez9">
@@ -1524,10 +1494,10 @@
             </objects>
             <point key="canvasLocation" x="615" y="815"/>
         </scene>
-        <!--Admin View-->
+        <!--AdminTechListViewController-->
         <scene sceneID="G9R-Ir-r02">
             <objects>
-                <viewController storyboardIdentifier="AdminTechListViewController" title="Technician Account Creation" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="OLL-ru-2CW" userLabel="Admin View" customClass="AdminTechListViewController" customModule="PolyFixIt" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="AdminTechListViewController" title="Technician Account Creation" modalTransitionStyle="crossDissolve" modalPresentationStyle="fullScreen" id="OLL-ru-2CW" userLabel="AdminTechListViewController" customClass="AdminTechListViewController" customModule="PolyFixIt" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" ambiguous="YES" id="gB7-5p-JSo">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2090,7 +2060,7 @@
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8ge-lR-dCJ">
+                                                            <button opaque="NO" tag="100" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8ge-lR-dCJ">
                                                                 <rect key="frame" x="322" y="29" width="31" height="39"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -2408,6 +2378,9 @@
                                                         <integer key="value" value="10"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="deleteButtonTapped:" destination="Bca-Ou-s5d" eventType="touchUpInside" id="Pjq-rc-bNd"/>
+                                                </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oNu-z3-Gp6">
                                                 <rect key="frame" x="201" y="509.33333333333337" width="184" height="39"/>
@@ -2425,6 +2398,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
+                                                    <action selector="assignButtonTapped:" destination="Bca-Ou-s5d" eventType="touchUpInside" id="TwI-mm-ME1"/>
                                                     <segue destination="XyJ-Ic-erS" kind="show" id="oMg-hT-d9R"/>
                                                 </connections>
                                             </button>
@@ -2444,6 +2418,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
+                                                    <action selector="editButtonTapped:" destination="Bca-Ou-s5d" eventType="touchUpInside" id="FeZ-rW-Vc3"/>
                                                     <segue destination="92y-8o-g1M" kind="show" id="UL9-Fk-M5X"/>
                                                 </connections>
                                             </button>
@@ -2462,6 +2437,9 @@
                                                         <integer key="value" value="10"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="acceptButtonTapped:" destination="Bca-Ou-s5d" eventType="touchUpInside" id="0mw-Q7-XbQ"/>
+                                                </connections>
                                             </button>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Vsf-RT-MAw">
                                                 <rect key="frame" x="23" y="286" width="123" height="78"/>
@@ -2607,7 +2585,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UI3-e1-o57">
                                         <rect key="frame" x="0.0" y="0.0" width="393" height="300"/>
                                         <subviews>
-                                            <searchBar contentMode="redraw" barStyle="black" searchBarStyle="minimal" text="Search" showsSearchResultsButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K4S-BR-XIr">
+                                            <searchBar contentMode="redraw" barStyle="black" searchBarStyle="minimal" placeholder="Search" showsSearchResultsButton="YES" translatesAutoresizingMaskIntoConstraints="NO" id="K4S-BR-XIr">
                                                 <rect key="frame" x="193" y="59" width="185" height="56"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="185" id="1uQ-ea-Khf"/>
@@ -2670,7 +2648,7 @@
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Busy" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M9X-dd-f7a">
+                                                            <label opaque="NO" userInteractionEnabled="NO" tag="1004" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Busy" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M9X-dd-f7a">
                                                                 <rect key="frame" x="319" y="14" width="34" height="18"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                 <color key="backgroundColor" red="0.13333332540000001" green="0.18039217590000001" blue="0.29803922770000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -2824,7 +2802,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yF1-0s-bcZ" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1912" y="2346"/>
+            <point key="canvasLocation" x="1910.6870229007632" y="2345.7746478873241"/>
         </scene>
         <!--EditRequestViewController-->
         <scene sceneID="oMT-fx-HoG">
@@ -2996,6 +2974,9 @@
                                                         <integer key="value" value="10"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="submitButtonTapped:" destination="92y-8o-g1M" eventType="touchUpInside" id="PeP-B8-N0w"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -3536,7 +3517,7 @@
                                 <rect key="frame" x="0.0" y="120" width="393" height="531"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Guc-lL-ZUd">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="900"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="800"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zK1-Lj-XCh">
                                                 <rect key="frame" x="8" y="19" width="377" height="415.66666666666669"/>
@@ -3676,7 +3657,7 @@
                                             <constraint firstItem="WbP-W8-eR3" firstAttribute="leading" secondItem="Guc-lL-ZUd" secondAttribute="leading" constant="8" id="KyB-k8-Hn9"/>
                                             <constraint firstItem="HzD-nG-iXe" firstAttribute="leading" secondItem="Guc-lL-ZUd" secondAttribute="leading" constant="8" id="OeJ-6e-3xA"/>
                                             <constraint firstItem="wEA-MA-9oz" firstAttribute="top" secondItem="HzD-nG-iXe" secondAttribute="bottom" constant="31.670000000000002" id="Xr3-GA-1Kl"/>
-                                            <constraint firstAttribute="height" constant="900" id="ZDh-NU-qW0"/>
+                                            <constraint firstAttribute="height" constant="800" id="ZDh-NU-qW0"/>
                                             <constraint firstItem="zK1-Lj-XCh" firstAttribute="leading" secondItem="Guc-lL-ZUd" secondAttribute="leading" constant="8" id="aZy-fF-3e0"/>
                                             <constraint firstItem="WbP-W8-eR3" firstAttribute="top" secondItem="zK1-Lj-XCh" secondAttribute="bottom" constant="30" id="arj-bD-S1D"/>
                                             <constraint firstItem="wEA-MA-9oz" firstAttribute="leading" secondItem="Guc-lL-ZUd" secondAttribute="leading" constant="46" id="f9f-fW-fAV"/>
@@ -5065,9 +5046,15 @@ Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
+<<<<<<< HEAD
         <segue reference="ntS-O7-WV9"/>
         <segue reference="Hmz-nl-toj"/>
         <segue reference="g3z-cK-Yz3"/>
+=======
+        <segue reference="o1y-bp-1Ql"/>
+        <segue reference="6kb-nW-Fer"/>
+        <segue reference="iN3-oM-Yx5"/>
+>>>>>>> main
     </inferredMetricsTieBreakers>
     <resources>
         <image name="AdminDashboard" width="20" height="18.666666030883789"/>

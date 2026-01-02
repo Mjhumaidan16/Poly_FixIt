@@ -178,7 +178,7 @@ final class AdminTaskSelectionViewController: UIViewController {
         if other.count > 0 { other[0].text = item.locationText }
         if other.count > 1 {
             other[1].text = "Priority: \(item.priority)"
-            applyPriorityColor(other[1], priority: item.priority)   // ✅ color rule
+            applyPriorityColor(other[1], priority: item.priority)
         }
         if other.count > 2 {
             if let d = item.createdAt {
@@ -267,10 +267,23 @@ final class AdminTaskSelectionViewController: UIViewController {
                 return
             }
 
-            self.showAlert(title: "Done", message: "Assigned \(chosen.count) task(s).") {
-                // Reload list (assigned ones should disappear)
-                self.loadAndRender()
-            }
+                self.showAlert(title: "Done", message: "Assigned \(chosen.count) task(s).") { [weak self] in
+                                guard let self else { return }
+
+                                let main = UIStoryboard(name: "Main", bundle: nil)
+                                    .instantiateViewController(withIdentifier: "AdminTabBarViewController")
+
+                                // Replace root
+                                if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                                   let delegate = scene.delegate as? SceneDelegate,
+                                   let window = delegate.window {
+                                    window.rootViewController = main
+                                    window.makeKeyAndVisible()
+                                } else {
+                                    // Fallback: if SceneDelegate/window not reachable, push instead
+                                    self.navigationController?.setViewControllers([main], animated: true)
+                                }
+                            }
         }
     }
 
@@ -375,6 +388,7 @@ final class AdminTaskSelectionViewController: UIViewController {
     }
 }
 
+
 // MARK: - UISearchBarDelegate
 extension AdminTaskSelectionViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
@@ -385,3 +399,5 @@ extension AdminTaskSelectionViewController: UISearchBarDelegate {
         searchBar.resignFirstResponder()
     }
 }
+
+

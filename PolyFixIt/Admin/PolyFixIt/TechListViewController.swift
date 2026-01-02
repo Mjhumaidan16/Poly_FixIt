@@ -63,9 +63,9 @@ final class TechListViewController: UIViewController {
     @IBAction func modififcationButtonTapped(_ sender: UIButton) {
 
            let sb = self.storyboard ?? UIStoryboard(name: "Main", bundle: nil)
-           guard let editVC = sb.instantiateViewController(withIdentifier: "PendingRequestsViewController")
-                   as? PendingRequestsViewController else {
-               print("❌ Could not instantiate PendingRequestsViewController. Check Storyboard ID + Custom Class.")
+           guard let editVC = sb.instantiateViewController(withIdentifier: "AdminTechListViewController")
+                   as? AdminTechListViewController else {
+               print("Could not instantiate PendingRequestsViewController. Check Storyboard ID + Custom Class.")
                return
            }
 
@@ -318,7 +318,7 @@ private extension TechListViewController {
     }
 }
 
-// MARK: - UI Wiring (search + segmented + counters)
+// MARK: - UI Wiring (search,segmented,counters)
 extension TechListViewController {
 
     func wireDashboardControlsIfNeeded() {

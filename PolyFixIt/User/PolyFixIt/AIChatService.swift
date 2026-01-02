@@ -5,7 +5,7 @@ final class AIChatService {
     
     private let apiKey: String = {
         guard let key = Bundle.main.object(forInfoDictionaryKey: "GEMINI_API_KEY") as? String else {
-            fatalError("❌ GEMINI_API_KEY missing in Info.plist")
+            fatalError(" GEMINI_API_KEY missing in Info.plist")
         }
         return key
     }()
