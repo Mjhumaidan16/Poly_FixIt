@@ -31,7 +31,7 @@ final class RequestFilterViewController: UIViewController {
 
         selectedDate = datePicker.date
 
-        //  Only treat the current button title as a selection if it's actually valid
+        // ✅ Only treat the current button title as a selection if it's actually valid
         selectedCategory = canonicalCategory(from: readButtonTitle(categoryButton))
         selectedStatus = canonicalStatus(from: readButtonTitle(statusButton))
 
@@ -80,12 +80,12 @@ final class RequestFilterViewController: UIViewController {
                         ) { [weak self] action in
                             guard let self = self else { return }
 
-                            //  SAFETY FIX:
+                            // ✅ SAFETY FIX:
                             // If storyboard typo exists (e.g., "Saftey"), correct it to "Safety"
                             let raw = action.title.trimmingCharacters(in: .whitespacesAndNewlines)
                             let corrected = (normalize(raw) == "saftey") ? "Safety" : raw
 
-                            //  store canonical Firestore value if possible
+                            // ✅ store canonical Firestore value if possible
                             self.selectedCategory = self.canonicalCategory(from: corrected) ?? corrected
 
                             self.setButtonTitle(self.categoryButton, title: corrected)

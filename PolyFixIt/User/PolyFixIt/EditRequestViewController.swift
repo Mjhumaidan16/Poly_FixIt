@@ -165,7 +165,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
         }
 
         guard request.location.count == 3 else {
-            print(" Invalid location array, skipping location prefill")
+            print("❌ Invalid location array, skipping location prefill")
             return
         }
 
@@ -301,11 +301,11 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    //self?.showAlert("Request deleted successfully ")
+                    //self?.showAlert("Request deleted successfully ✅")
                     self?.navigationController?.popViewController(animated: true)
                     (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "UserTabController")
                 case .failure(let error):
-                    self?.showAlert("Failed to delete request : \(error.localizedDescription)")
+                    self?.showAlert("Failed to delete request ❌: \(error.localizedDescription)")
                 }
             }
         }
@@ -336,7 +336,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
             uploadToCloudinary(image: image) { [weak self] result in
                 switch result {
                 case .success(let url): self?.performUpdate(imageUrl: url)
-                case .failure: self?.showAlert("Image upload failed ")
+                case .failure: self?.showAlert("Image upload failed ❌")
                 }
             }
         } else {
@@ -396,10 +396,10 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
         Task {
             do {
                 try await RequestManager.shared.updateRequest(requestId: userId, updateDTO: updateDTO)
-                //showAlert("Request submitted successfully ")
+                //showAlert("Request submitted successfully ✅")
                 (UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate)?.window?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "UserTabController")
             } catch {
-                showAlert("Failed to submit request ")
+                showAlert("Failed to submit request ❌")
             }
         }
     }

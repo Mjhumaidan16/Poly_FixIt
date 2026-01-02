@@ -20,27 +20,27 @@ final class AddRequsetViewController: UIViewController,
     // MARK: - Properties
     private let db = Firestore.firestore()
 
-    // Put these INSIDE the class (NOT global)
+    // ✅ Put these INSIDE the class (NOT global)
     private var uploadedImageUrl: String?
     private var selectedImage: UIImage?
     private var didUserPickImage: Bool = false
 
     private let uploadPreset = "iOS_requests_preset" // Cloudinary upload preset
 
-    // HARD-CODED Categories + Priority
+    // ✅ HARD-CODED Categories + Priority
     private let categories: [String] = ["Plumbing", "IT", "HVAC", "Furniture", "Safety"]
     private let priorityLevels: [String] = ["high", "middel", "low"]
 
     private var selectedCategory: String?
     private var selectedPriorityLevel: String?
 
-    // Campus -> Buildings
+    // ✅ Campus -> Buildings
     private let buildingsByCampus: [String: [String]] = [
         "CampA": ["19", "36", "5"],
         "CampB": ["20", "25"]
     ]
 
-    // Building -> Classes
+    // ✅ Building -> Classes
     private let classesByBuilding: [String: [String]] = [
         "19": ["01", "02", "03", "04"],
         "36": ["101", "102", "103", "104"],
@@ -200,7 +200,7 @@ final class AddRequsetViewController: UIViewController,
         guard let image = info[.originalImage] as? UIImage else { return }
         imageView.image = image
 
-        // This is the only way to mark an image as selected for upload
+        // ✅ This is the only way to mark an image as selected for upload
         selectedImage = image
         didUserPickImage = true
     }
@@ -247,7 +247,7 @@ final class AddRequsetViewController: UIViewController,
     @IBAction func submitButtonTapped(_ sender: UIButton) {
         guard validateFields() else { return }
 
-        // Correct behavior for “second code”:
+        // ✅ Correct behavior for “second code”:
         // Must pick image from gallery; default image doesn't count.
         guard didUserPickImage, let image = selectedImage else {
             showAlert("Please select an image.")
@@ -262,7 +262,7 @@ final class AddRequsetViewController: UIViewController,
 
             switch result {
             case .failure:
-                self.showAlert("Image upload failed ")
+                self.showAlert("Image upload failed ❌")
             case .success(let imageUrl):
                 self.submitRequest(with: imageUrl)
             }
@@ -275,7 +275,7 @@ final class AddRequsetViewController: UIViewController,
             return
         }
 
-        // Ensure category is selected
+        // ✅ Ensure category is selected
         guard let category = selectedCategory, categories.contains(category) else {
             showAlert("Please select a category.")
             return
@@ -318,7 +318,7 @@ final class AddRequsetViewController: UIViewController,
                         UIStoryboard(name: "Main", bundle: nil)
                             .instantiateViewController(withIdentifier: "UserTabController")
             } catch {
-                showAlert("Failed to submit request ")
+                showAlert("Failed to submit request ❌")
             }
         }
     }
@@ -344,7 +344,7 @@ final class AddRequsetViewController: UIViewController,
         titleTextField.text = ""
         descriptionTextField.text = ""
 
-        // Category resets to no selection
+        // ✅ Category resets to no selection
         selectedCategory = nil
         categoryButton.setTitle("Select Category", for: .normal)
         setupCategoryDropdownMenu()
@@ -357,7 +357,7 @@ final class AddRequsetViewController: UIViewController,
         selectedBuilding = nil
         selectedRoom = nil
 
-        // Reset image state (this fixes the “second code” inconsistency)
+        // ✅ Reset image state (this fixes the “second code” inconsistency)
         selectedImage = nil
         didUserPickImage = false
 

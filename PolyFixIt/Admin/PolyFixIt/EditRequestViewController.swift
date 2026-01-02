@@ -25,15 +25,14 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
     private var didPickNewImage: Bool = false
 
     private let buildingsByCampus: [String: [String]] = [
-        "CampA": ["19", "36", "5"],
-        "CampB": ["20", "25"]
+        "CampusA": ["19", "36", "25"],
+        "CampusB": ["20", "25"]
     ]
     
     private let classesByBuilding: [String: [String]] = [
         "19": ["01", "02", "03", "04"],
         "36": ["101", "102", "103", "104"],
         "25": ["313", "314", "315", "316"],
-        "5":  ["21", "20", "19", "18"],
         "20": ["98", "99", "100", "101"]
     ]
 
@@ -263,58 +262,40 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
         }
     }
 
-//    // MARK: - Delete
-//    private func deleteRequestFromManager() {
-//        guard let requestId = userId, !requestId.isEmpty else {
-//            showAlert("Missing request id")
-//            return
-//        }
-//        RequestManager.shared.deleteRequest(requestId: requestId) { [weak self] result in
-//            DispatchQueue.main.async {
-//                switch result {
-//                case .success:
-//                    self?.showAlert("Request deleted successfully ✅")
-//                    self?.navigationController?.popViewController(animated: true)
-//                case .failure(let error):
-//                    self?.showAlert("Failed to delete request ❌: \(error.localizedDescription)")
-//                }
-//            }
-//        }
-//    }
-//
-//    @IBAction func deleteButtonTapped(_ sender: UIButton) {
-//        let alert = UIAlertController(title: "Delete Request",
-//                                      message: "Are you sure you want to delete this request? This action cannot be undone.",
-//                                      preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-//        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self] _ in
-//            self?.deleteRequestFromManager()
-//        }))
-//        present(alert, animated: true)
-//    }
-
-    // MARK: - Submit
-    @IBAction func submitButtonTapped(_ sender: UIButton) {
-            guard validateFields() else { return }
-            submitButton.isEnabled = false
-
-            Task { [weak self] in
-                guard let self = self else { return }
-                do {
-                    try await self.performUpdate()
-                    await MainActor.run {
-                        self.submitButton.isEnabled = true
-                        self.showupAlert()   // ✅ navigate only AFTER success
-                    }
-                } catch {
-                    await MainActor.run {
-                        self.submitButton.isEnabled = true
-                        self.showAlert("Failed to submit request ❌: \(error.localizedDescription)")
-                    }
+    // MARK: - Delete
+    private func deleteRequestFromManager() {
+        guard let requestId = userId, !requestId.isEmpty else {
+            showAlert("Missing request id")
+            return
+        }
+        RequestManager.shared.deleteRequest(requestId: requestId) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self?.showAlert("Request deleted successfully ✅")
+                    self?.navigationController?.popViewController(animated: true)
+                case .failure(let error):
+                    self?.showAlert("Failed to delete request ❌: \(error.localizedDescription)")
                 }
             }
         }
+    }
 
+    @IBAction func deleteButtonTapped(_ sender: UIButton) {
+        let alert = UIAlertController(title: "Delete Request",
+                                      message: "Are you sure you want to delete this request? This action cannot be undone.",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive, handler: { [weak self] _ in
+            self?.deleteRequestFromManager()
+        }))
+        present(alert, animated: true)
+    }
+
+    // MARK: - Submit
+    @IBAction func submitButtonTapped(_ sender: UIButton) {
+        guard validateFields() else { return }
+    }
 
     private func validateFields() -> Bool {
         guard let title = titleTextField.text, !title.isEmpty,
@@ -335,57 +316,13 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
     }
-    
-    func showupAlert() {
-        let alertController = UIAlertController(
-            title: "Success",
-            message: "Operation completed successfully.",
-            preferredStyle: .alert
-        )
 
-        alertController.addAction(
-            UIAlertAction(title: "OK", style: .default) { _ in
-                self.navigateToMainTabBar()
-            }
-        )
-
-        present(alertController, animated: true)
-    }
-    
-    private func navigateToMainTabBar() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let tabBarVC = storyboard.instantiateViewController(
-            withIdentifier: "AdminTabBarViewController"
-        )
-
-        // Reset navigation stack
-        if let sceneDelegate = UIApplication.shared.connectedScenes
-            .first?.delegate as? SceneDelegate {
-
-            sceneDelegate.window?.rootViewController = tabBarVC
-            sceneDelegate.window?.makeKeyAndVisible()
-        }
-    }
-
-
-
-    private func performUpdate() async throws {
+    private func performUpdate(imageUrl: String) {
         guard let selectedCategory = selectedCategory,
-              let selectedPriorityLevel = selectedPriorityLevel,
+              let selectedPriorityLevel = selectedPriorityLevel, // NEW
               let selectedCampus = selectedCampus,
               let selectedBuilding = selectedBuilding,
-              let selectedRoom = selectedRoom else {
-            throw NSError(domain: "EditRequest", code: 0, userInfo: [NSLocalizedDescriptionKey: "Missing required fields"])
-        }
-
-        // ✅ Keep the current image URL unless a new one was picked & uploaded
-        let finalImageUrl: String? = {
-            if didPickNewImage {
-                return uploadedImageUrl // this should be set after upload
-            } else {
-                return currentRequest?.imageUrl // keep what’s in DB
-            }
-        }()
+              let selectedRoom = selectedRoom else { return }
 
         let updateDTO = RequestUpdateDTO(
             title: titleTextField.text,
@@ -396,8 +333,8 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
             category: (currentRequest?.category.isEmpty == false ? currentRequest!.category : categories),
             priorityLevel: currentRequest?.priorityLevel ?? ["high","middel","low"],
             selectedCategory: selectedCategory,
-            selectedPriorityLevel: selectedPriorityLevel,
-            imageUrl: finalImageUrl,   // ✅ THIS is the key line
+            selectedPriorityLevel: selectedPriorityLevel, // UPDATED
+            imageUrl: imageUrl,
             imageProof: nil,
             submittedBy: nil,
             assignedTechnician: nil,
@@ -410,7 +347,13 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
             duplicateFlag: nil
         )
 
-        try await RequestManager.shared.updateRequest(requestId: userId, updateDTO: updateDTO)
+        Task {
+            do {
+                try await RequestManager.shared.updateRequest(requestId: userId, updateDTO: updateDTO)
+                showAlert("Request submitted successfully ✅")
+            } catch {
+                showAlert("Failed to submit request ❌")
+            }
+        }
     }
-
 }

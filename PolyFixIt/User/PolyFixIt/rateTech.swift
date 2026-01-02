@@ -117,7 +117,7 @@ final class RateTechnicianViewController: UIViewController {
         requestRef.getDocument { [weak self] snap, err in
             guard let self else { return }
             if let err = err {
-                print(" Request fetch error:", err)
+                print("❌ Request fetch error:", err)
                 self.showAlert(title: "Error", message: "Could not load the ticket.")
                 return
             }
@@ -155,7 +155,7 @@ final class RateTechnicianViewController: UIViewController {
             techRef.getDocument { [weak self] techSnap, techErr in
                 guard let self else { return }
                 if let techErr = techErr {
-                    print(" Tech fetch error:", techErr)
+                    print("❌ Tech fetch error:", techErr)
                     self.technicianNameLabel?.text = "Unknown"
                     self.departmentLabel?.text = "Department: -"
                     return
@@ -197,7 +197,7 @@ final class RateTechnicianViewController: UIViewController {
         ]) { [weak self] err in
             guard let self else { return }
             if let err = err {
-                print(" Save rating error:", err)
+                print("❌ Save rating error:", err)
                 self.showAlert(title: "Error", message: "Could not save your rating.")
                 return
             }

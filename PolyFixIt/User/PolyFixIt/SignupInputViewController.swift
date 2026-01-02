@@ -144,7 +144,7 @@ class SignupInputViewController: UIViewController {
         let sb = self.storyboard ?? UIStoryboard(name: "Main", bundle: nil)
         let vc = sb.instantiateViewController(withIdentifier: "OTPVerificationViewController")
 
-        //  Ensure the storyboard scene Custom Class is OTPVerificationViewController
+        // ✅ Ensure the storyboard scene Custom Class is OTPVerificationViewController
         guard let otpVC = vc as? OTPVerificationViewController else {
             self.showAlert(message: "OTP screen is not configured correctly in storyboard (Custom Class mismatch).")
             return
@@ -159,7 +159,7 @@ class SignupInputViewController: UIViewController {
         if let nav = self.navigationController {
             nav.pushViewController(otpVC, animated: true)
         } else {
-            //  If you're not inside a UINavigationController, present instead
+            // ✅ If you're not inside a UINavigationController, present instead
             otpVC.modalPresentationStyle = .fullScreen
             self.present(otpVC, animated: true)
         }

@@ -42,9 +42,9 @@ class OTPVerificationViewController: UIViewController {
         otpTextField.borderStyle = .roundedRect
         otpTextField.keyboardType = .numberPad
         
-//        verifyButton.layer.cornerRadius = 10
-//        verifyButton.backgroundColor = .systemBlue
-//        verifyButton.setTitleColor(.white, for: .normal)
+        verifyButton.layer.cornerRadius = 10
+        verifyButton.backgroundColor = .systemBlue
+        verifyButton.setTitleColor(.white, for: .normal)
     }
     
 
