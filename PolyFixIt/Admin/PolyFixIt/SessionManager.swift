@@ -11,7 +11,7 @@ final class SessionManager {
     static let shared = SessionManager()
 
     /// Inactivity timeout (seconds).
-    private let timeoutSeconds: TimeInterval = 30
+    private let timeoutSeconds: TimeInterval = 3000000
 
     /// How often we check inactivity (seconds).
     private let checkInterval: TimeInterval = 1
