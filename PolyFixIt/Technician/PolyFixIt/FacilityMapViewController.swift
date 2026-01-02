@@ -100,7 +100,7 @@ final class FacilityMapViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var imageView: UIImageView!
 
-    // ✅ Connect this to the vertical stack view inside “Stack Host View”
+    // Connect this to the vertical stack view inside “Stack Host View”
     @IBOutlet weak var requestsStackView: UIStackView!
     @IBOutlet weak var Header: UILabel!
     
@@ -175,7 +175,7 @@ final class FacilityMapViewController: UIViewController {
                 guard let self = self else { return }
 
                 if let error = error {
-                    print("❌ requests listener error:", error)
+                    print("requests listener error:", error)
                     return
                 }
 
@@ -278,19 +278,19 @@ final class FacilityMapViewController: UIViewController {
         titleLabel.numberOfLines = 2
 
         let locationLabel = UILabel()
-        locationLabel.text = "📍 \(row.locationText)"
+        locationLabel.text = "\(row.locationText)"
         locationLabel.font = .systemFont(ofSize: 14, weight: .regular)
         locationLabel.textColor = UIColor(white: 1.0, alpha: 0.85)
         locationLabel.numberOfLines = 2
 
         let techLabel = UILabel()
-        techLabel.text = "👷 \(row.assignedTech)"
+        techLabel.text = "\(row.assignedTech)"
         techLabel.font = .systemFont(ofSize: 14, weight: .regular)
         techLabel.textColor = UIColor(white: 1.0, alpha: 0.85)
         techLabel.numberOfLines = 1
 
         let priorityLabel = UILabel()
-        priorityLabel.text = "⚡ Priority: \(row.priority)"
+        priorityLabel.text = "Priority: \(row.priority)"
         priorityLabel.font = .systemFont(ofSize: 14, weight: .regular)
         priorityLabel.textColor = UIColor(white: 1.0, alpha: 0.85)
         priorityLabel.numberOfLines = 1
