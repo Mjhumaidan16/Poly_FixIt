@@ -1,6 +1,7 @@
 import UIKit
 import SwiftUI
 import FirebaseFirestore
+import UserNotifications
 
 // MARK: - نموذج البيانات
 struct NotificationMessage: Identifiable {
@@ -34,7 +35,7 @@ struct StackedNotificationView: View {
                 .padding(.vertical, 8 * scaleFactor)
             }
             Divider()
-            Button(action: { print("عرض الكل") }) {
+            Button(action: { print("show all") }) {
                 Text("View All")
                     .font(.system(size: 16 * scaleFactor, weight: .bold))
                     .frame(maxWidth: .infinity)
@@ -110,14 +111,13 @@ class NotificationButton: UIBarButtonItem {
     }
 
     @objc private func togglePanel() {
-        // تم استبدال triggerButton.findParentViewController بـ self.customView
         guard let customView = self.customView, let parentVC = customView.findParentViewController else { return }
         
         if isPanelVisible {
             hidePanel()
         } else {
             showPanel(in: parentVC)
-            updateBadge(count: 0)
+            updateBadge(count: 0) // اختياري: تصفير الشارة عند الفتح
         }
         isPanelVisible.toggle()
     }
@@ -128,7 +128,6 @@ class NotificationButton: UIBarButtonItem {
             .addSnapshotListener { [weak self] querySnapshot, error in
                 guard let self = self, let documents = querySnapshot?.documents else { return }
                 
-                // فلترة الإشعارات التي تحتوي على مرجع في مجموعة users
                 let userDocs = documents.filter { doc in
                     if let receiverRef = doc.data()["receiver"] as? DocumentReference {
                         return receiverRef.path.contains("users")
@@ -173,13 +172,19 @@ class NotificationButton: UIBarButtonItem {
         parent.view.addSubview(hc.view)
         hc.didMove(toParent: parent)
 
+        // MARK: - تعديل القيود للإزاحة (Constraints)
         NSLayoutConstraint.activate([
-            hc.view.topAnchor.constraint(equalTo: parent.view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            hc.view.trailingAnchor.constraint(equalTo: parent.view.trailingAnchor, constant: -20)
+            // constant: 60 يدفع المربع للأسفل أكثر بعيداً عن زر الجرس
+            hc.view.topAnchor.constraint(equalTo: parent.view.safeAreaLayoutGuide.topAnchor, constant: 60),
+            
+            // constant: -60 يدفع المربع لجهة اليسار أكثر
+            hc.view.trailingAnchor.constraint(equalTo: parent.view.trailingAnchor, constant: -60)
         ])
 
         hc.view.alpha = 0
-        UIView.animate(withDuration: 0.3) { hc.view.alpha = 1 }
+        UIView.animate(withDuration: 0.3) {
+            hc.view.alpha = 1
+        }
     }
 
     private func refreshPanel() {
@@ -187,7 +192,9 @@ class NotificationButton: UIBarButtonItem {
     }
 
     private func hidePanel() {
-        UIView.animate(withDuration: 0.2, animations: { self.hostingController?.view.alpha = 0 }) { _ in
+        UIView.animate(withDuration: 0.2, animations: {
+            self.hostingController?.view.alpha = 0
+        }) { _ in
             self.hostingController?.view.removeFromSuperview()
             self.hostingController?.removeFromParent()
             self.hostingController = nil
