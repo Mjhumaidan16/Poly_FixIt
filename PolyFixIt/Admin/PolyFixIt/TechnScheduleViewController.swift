@@ -2,44 +2,51 @@
 //  TechnScheduleViewController.swift
 //  SignIn
 //
-//  Shows a calendar + technician assigned requests in a stack view
+//  Calendar + assigned requests list (Bahrain-safe) + async/await dots + Swift-6 safe live listener
 //
 
 import UIKit
 import FirebaseFirestore
 import FSCalendar
 
-final class TechnScheduleViewController: UIViewController, FSCalendarDataSource, FSCalendarDelegate {
+final class TechnScheduleViewController: UIViewController,
+                                        UISearchBarDelegate,
+                                        FSCalendarDataSource,
+                                        FSCalendarDelegate {
 
     // MARK: - Passed in from TechListViewController
     var technicianUID: String!
     var technicianFullName: String = ""
 
-    // MARK: - Storyboard Outlets (connect these)
+    // MARK: - Storyboard Outlets
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var datePicker: FSCalendar!
     @IBOutlet var tasksForLabel: UILabel!
     @IBOutlet var tasksDateLabel: UILabel!
     @IBOutlet var requestsStackView: UIStackView!
 
-    private let db = Firestore.firestore()
+    // Optional (if you add it like the other controller)
+    @IBOutlet weak var searchBar: UISearchBar?
 
-    // We’ll use the first arranged subview as a template card (your storyboard already has sample cards).
+    // Template card in the stack view
     @IBOutlet var templateCard: UIView?
 
-    // Current signed-in tech UID
-    private var currentTechUID: String?
-    
-    // Keep listener so the list updates live
-    private var listener: ListenerRegistration?
+    private let db = Firestore.firestore()
 
-    // ✅ Store request days as stable keys (yyyy-MM-dd) in Bahrain timezone
+    // Live updates (Swift 6 safe async stream consumer task)
+    private var listenTask: Task<Void, Never>?
+
+    // Cache docs for rendering + search filtering
+    private var allDocs: [(id: String, data: [String: Any])] = []
+    private var filteredDocs: [(id: String, data: [String: Any])] = []
+
+    // ✅ Store request days as stable keys (yyyy-MM-dd) in Bahrain timezone (for dots)
     private var requestDayKeys: Set<String> = []
 
     // ✅ Always normalize selected date to Bahrain start-of-day
     private var selectedDate: Date = Calendar.current.startOfDay(for: Date())
 
-    // ✅ Use a fixed timezone for all calendar + formatting logic
+    // ✅ Fixed timezone for all calendar + formatting logic
     private let appTimeZone = TimeZone(identifier: "Asia/Bahrain") ?? .current
 
     private lazy var appCalendar: Calendar = {
@@ -72,28 +79,33 @@ final class TechnScheduleViewController: UIViewController, FSCalendarDataSource,
         configureUI()
         setupTemplateCard()
         setupCalendar()
+        setupSearchBarIfExists()
 
-        // ✅ Initial: today in Bahrain start-of-day
+        // ✅ Initial selection: today in Bahrain start-of-day
         selectedDate = appCalendar.startOfDay(for: Date())
+        tasksDateLabel.text = "Task On: \(formatDate(selectedDate))"
 
-        // ✅ Dots for current month
-        loadRequestDots(forMonthContaining: selectedDate)
+        // ✅ Dots for current month (async/await)
+        Task { [weak self] in
+            guard let self else { return }
+            await self.loadRequestDotsAsync(forMonthContaining: self.selectedDate)
+        }
 
-        // ✅ Load initial day tasks
-        loadAndRender(for: selectedDate)
+        // ✅ Live list for selected day (async listener stream)
+        Task { [weak self] in
+            guard let self else { return }
+            await self.loadAndRenderAsync(for: self.selectedDate)
+        }
     }
 
     deinit {
-        listener?.remove()
+        listenTask?.cancel()
     }
 
     // MARK: - UI
     private func configureUI() {
-        if technicianFullName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            tasksForLabel.text = "Tasks for: (Unknown)"
-        } else {
-            tasksForLabel.text = "Tasks for: \(technicianFullName)"
-        }
+        let name = technicianFullName.trimmingCharacters(in: .whitespacesAndNewlines)
+        tasksForLabel.text = name.isEmpty ? "Tasks for: (Unknown)" : "Tasks for: \(name)"
     }
 
     private func setupTemplateCard() {
@@ -106,11 +118,17 @@ final class TechnScheduleViewController: UIViewController, FSCalendarDataSource,
     }
 
     private func setupCalendar() {
-        // event dot colors
+        // dots
         datePicker.appearance.eventDefaultColor = .red
         datePicker.appearance.eventSelectionColor = .red
 
-        // Remove the default "today" filled circle highlight
+        // Like your other one: make calendar text white (optional but common)
+        datePicker.appearance.titleDefaultColor = .white
+        datePicker.appearance.titleSelectionColor = .white
+        datePicker.appearance.weekdayTextColor = .white
+        datePicker.appearance.headerTitleColor = .white
+
+        // Remove the default "today" filled circle highlight (like your Bahrain one)
         datePicker.appearance.todayColor = .clear
         datePicker.appearance.titleTodayColor = datePicker.appearance.titleDefaultColor
 
@@ -118,78 +136,96 @@ final class TechnScheduleViewController: UIViewController, FSCalendarDataSource,
         view.bringSubviewToFront(datePicker)
     }
 
+    private func setupSearchBarIfExists() {
+        guard let searchBar else { return }
+        searchBar.delegate = self
+        searchBar.autocapitalizationType = .none
+        searchBar.autocorrectionType = .no
+        searchBar.returnKeyType = .done
+    }
 
     // MARK: - FSCalendarDataSource (dots)
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        // Normalize to Bahrain day key
-        let key = dayKey(from: date)
+        let key = dayKey(from: date) // Bahrain-stable
         return requestDayKeys.contains(key) ? 1 : 0
     }
 
     // MARK: - FSCalendarDelegate (tap date)
     func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
-        let normalized = Calendar.current.startOfDay(for: date)
         let dayStart = appCalendar.startOfDay(for: date)
         selectedDate = dayStart
-        tasksDateLabel.text = "Task On: \(formatDate(normalized))"
-        loadAndRender(for: dayStart)
+        tasksDateLabel.text = "Task On: \(formatDate(dayStart))"
+
+        // clear search when changing date (like your other controller)
+        searchBar?.text = ""
+        searchBar?.resignFirstResponder()
+
+        Task { [weak self] in
+            guard let self else { return }
+            await self.loadAndRenderAsync(for: dayStart)
+        }
     }
 
     // MARK: - FSCalendarDelegate (page/month changed)
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
-        loadRequestDots(forMonthContaining: calendar.currentPage)
+        Task { [weak self] in
+            guard let self else { return }
+            await self.loadRequestDotsAsync(forMonthContaining: calendar.currentPage)
+        }
     }
 
-    // MARK: - Month dots loader
-    private func loadRequestDots(forMonthContaining date: Date) {
+    // MARK: - Month dots loader (async/await) (Bahrain-safe)
+    private func loadRequestDotsAsync(forMonthContaining date: Date) async {
         guard let technicianUID else { return }
 
         let techRef = db.collection("technicians").document(technicianUID)
 
         // month boundaries in Bahrain timezone
         let comps = appCalendar.dateComponents([.year, .month], from: date)
-        guard let monthStart = appCalendar.date(from: comps) else { return }
-        guard let monthEnd = appCalendar.date(byAdding: .month, value: 1, to: monthStart) else { return }
+        guard let monthStart = appCalendar.date(from: comps),
+              let monthEnd = appCalendar.date(byAdding: .month, value: 1, to: monthStart)
+        else { return }
 
-        db.collection("requests")
-            .whereField("assignedTechnician", isEqualTo: techRef)
-            .whereField("assignedAt", isGreaterThanOrEqualTo: Timestamp(date: monthStart))
-            .whereField("assignedAt", isLessThan: Timestamp(date: monthEnd))
-            .getDocuments { [weak self] snap, err in
-                guard let self else { return }
+        do {
+            let snap = try await db.collection("requests")
+                .whereField("assignedTechnician", isEqualTo: techRef)
+                .whereField("assignedAt", isGreaterThanOrEqualTo: Timestamp(date: monthStart))
+                .whereField("assignedAt", isLessThan: Timestamp(date: monthEnd))
+                .getDocuments()
 
-                if let err = err {
-                    print("❌ loadRequestDots error:", err)
-                    return
+            var keys = Set<String>()
+            for d in snap.documents {
+                if let ts = d.data()["assignedAt"] as? Timestamp {
+                    keys.insert(dayKey(from: ts.dateValue()))
                 }
+            }
 
-                let docs = snap?.documents ?? []
-                var keys = Set<String>()
-
-                for d in docs {
-                    if let ts = d.data()["assignedAt"] as? Timestamp {
-                        keys.insert(self.dayKey(from: ts.dateValue()))
-                    }
-                }
-
+            await MainActor.run {
                 self.requestDayKeys = keys
                 self.datePicker.reloadData()
             }
+        } catch {
+            print("❌ loadRequestDotsAsync error:", error)
+        }
     }
 
-    // MARK: - Data + Rendering
-    private func loadAndRender(for selectedDate: Date) {
-        listener?.remove()
-        listener = nil
-        clearGeneratedCards()
+    // MARK: - Data + Rendering (async live stream)
+    private func loadAndRenderAsync(for date: Date) async {
+        // stop old listener task
+        listenTask?.cancel()
+        listenTask = nil
+
+        await MainActor.run {
+            self.clearGeneratedCards()
+        }
 
         guard let technicianUID else { return }
         let techRef = db.collection("technicians").document(technicianUID)
 
-        let startOfDay = appCalendar.startOfDay(for: selectedDate)
+        let startOfDay = appCalendar.startOfDay(for: date)
         let endOfDay = appCalendar.date(byAdding: .day, value: 1, to: startOfDay)!
 
-        // Debug prints that make sense in Bahrain time
+        // Debug prints in Bahrain time
         print("📅 Filtering (Bahrain):", dayKey(from: startOfDay), "->", dayKey(from: endOfDay))
 
         let q = db.collection("requests")
@@ -198,32 +234,95 @@ final class TechnScheduleViewController: UIViewController, FSCalendarDataSource,
             .whereField("assignedAt", isLessThan: Timestamp(date: endOfDay))
             .order(by: "assignedAt", descending: false)
 
-        listener = q.addSnapshotListener { [weak self] snap, err in
+        let stream = makeSnapshotStream(for: q)
+
+        listenTask = Task { [weak self] in
             guard let self else { return }
+            do {
+                for try await snap in stream {
+                    let docs = snap.documents
+                    self.allDocs = docs.map { ($0.documentID, $0.data()) }
 
-            if let err = err {
-                print("❌ TechnSchedule query error:", err)
-                return
+                    await MainActor.run {
+                        self.applySearchAndRender(for: startOfDay)
+                    }
+                }
+            } catch {
+                print("❌ TechnSchedule query error:", error)
+            }
+        }
+    }
+
+    // ✅ Wrap addSnapshotListener into AsyncThrowingStream (Swift 6 safe)
+    private func makeSnapshotStream(for query: Query) -> AsyncThrowingStream<QuerySnapshot, Error> {
+
+        actor RegistrationStore {
+            private var reg: ListenerRegistration?
+            func set(_ newReg: ListenerRegistration?) { reg = newReg }
+            func remove() { reg?.remove(); reg = nil }
+        }
+
+        let store = RegistrationStore()
+
+        return AsyncThrowingStream { continuation in
+            let reg = query.addSnapshotListener { snap, err in
+                if let err = err {
+                    continuation.finish(throwing: err)
+                    return
+                }
+                if let snap = snap {
+                    continuation.yield(snap)
+                }
             }
 
-            self.clearGeneratedCards()
-            let docs = snap?.documents ?? []
-            print("✅ Found docs:", docs.count)
+            Task { await store.set(reg) }
 
-            if docs.isEmpty {
-                self.showEmptyStateCard()
-                return
+            continuation.onTermination = { _ in
+                Task { await store.remove() }
             }
+        }
+    }
 
-            for d in docs {
-                self.addCard(for: d.data(), docID: d.documentID)
+    // MARK: - Search + Render
+    private func applySearchAndRender(for selectedDayStart: Date) {
+        clearGeneratedCards()
+
+        let term = (searchBar?.text ?? "")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+
+        // allDocs is already day-filtered by the query, but keep it safe
+        var docsForDay = allDocs.filter { pair in
+            guard let ts = pair.data["assignedAt"] as? Timestamp else { return false }
+            return appCalendar.startOfDay(for: ts.dateValue()) == selectedDayStart
+        }
+
+        if !term.isEmpty {
+            docsForDay = docsForDay.filter { pair in
+                let data = pair.data
+                let title = ((data["title"] as? String) ?? (data["problemTitle"] as? String) ?? "").lowercased()
+                let loc = readLocationString(data).lowercased()
+                let pr = ((data["selectedPriorityLevel"] as? String) ?? "").lowercased()
+                let ticket = ((data["ticketNumber"] as? String) ?? pair.id).lowercased()
+
+                return title.contains(term) || loc.contains(term) || pr.contains(term) || ticket.contains(term)
             }
+        }
+
+        filteredDocs = docsForDay
+
+        if filteredDocs.isEmpty {
+            showEmptyStateCard(message: term.isEmpty ? "No tasks found" : "No results for \"\(searchBar?.text ?? "")\"")
+            return
+        }
+
+        for item in filteredDocs {
+            addCard(for: item.data, docID: item.id)
         }
     }
 
     // MARK: - Helpers (stable key)
     private func dayKey(from date: Date) -> String {
-        // Normalize into Bahrain day start (prevents “one day off”)
         let normalized = appCalendar.startOfDay(for: date)
         return dayKeyFormatter.string(from: normalized)
     }
@@ -246,11 +345,13 @@ final class TechnScheduleViewController: UIViewController, FSCalendarDataSource,
         }
     }
 
-    private func showEmptyStateCard() {
+    private func showEmptyStateCard(message: String) {
         guard let template = templateCard else { return }
         guard let card = cloneView(template) else { return }
 
-        setLabelText(in: card, atIndex: 0, text: "No tasks found")
+        applyCardCornerRadius(card)
+
+        setLabelText(in: card, atIndex: 0, text: message)
         setLabelText(in: card, atIndex: 1, text: "Pick another day or check assignments")
         setLabelText(in: card, atIndex: 2, text: "")
         setLabelText(in: card, atIndex: 3, text: "")
@@ -269,6 +370,8 @@ final class TechnScheduleViewController: UIViewController, FSCalendarDataSource,
             return
         }
 
+        applyCardCornerRadius(card)
+
         let ticket = (data["ticketNumber"] as? String) ?? docID
         let title = (data["title"] as? String) ?? (data["problemTitle"] as? String) ?? "Request"
         setLabelText(in: card, atIndex: 0, text: "#\(ticket) : \(title)")
@@ -277,28 +380,29 @@ final class TechnScheduleViewController: UIViewController, FSCalendarDataSource,
         setLabelText(in: card, atIndex: 1, text: locationText)
 
         let priorityRaw = (data["selectedPriorityLevel"] as? String) ?? "normal"
-        let priorityText = "Priority: \(priorityRaw)"
-        setLabelText(in: card, atIndex: 2, text: priorityText)
-
+        setLabelText(in: card, atIndex: 2, text: "Priority: \(priorityRaw)")
         applyPriorityColor(in: card, priority: priorityRaw)
 
         let dateText = formatDateFromAnyKnownField(data)
         setLabelText(in: card, atIndex: 3, text: dateText.isEmpty ? "" : "Date: \(dateText)")
 
-        card.isHidden = false
-        requestsStackView.addArrangedSubview(card)
-        
-        //button
+        // ✅ Keep YOUR SAME logic: button tag 100 opens ViewRequestViewController
         if let viewButton = card.viewWithTag(100) as? UIButton {
-            print("✅ Button FOUND for request:", docID)
+            viewButton.isUserInteractionEnabled = true
+            viewButton.isEnabled = true
+            viewButton.alpha = 1.0
+
             viewButton.accessibilityIdentifier = docID
+            viewButton.removeTarget(nil, action: nil, for: .allEvents)
             viewButton.addTarget(self, action: #selector(viewRequestTapped(_:)), for: .touchUpInside)
         } else {
-            print("❌ Button NOT found in card")
+            print("❌ Button(tag 100) NOT found in card")
         }
 
+        card.isHidden = false
+        requestsStackView.addArrangedSubview(card)
     }
-    
+
     @objc private func viewRequestTapped(_ sender: UIButton) {
         guard let requestId = sender.accessibilityIdentifier else {
             print("❌ Missing requestId")
@@ -306,7 +410,6 @@ final class TechnScheduleViewController: UIViewController, FSCalendarDataSource,
         }
 
         let sb = storyboard ?? UIStoryboard(name: "Main", bundle: nil)
-
         guard let vc = sb.instantiateViewController(
             withIdentifier: "ViewRequestViewController"
         ) as? ViewRequestViewController else {
@@ -323,7 +426,6 @@ final class TechnScheduleViewController: UIViewController, FSCalendarDataSource,
             present(vc, animated: true)
         }
     }
-
 
     private func cloneView(_ view: UIView) -> UIView? {
         do {
@@ -386,4 +488,26 @@ final class TechnScheduleViewController: UIViewController, FSCalendarDataSource,
         f.dateFormat = "MMM d, yyyy"
         return f.string(from: date)
     }
+
+    // MARK: - UISearchBarDelegate
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        applySearchAndRender(for: selectedDate)
+    }
+
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+        applySearchAndRender(for: selectedDate)
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
+        applySearchAndRender(for: selectedDate)
+    }
+}
+
+// Same helper you used in the other file
+private func applyCardCornerRadius(_ card: UIView) {
+    card.layer.cornerRadius = 10
+    card.layer.masksToBounds = true
 }

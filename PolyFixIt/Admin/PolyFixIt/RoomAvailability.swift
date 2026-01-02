@@ -31,16 +31,17 @@ final class LocationBackendViewController: UIViewController, UIPickerViewDelegat
 
     // MARK: - Data
     /// Campus -> Buildings
+    
     private let buildingsByCampus: [String: [String]] = [
-        "campusA": ["19", "36", "25"],
-        "campusB": ["20", "25"]
+        "CampA": ["19", "36", "5"],
+        "CampB": ["20", "25"]
     ]
-
-    /// Building -> 4 Classes (edit names however you want)
+    
     private let classesByBuilding: [String: [String]] = [
         "19": ["01", "02", "03", "04"],
         "36": ["101", "102", "103", "104"],
         "25": ["313", "314", "315", "316"],
+        "5":  ["21", "20", "19", "18"],
         "20": ["98", "99", "100", "101"]
     ]
 

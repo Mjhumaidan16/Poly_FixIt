@@ -23,7 +23,7 @@ struct Request {
     let submittedBy: DocumentReference?
     let assignedTechnician: DocumentReference?
     let assignedAdmin: DocumentReference?
-    let status: String
+    var status: String
     let acceptanceTime: Timestamp?
     let completionTime: Timestamp?
     let completionNotes: String?

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5B05873B2F07B55700DD5064 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 5B05873A2F07B55700DD5064 /* FSCalendar */; };
+		5B57B0622F07FE9A008CC79B /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 5B57B0612F07FE9A008CC79B /* DGCharts */; };
 		5B75E2532F04418E001F6EA1 /* Cloudinary in Frameworks */ = {isa = PBXBuildFile; productRef = 5B75E2522F04418E001F6EA1 /* Cloudinary */; };
 		7F5789902EF071B2000BC502 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 7F57898F2EF071B2000BC502 /* FirebaseAuth */; };
 		7F5789922EF071B2000BC502 /* FirebaseAuthCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 7F5789912EF071B2000BC502 /* FirebaseAuthCombine-Community */; };
@@ -18,6 +19,19 @@
 		DA59238F2EF58077002F7D12 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = DA59238E2EF58077002F7D12 /* GoogleSignIn */; };
 		DA5923912EF58077002F7D12 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DA5923902EF58077002F7D12 /* GoogleSignInSwift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5B57B0662F07FF98008CC79B /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		50028F4F2EEDD6F2001FD73E /* PolyFixIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PolyFixIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -58,6 +72,7 @@
 				5B75E2532F04418E001F6EA1 /* Cloudinary in Frameworks */,
 				7F5789902EF071B2000BC502 /* FirebaseAuth in Frameworks */,
 				7F5789922EF071B2000BC502 /* FirebaseAuthCombine-Community in Frameworks */,
+				5B57B0622F07FE9A008CC79B /* DGCharts in Frameworks */,
 				DA59238F2EF58077002F7D12 /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -99,6 +114,7 @@
 				50028F4B2EEDD6F2001FD73E /* Sources */,
 				50028F4C2EEDD6F2001FD73E /* Frameworks */,
 				50028F4D2EEDD6F2001FD73E /* Resources */,
+				5B57B0662F07FF98008CC79B /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -119,6 +135,7 @@
 				DA5923902EF58077002F7D12 /* GoogleSignInSwift */,
 				5B75E2522F04418E001F6EA1 /* Cloudinary */,
 				5B05873A2F07B55700DD5064 /* FSCalendar */,
+				5B57B0612F07FE9A008CC79B /* DGCharts */,
 			);
 			productName = SignIn;
 			productReference = 50028F4F2EEDD6F2001FD73E /* PolyFixIt.app */;
@@ -154,6 +171,7 @@
 				DA59238D2EF58077002F7D12 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				5B75E2512F04418E001F6EA1 /* XCRemoteSwiftPackageReference "cloudinary_ios" */,
 				5B0587392F07B55700DD5064 /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				5B57B0602F07FE9A008CC79B /* XCRemoteSwiftPackageReference "Charts" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 50028F502EEDD6F2001FD73E /* Products */;
@@ -391,6 +409,14 @@
 				minimumVersion = 2.8.4;
 			};
 		};
+		5B57B0602F07FE9A008CC79B /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ChartsOrg/Charts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.1.0;
+			};
+		};
 		5B75E2512F04418E001F6EA1 /* XCRemoteSwiftPackageReference "cloudinary_ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/cloudinary/cloudinary_ios.git";
@@ -430,6 +456,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5B0587392F07B55700DD5064 /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
+		};
+		5B57B0612F07FE9A008CC79B /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5B57B0602F07FE9A008CC79B /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
 		};
 		5B75E2522F04418E001F6EA1 /* Cloudinary */ = {
 			isa = XCSwiftPackageProductDependency;
