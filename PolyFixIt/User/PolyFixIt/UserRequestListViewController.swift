@@ -292,7 +292,8 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
 
     // MARK: - Apply Card Content
     private func applyCard(_ card: UIView, data: [String: Any], docID: String) {
-
+        card.layer.cornerRadius = 10
+        
         let labels = card.findAll(UILabel.self)
         let imageView = card.findFirst(UIImageView.self)
 
@@ -308,6 +309,9 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
         guard let statusButton = card.viewWithTag(777) as? UIButton else { return }
         guard let actionButton = card.viewWithTag(779) as? UIButton else { return }
         guard let chatButton = card.viewWithTag(780) as? UIButton else { return }
+        statusButton.layer.cornerRadius = 10
+        actionButton.layer.cornerRadius = 10
+        chatButton.layer.cornerRadius = 10
 
              //chat button is hidden
              chatButton.isHidden = true
