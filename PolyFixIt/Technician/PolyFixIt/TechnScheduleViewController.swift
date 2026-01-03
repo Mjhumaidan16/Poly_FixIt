@@ -27,7 +27,7 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate, 
     // Keep listener so the list updates live
     private var listener: ListenerRegistration?
 
-    // ✅ Task that consumes the async snapshot stream
+    //  Task that consumes the async snapshot stream
     private var listenTask: Task<Void, Never>?
 
     // Current signed-in tech UID
@@ -48,7 +48,7 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate, 
         super.viewDidLoad()
 
         guard let uid = Auth.auth().currentUser?.uid else {
-            print("❌ No logged-in user. Cannot load technician schedule.")
+            print(" No logged-in user. Cannot load technician schedule.")
             tasksForLabel.text = "Task On: —"
             return
         }
@@ -66,13 +66,13 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate, 
         setupDatePicker()
         setupSearchBar()
 
-        // ✅ Dots for current month (async/await)
+        //  Dots for current month (async/await)
         Task { [weak self] in
             guard let self else { return }
             await self.loadRequestDotsAsync(forMonthContaining: Date())
         }
 
-        // ✅ Load initial day (today start-of-day) (async/await + async listener)
+        //  Load initial day (today start-of-day) (async/await + async listener)
         selectedDate = Calendar.current.startOfDay(for: Date())
         Task { [weak self] in
             guard let self else { return }
@@ -95,7 +95,7 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate, 
             templateCard = first
             first.isHidden = true
         } else {
-            print("❌ No template card found inside requestsStackView.")
+            print(" No template card found inside requestsStackView.")
         }
     }
     
@@ -161,7 +161,7 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate, 
                 self.datePicker.reloadData()
             }
         } catch {
-            print("❌ loadRequestDots error:", error)
+            print(" loadRequestDots error:", error)
         }
     }
 
@@ -198,7 +198,7 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate, 
                     let docs = snap.documents
                     self.allDocs = docs.map { ($0.documentID, $0.data()) }
 
-                    // ✅ DO NOT set requestDates here anymore (this query is only 1 day)
+                    //  DO NOT set requestDates here anymore (this query is only 1 day)
                     // Dots are loaded by loadRequestDotsAsync(forMonthContaining:)
 
                     await MainActor.run {
@@ -206,12 +206,12 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate, 
                     }
                 }
             } catch {
-                print("❌ TechnSchedule query error:", error)
+                print(" TechnSchedule query error:", error)
             }
         }
     }
 
-    // ✅ Wrap addSnapshotListener into AsyncThrowingStream (Swift 6 safe)
+    //  Wrap addSnapshotListener into AsyncThrowingStream (Swift 6 safe)
     private func makeSnapshotStream(for query: Query) -> AsyncThrowingStream<QuerySnapshot, Error> {
 
         // Actor to safely hold & mutate the registration across @Sendable closures
@@ -316,14 +316,14 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate, 
         searchBar.text = ""
         searchBar.resignFirstResponder()
 
-        // ✅ Query Firestore for the selected day (async/await)
+        //  Query Firestore for the selected day (async/await)
         Task { [weak self] in
             guard let self else { return }
             await self.loadAndRenderAsync(for: normalized)
         }
     }
 
-    // ✅ When user swipes to a new month, refresh dots for that month (async/await)
+    //  When user swipes to a new month, refresh dots for that month (async/await)
     func calendarCurrentPageDidChange(_ calendar: FSCalendar) {
         Task { [weak self] in
             guard let self else { return }
@@ -363,17 +363,17 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate, 
 
     private func addCard(for data: [String: Any], docID: String) {
         guard let template = templateCard else {
-            print("❌ templateCard is nil in addCard")
+            print(" templateCard is nil in addCard")
             return
         }
         guard let card = cloneView(template) else {
-            print("❌ cloneView returned nil")
+            print(" cloneView returned nil")
             return
         }
         
         applyCardCornerRadius(card)
 
-        // 🔥 FORCE interaction
+        //  FORCE interaction
         card.isUserInteractionEnabled = true
         card.translatesAutoresizingMaskIntoConstraints = false
 
@@ -396,13 +396,13 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate, 
         if let button = findFirstButton(in: card) {
             let status = (data["status"] as? String)?.lowercased() ?? "unknown"
 
-            // 🔥 FORCE BUTTON TO RECEIVE TOUCHES
+            //  FORCE BUTTON TO RECEIVE TOUCHES
             button.isUserInteractionEnabled = true
             button.isEnabled = true
             button.alpha = 1.0
 
             // Debug (you WILL see this)
-            print("✅ Button wired for request:", docID, "status:", status)
+            print(" Button wired for request:", docID, "status:", status)
 
             button.accessibilityIdentifier = docID
             button.accessibilityHint = status
@@ -412,7 +412,7 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate, 
                              action: #selector(openTaskDetails(_:)),
                              for: .touchUpInside)
         } else {
-            print("❌ No button found in card")
+            print(" No button found in card")
         }
 
         card.isHidden = false
@@ -420,7 +420,7 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate, 
     }
 
     @objc private func openTaskDetails(_ sender: UIButton) {
-        print("🔥 BUTTON TAP DETECTED")
+        print(" BUTTON TAP DETECTED")
         guard
             let requestId = sender.accessibilityIdentifier,
             let status = sender.accessibilityHint?.lowercased()
@@ -434,7 +434,7 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate, 
             guard let vc = sb.instantiateViewController(
                 withIdentifier: "TechViewRequestViewController"
             ) as? TechViewRequestViewController else {
-                print("❌ Could not instantiate TechViewRequestViewController")
+                print(" Could not instantiate TechViewRequestViewController")
                 return
             }
 
@@ -449,7 +449,7 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate, 
             guard let vc = sb.instantiateViewController(
                 withIdentifier: "TechnicianTaskFlowViewController"
             ) as? TechnicianTaskFlowViewController else {
-                print("❌ Could not instantiate TechBeginTaskViewController")
+                print(" Could not instantiate TechBeginTaskViewController")
                 return
             }
 
@@ -500,7 +500,7 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate, 
             defer { unarchiver.finishDecoding() }
             return unarchiver.decodeObject(forKey: NSKeyedArchiveRootObjectKey) as? UIView
         } catch {
-            print("❌ cloneView failed:", error)
+            print(" cloneView failed:", error)
             return nil
         }
     }

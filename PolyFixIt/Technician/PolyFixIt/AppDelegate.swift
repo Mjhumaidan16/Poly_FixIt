@@ -60,7 +60,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             let cloudName = Bundle.main.object(forInfoDictionaryKey: "CLOUDINARY_CLOUD_NAME") as? String,
             let apiKey = Bundle.main.object(forInfoDictionaryKey: "CLOUDINARY_API_KEY") as? String
         else {
-            fatalError("❌ Cloudinary keys missing from Info.plist")
+            fatalError(" Cloudinary keys missing from Info.plist")
         }
         
         let config = CLDConfiguration(

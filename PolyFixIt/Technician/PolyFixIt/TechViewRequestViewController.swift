@@ -33,12 +33,12 @@ final class TechViewRequestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //precondition(requestId != nil, "❌ requestId was not set")
+        //precondition(requestId != nil, " requestId was not set")
         descriptionView.isEditable = false
         descriptionView.isScrollEnabled = true
 
         guard let requestId, !requestId.isEmpty else {
-            showAlert("Missing request id ❌")
+            showAlert("Missing request id ")
             return
         }
 
@@ -49,7 +49,7 @@ final class TechViewRequestViewController: UIViewController {
     private func fetchRequest(requestId: String) {
         RequestManager.shared.fetchRequest(requestId: requestId) { [weak self] request in
             guard let self = self, let request = request else {
-                self?.showAlert("Failed to load request ❌")
+                self?.showAlert("Failed to load request ")
                 return
             }
             self.currentRequest = request
@@ -97,7 +97,7 @@ final class TechViewRequestViewController: UIViewController {
         ChatButton.isHidden = request.status == "begin"
     }
 
-    // ✅ UPDATED ONLY THIS PART:
+    //  UPDATED ONLY THIS PART:
     // submittedBy is a DocumentReference, but you want to use its documentID (uid)
     // to fetch the user document from the "users" collection and read "fullName".
     private func fetchRequesterName(from ref: DocumentReference) {
@@ -114,7 +114,7 @@ final class TechViewRequestViewController: UIViewController {
             guard let self else { return }
 
             if let error = error {
-                print("❌ fetchRequesterName(users/\(uid)) error:", error)
+                print(" fetchRequesterName(users/\(uid)) error:", error)
                 DispatchQueue.main.async { self.requesterLabel.text = "Unknown" }
                 return
             }
@@ -174,7 +174,7 @@ final class TechViewRequestViewController: UIViewController {
         let sb = self.storyboard ?? UIStoryboard(name: "Main", bundle: nil)
         guard let editVC = sb.instantiateViewController(withIdentifier: "ChatRequestViewController")
                 as? ChatRequestViewController else {
-            print("❌ Could not instantiate EditRequestViewController. Check Storyboard ID + Custom Class.")
+            print(" Could not instantiate EditRequestViewController. Check Storyboard ID + Custom Class.")
             return
         }
 
@@ -207,7 +207,7 @@ final class TechViewRequestViewController: UIViewController {
                     completion()
 
                 case .failure(let error):
-                    self?.showAlert("Failed ❌: \(error.localizedDescription)")
+                    self?.showAlert("Failed : \(error.localizedDescription)")
                 }
             }
         }

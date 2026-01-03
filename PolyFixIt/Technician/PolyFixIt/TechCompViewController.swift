@@ -14,7 +14,7 @@ final class TechCompViewController: UIViewController {
     private let uploadPreset = "iOS_requests_preset"
     private let defaultImageUrl = "https://res.cloudinary.com/polyfixit/image/upload/v1766424070/images-3_ufcbkf.png"
     
-    // ✅ Destination storyboard ID
+    //  Destination storyboard ID
     private let nextViewControllerID = "TechnicianHomeViewController"
     
     // MARK: - State
@@ -30,7 +30,7 @@ final class TechCompViewController: UIViewController {
         imageView.isUserInteractionEnabled = true
         imageView.clipsToBounds = true
         
-        // ✅ Set default image from Cloudinary
+        //  Set default image from Cloudinary
         downloadImage(from: defaultImageUrl) { [weak self] image in
             DispatchQueue.main.async {
                 self?.imageView.image = image
@@ -57,14 +57,14 @@ final class TechCompViewController: UIViewController {
                 guard let self else { return }
                 switch result {
                 case .success(let uploadedUrl):
-                    // ✅ Use notes + uploadedUrl in Firestore update if needed
+                    //  Use notes + uploadedUrl in Firestore update if needed
                     self.showSuccessThenNavigate()
                 case .failure:
                     self.showAlert(title: "Upload Failed", message: "Could not upload image. Please try again.")
                 }
             }
         } else {
-            // ✅ Use notes + defaultImageUrl in Firestore update if needed
+            //  Use notes + defaultImageUrl in Firestore update if needed
             showSuccessThenNavigate()
         }
     }
@@ -147,7 +147,7 @@ final class TechCompViewController: UIViewController {
     }
 }
 
-// ✅ Put delegate methods in an extension + mark them @objc
+//  Put delegate methods in an extension + mark them @objc
 extension TechCompViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     @objc func imagePickerController(

@@ -27,16 +27,16 @@ final class TechnicianTaskFlowViewController: UIViewController {
         togglePartsUI(isEnabled: !noPartsSwitch.isOn)
     }
 
-    // ✅ No segue needed
+    //  No segue needed
     @objc private func barButtonTapped() {
         guard let requestId else {
-            print("❌ requestId is nil before navigation")
+            print(" requestId is nil before navigation")
             return
         }
 
         let sb = storyboard ?? UIStoryboard(name: "Main", bundle: nil)
         guard let vc = sb.instantiateViewController(withIdentifier: "TechViewRequestViewController") as? TechViewRequestViewController else {
-            fatalError("❌ Could not instantiate TechViewRequestViewController. Check Storyboard ID.")
+            fatalError(" Could not instantiate TechViewRequestViewController. Check Storyboard ID.")
         }
 
         vc.requestId = requestId
@@ -52,7 +52,7 @@ final class TechnicianTaskFlowViewController: UIViewController {
     }
 
     @IBAction func confirmPartsTapped(_ sender: UIButton) {
-        print("✅ Confirm selected parts")
+        print(" Confirm selected parts")
     }
 
     private func togglePartsUI(isEnabled: Bool) {

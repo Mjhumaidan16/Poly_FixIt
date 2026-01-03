@@ -39,7 +39,7 @@ final class TechSettingViewController: UIViewController {
         passwordTextField.isUserInteractionEnabled = false
 
         changeButton.setTitle("Change", for: .normal)
-        logoutButton.setTitle("Logout", for: .normal)   // ✅ default
+        logoutButton.setTitle("Logout", for: .normal)   //  default
         //statusLabel.text = ""
     }
 
@@ -68,13 +68,13 @@ final class TechSettingViewController: UIViewController {
     }
 
     @objc private func logoutButtonTapped(_ sender: UIButton) {
-        // ✅ If we are editing, Logout becomes Cancel
+        //  If we are editing, Logout becomes Cancel
         if isInEditMode {
             exitEditMode() // cancels edit mode and restores buttons
             return
         }
 
-        // ✅ Normal logout
+        //  Normal logout
         logoutAndReturnToSignIn(message: nil)
     }
 
@@ -89,7 +89,7 @@ final class TechSettingViewController: UIViewController {
         passwordTextField.text = ""
 
         changeButton.setTitle("Submit", for: .normal)
-        logoutButton.setTitle("Cancel", for: .normal)   // ✅ change Logout -> Cancel
+        logoutButton.setTitle("Cancel", for: .normal)   //  change Logout -> Cancel
         statusLabel.text = "Edit Mode"
     }
 
@@ -102,7 +102,7 @@ final class TechSettingViewController: UIViewController {
         passwordTextField.text = "12345678"
 
         changeButton.setTitle("Change", for: .normal)
-        logoutButton.setTitle("Logout", for: .normal)   // ✅ restore Cancel -> Logout
+        logoutButton.setTitle("Logout", for: .normal)   //  restore Cancel -> Logout
         statusLabel.text = "View Mode"
     }
 

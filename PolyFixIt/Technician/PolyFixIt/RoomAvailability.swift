@@ -160,7 +160,7 @@ final class LocationPickerViewController: UIViewController, UIPickerViewDelegate
     private func fetchAvailabilityForSelectedLocationAndDay() {
         let docId = compactLocationString
         if docId.isEmpty {
-            print("❌ compactLocationString is empty")
+            print(" compactLocationString is empty")
             clearSlotViews()
             return
         }
@@ -169,7 +169,7 @@ final class LocationPickerViewController: UIViewController, UIPickerViewDelegate
         let selectedDate = getSelectedDateFromWeekAndDay()
         let dayStart = Calendar.current.startOfDay(for: selectedDate)
         guard let dayEnd = Calendar.current.date(byAdding: .day, value: 1, to: dayStart) else {
-            print("❌ Could not compute day end")
+            print(" Could not compute day end")
             clearSlotViews()
             return
         }
@@ -181,7 +181,7 @@ final class LocationPickerViewController: UIViewController, UIPickerViewDelegate
             guard let self = self else { return }
 
             if let error = error {
-                print("❌ Firestore fetch error: \(error.localizedDescription)")
+                print(" Firestore fetch error: \(error.localizedDescription)")
                 DispatchQueue.main.async { self.renderEmptyState("Error fetching availability") }
                 return
             }
@@ -253,7 +253,7 @@ final class LocationPickerViewController: UIViewController, UIPickerViewDelegate
         clearSlotViews()
 
         guard let stack = slotsStackView else {
-            print("❌ slotsStackView outlet not connected")
+            print(" slotsStackView outlet not connected")
             return
         }
 
