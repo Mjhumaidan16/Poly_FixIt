@@ -44,13 +44,15 @@
 * **Mohammed Humaidan**: 
     1. Smart Chat.
     2. AI-Enchanced Repair Request.
+    3. FSCalender Request Filter
 
 ---
 
 ## Design Changes
-* **Removed the Duplicate request**: Removed the duplicate request from the admin dashboard.
-* **Added pending request**: Added the pending request to the admin dashboard.
-* **Added the AVFoundation**: Added the AVFoundation to show off the guided video for the newly created users.
+* **Removed the Duplicate request**: Removed the duplicate request from the admin dashboard. (Pending Request was used instead)
+* **Added pending request**: Added the pending request to the admin dashboard. (It was used as a replacement for duplicates page,
+* it serves the purpose for the admin to view requests and take action conveniently)
+* **Added the AVFoundation**: Added the AVFoundation to show off the guided video for the newly created users. (Is an Additional Feature)
 * **Added a chat with AI**: Added a btn in the request list that will redirect the ticketer to an AI based chat.
 
 ---
