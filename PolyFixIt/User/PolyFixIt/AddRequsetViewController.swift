@@ -45,7 +45,7 @@ final class AddRequsetViewController: UIViewController,
         "19": ["01", "02", "03", "04"],
         "36": ["101", "102", "103", "104"],
         "25": ["313", "314", "315", "316"],
-        "5":  ["21", "20", "19", "19"],
+        "5":  ["21", "20", "19", "18"],
         "20": ["98", "99", "100", "101"]
     ]
 
@@ -300,7 +300,7 @@ final class AddRequsetViewController: UIViewController,
             submittedBy: db.collection("users").document(currentUser.uid),
             assignedTechnician: nil,
             assignedAdmin: nil,
-            status: "Pending",
+            status: "pending",
             acceptanceTime: nil,
             completionTime: nil,
             completionNotes: nil,

@@ -85,7 +85,8 @@ final class AIChatService {
         let body: [String: Any] = ["contents": contents]
         
         guard let url = URL(string: endpoint) else {
-            return "⚠️ Invalid URL"
+            print("Invalid URL")
+            return ""
         }
         
         var request = URLRequest(url: url)
@@ -99,7 +100,7 @@ final class AIChatService {
         do {
             request.httpBody = try JSONSerialization.data(withJSONObject: body)
         } catch {
-            return "⚠️ Failed to encode request"
+            print("Failed to encode request")
         }
         
         do {
@@ -108,7 +109,8 @@ final class AIChatService {
             // Helpful during debugging
             if let http = response as? HTTPURLResponse, !(200...299).contains(http.statusCode) {
                 let raw = String(data: data, encoding: .utf8) ?? ""
-                return "⚠️ HTTP \(http.statusCode): \(raw)"
+                print("HTTP \(http.statusCode): \(raw)")
+                return "Could not connect to the server! \nPlease contact support."
             }
             
             let json = (try JSONSerialization.jsonObject(with: data)) as? [String: Any]
@@ -116,7 +118,7 @@ final class AIChatService {
             // 2) If Google returns an error object, show it.
             if let errorObj = json?["error"] as? [String: Any],
                let message = errorObj["message"] as? String {
-                return "⚠️ Gemini error: \(message)"
+                return " Gemini error: \(message)"
             }
             
             // 3) Normal path: candidates -> content -> parts -> text
@@ -135,15 +137,18 @@ final class AIChatService {
             // 4) If no candidates, often the reason is in promptFeedback.blockReason :contentReference[oaicite:4]{index=4}
             if let promptFeedback = json?["promptFeedback"] as? [String: Any],
                let blockReason = promptFeedback["blockReason"] as? String {
-                return "⚠️ Gemini blocked the prompt: \(blockReason)"
+                print(" Gemini blocked the prompt: \(blockReason)")
+                return " Gemini blocked the prompt."
             }
             
             // Last resort: show raw so you can see what changed
             let raw = String(data: data, encoding: .utf8) ?? ""
-            return "⚠️ AI returned no response. Raw: \(raw)"
+            print( "AI returned no response. Raw: \(raw)")
+            return "AI returned no response."
             
         } catch {
-            return "⚠️ AI service error: \(error.localizedDescription)"
+            print("AI service error: \(error.localizedDescription)")
+            return "AI service error"
         }
     }
 }

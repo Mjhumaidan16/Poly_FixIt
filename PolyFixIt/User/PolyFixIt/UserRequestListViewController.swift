@@ -469,7 +469,7 @@ final class UserRequestListViewController: UIViewController, UISearchBarDelegate
         let storyboard = self.storyboard ?? UIStoryboard(name: "Main", bundle: nil)
 
         if title == "chat" {
-            let vc = storyboard.instantiateViewController(withIdentifier: "ChatViewController")
+            let vc = storyboard.instantiateViewController(withIdentifier: "UserChatViewController")
             self.navigationController?.pushViewController(vc, animated: true)
 
         } else if title == "rate" {
