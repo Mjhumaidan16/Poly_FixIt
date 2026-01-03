@@ -1,9 +1,7 @@
 //
 //  TechnScheduleViewController.swift
 //  SignIn
-//
-//  Calendar + assigned requests list (Bahrain-safe) + async/await dots + Swift-6 safe live listener
-//
+
 
 import UIKit
 import FirebaseFirestore
@@ -25,28 +23,28 @@ final class TechnScheduleViewController: UIViewController,
     @IBOutlet var tasksDateLabel: UILabel!
     @IBOutlet var requestsStackView: UIStackView!
 
-    // Optional (if you add it like the other controller)
+  
     @IBOutlet weak var searchBar: UISearchBar?
 
-    // Template card in the stack view
+
     @IBOutlet var templateCard: UIView?
 
     private let db = Firestore.firestore()
 
-    // Live updates (Swift 6 safe async stream consumer task)
+ 
     private var listenTask: Task<Void, Never>?
 
-    // Cache docs for rendering + search filtering
+  
     private var allDocs: [(id: String, data: [String: Any])] = []
     private var filteredDocs: [(id: String, data: [String: Any])] = []
 
-    // ✅ Store request days as stable keys (yyyy-MM-dd) in Bahrain timezone (for dots)
+    //Store request days as stable keys (yyyy-MM-dd)
     private var requestDayKeys: Set<String> = []
 
-    // ✅ Always normalize selected date to Bahrain start-of-day
+    //Always normalize selected date to Bahrain start-of-day
     private var selectedDate: Date = Calendar.current.startOfDay(for: Date())
 
-    // ✅ Fixed timezone for all calendar + formatting logic
+
     private let appTimeZone = TimeZone(identifier: "Asia/Bahrain") ?? .current
 
     private lazy var appCalendar: Calendar = {
@@ -69,7 +67,7 @@ final class TechnScheduleViewController: UIViewController,
         super.viewDidLoad()
 
         guard technicianUID != nil else {
-            print("❌ TechnScheduleViewController: technicianUID is nil")
+            print("TechnScheduleViewController: technicianUID is nil")
             return
         }
 
@@ -81,17 +79,17 @@ final class TechnScheduleViewController: UIViewController,
         setupCalendar()
         setupSearchBarIfExists()
 
-        // ✅ Initial selection: today in Bahrain start-of-day
+     
         selectedDate = appCalendar.startOfDay(for: Date())
         tasksDateLabel.text = "Task On: \(formatDate(selectedDate))"
 
-        // ✅ Dots for current month (async/await)
+        //Dots for current month (async/await)
         Task { [weak self] in
             guard let self else { return }
             await self.loadRequestDotsAsync(forMonthContaining: self.selectedDate)
         }
 
-        // ✅ Live list for selected day (async listener stream)
+        //Live list for selected day (async listener stream)
         Task { [weak self] in
             guard let self else { return }
             await self.loadAndRenderAsync(for: self.selectedDate)
@@ -113,7 +111,7 @@ final class TechnScheduleViewController: UIViewController,
             templateCard = first
             first.isHidden = true
         } else {
-            print("❌ No template card found inside requestsStackView.")
+            print("No template card found inside requestsStackView.")
         }
     }
 
@@ -122,13 +120,13 @@ final class TechnScheduleViewController: UIViewController,
         datePicker.appearance.eventDefaultColor = .red
         datePicker.appearance.eventSelectionColor = .red
 
-        // Like your other one: make calendar text white (optional but common)
+        //make calendar text white (optional but common)
         datePicker.appearance.titleDefaultColor = .white
         datePicker.appearance.titleSelectionColor = .white
         datePicker.appearance.weekdayTextColor = .white
         datePicker.appearance.headerTitleColor = .white
 
-        // Remove the default "today" filled circle highlight (like your Bahrain one)
+    
         datePicker.appearance.todayColor = .clear
         datePicker.appearance.titleTodayColor = datePicker.appearance.titleDefaultColor
 
@@ -146,7 +144,7 @@ final class TechnScheduleViewController: UIViewController,
 
     // MARK: - FSCalendarDataSource (dots)
     func calendar(_ calendar: FSCalendar, numberOfEventsFor date: Date) -> Int {
-        let key = dayKey(from: date) // Bahrain-stable
+        let key = dayKey(from: date)
         return requestDayKeys.contains(key) ? 1 : 0
     }
 
@@ -156,7 +154,7 @@ final class TechnScheduleViewController: UIViewController,
         selectedDate = dayStart
         tasksDateLabel.text = "Task On: \(formatDate(dayStart))"
 
-        // clear search when changing date (like your other controller)
+  
         searchBar?.text = ""
         searchBar?.resignFirstResponder()
 
@@ -180,7 +178,7 @@ final class TechnScheduleViewController: UIViewController,
 
         let techRef = db.collection("technicians").document(technicianUID)
 
-        // month boundaries in Bahrain timezone
+      
         let comps = appCalendar.dateComponents([.year, .month], from: date)
         guard let monthStart = appCalendar.date(from: comps),
               let monthEnd = appCalendar.date(byAdding: .month, value: 1, to: monthStart)
@@ -205,7 +203,7 @@ final class TechnScheduleViewController: UIViewController,
                 self.datePicker.reloadData()
             }
         } catch {
-            print("❌ loadRequestDotsAsync error:", error)
+            print("loadRequestDotsAsync error:", error)
         }
     }
 
@@ -226,7 +224,7 @@ final class TechnScheduleViewController: UIViewController,
         let endOfDay = appCalendar.date(byAdding: .day, value: 1, to: startOfDay)!
 
         // Debug prints in Bahrain time
-        print("📅 Filtering (Bahrain):", dayKey(from: startOfDay), "->", dayKey(from: endOfDay))
+        print("Filtering (Bahrain):", dayKey(from: startOfDay), "->", dayKey(from: endOfDay))
 
         let q = db.collection("requests")
             .whereField("assignedTechnician", isEqualTo: techRef)
@@ -248,12 +246,12 @@ final class TechnScheduleViewController: UIViewController,
                     }
                 }
             } catch {
-                print("❌ TechnSchedule query error:", error)
+                print("TechnSchedule query error:", error)
             }
         }
     }
 
-    // ✅ Wrap addSnapshotListener into AsyncThrowingStream (Swift 6 safe)
+    //wrap addSnapshotListener into AsyncThrowingStream
     private func makeSnapshotStream(for query: Query) -> AsyncThrowingStream<QuerySnapshot, Error> {
 
         actor RegistrationStore {
@@ -291,7 +289,7 @@ final class TechnScheduleViewController: UIViewController,
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .lowercased()
 
-        // allDocs is already day-filtered by the query, but keep it safe
+        // allDocsby
         var docsForDay = allDocs.filter { pair in
             guard let ts = pair.data["assignedAt"] as? Timestamp else { return false }
             return appCalendar.startOfDay(for: ts.dateValue()) == selectedDayStart
@@ -362,11 +360,11 @@ final class TechnScheduleViewController: UIViewController,
 
     private func addCard(for data: [String: Any], docID: String) {
         guard let template = templateCard else {
-            print("❌ templateCard is nil in addCard")
+            print("templateCard is nil in addCard")
             return
         }
         guard let card = cloneView(template) else {
-            print("❌ cloneView returned nil")
+            print("cloneView returned nil")
             return
         }
 
@@ -386,7 +384,7 @@ final class TechnScheduleViewController: UIViewController,
         let dateText = formatDateFromAnyKnownField(data)
         setLabelText(in: card, atIndex: 3, text: dateText.isEmpty ? "" : "Date: \(dateText)")
 
-        // ✅ Keep YOUR SAME logic: button tag 100 opens ViewRequestViewController
+        // button tag 100 opens ViewRequestViewController
         if let viewButton = card.viewWithTag(100) as? UIButton {
             viewButton.isUserInteractionEnabled = true
             viewButton.isEnabled = true
@@ -396,7 +394,7 @@ final class TechnScheduleViewController: UIViewController,
             viewButton.removeTarget(nil, action: nil, for: .allEvents)
             viewButton.addTarget(self, action: #selector(viewRequestTapped(_:)), for: .touchUpInside)
         } else {
-            print("❌ Button(tag 100) NOT found in card")
+            print("Button(tag 100) NOT found in card")
         }
 
         card.isHidden = false
@@ -405,7 +403,7 @@ final class TechnScheduleViewController: UIViewController,
 
     @objc private func viewRequestTapped(_ sender: UIButton) {
         guard let requestId = sender.accessibilityIdentifier else {
-            print("❌ Missing requestId")
+            print("Missing requestId")
             return
         }
 
@@ -413,7 +411,7 @@ final class TechnScheduleViewController: UIViewController,
         guard let vc = sb.instantiateViewController(
             withIdentifier: "ViewRequestViewController"
         ) as? ViewRequestViewController else {
-            print("❌ ViewRequestViewController not found")
+            print("ViewRequestViewController not found")
             return
         }
 
@@ -435,7 +433,7 @@ final class TechnScheduleViewController: UIViewController,
             defer { unarchiver.finishDecoding() }
             return unarchiver.decodeObject(forKey: NSKeyedArchiveRootObjectKey) as? UIView
         } catch {
-            print("❌ cloneView failed:", error)
+            print("cloneView failed:", error)
             return nil
         }
     }

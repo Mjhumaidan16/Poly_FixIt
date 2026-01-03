@@ -39,7 +39,7 @@ final class PendingRequestsViewController: UIViewController {
             let templateCard = stackView.arrangedSubviews.first(where: { $0.tag == 1 })
                 ?? stackView.arrangedSubviews.first
         else {
-            print("❌ Template card or stackView not found")
+            print("Template card or stackView not found")
             refreshButton.isEnabled = true
             return
         }
@@ -53,15 +53,15 @@ final class PendingRequestsViewController: UIViewController {
             v.removeFromSuperview()
         }
         
-        // ✅ Fetch ALL
+        //Fetch ALL
         db.collection("requests")
-            .whereField("status", isEqualTo: "Pending")
+            .whereField("status", isEqualTo: "pending")
             .getDocuments { [weak self] snapshot, error in
                 guard let self = self else { return }
                 DispatchQueue.main.async { self.refreshButton.isEnabled = true }
 
                 if let error = error {
-                    print("❌ Firestore error:", error)
+                    print("Firestore error:", error)
                     return
                 }
 
@@ -89,9 +89,9 @@ final class PendingRequestsViewController: UIViewController {
 
 
                     guard let card = templateCard.cloneView() else { continue }
-                    print("🟢 CLONED CARD HIERARCHY START")
+                    print("CLONED CARD HIERARCHY START")
                     card.debugPrintHierarchy()
-                    print("🟢 CLONED CARD HIERARCHY END")
+                    print("CLONED CARD HIERARCHY END")
                     card.isHidden = false
                     card.tag = 0
 
@@ -138,7 +138,7 @@ final class PendingRequestsViewController: UIViewController {
             detailsBtn.removeTarget(nil, action: nil, for: .allEvents)
             detailsBtn.addTarget(self, action: #selector(handleDetailsTapped(_:)), for: .touchUpInside)
         } else {
-            print("❌ detailsBtn button not found in cloned card")
+            print("detailsBtn button not found in cloned card")
         }
 
         if let cancelBtn = buttons.cancel {
@@ -146,7 +146,7 @@ final class PendingRequestsViewController: UIViewController {
             cancelBtn.removeTarget(nil, action: nil, for: .allEvents)
             cancelBtn.addTarget(self, action: #selector(handleCancelTapped(_:)), for: .touchUpInside)
         } else {
-            print("❌ Cancel/Delete button not found in cloned card")
+            print("Cancel/Delete button not found in cloned card")
         }
 
         if let editBtn = buttons.edit {
@@ -154,7 +154,7 @@ final class PendingRequestsViewController: UIViewController {
             editBtn.removeTarget(nil, action: nil, for: .allEvents)
             editBtn.addTarget(self, action: #selector(handleEditTapped(_:)), for: .touchUpInside)
         } else {
-            print("❌ Edit button not found in cloned card")
+            print("Edit button not found in cloned card")
         }
     }
 
@@ -162,18 +162,19 @@ final class PendingRequestsViewController: UIViewController {
     // MARK: - Button Actions
     @objc private func handleAcceptTapped(_ sender: UIButton) {
         guard let requestId = sender.accessibilityIdentifier else { return }
-        updateRequestStatus(requestId: requestId, status: "Accepted")
+        updateRequestStatus(requestId: requestId, status: "accepted")
         loadPendingRequests()
     }
 
     @objc private func handleCancelTapped(_ sender: UIButton) {
         guard let requestId = sender.accessibilityIdentifier else { return }
-        updateRequestStatus(requestId: requestId, status: "Canceled")
-        loadPendingRequests()
+
+        deleteRequestAndDecrementCount(requestId: requestId)
     }
 
+
     // Inside handleEditTapped:
-    // ✅ NEW: Open edit screen + pass UID
+    //NEW: Open edit screen + pass UID
         @objc private func handleEditTapped(_ sender: UIButton) {
             guard let uid = sender.accessibilityIdentifier, !uid.isEmpty else { return }
 
@@ -181,7 +182,7 @@ final class PendingRequestsViewController: UIViewController {
             let sb = self.storyboard ?? UIStoryboard(name: "Main", bundle: nil)
             guard let editVC = sb.instantiateViewController(withIdentifier: "EditRequestViewController")
                     as? EditRequestViewController else {
-                print("❌ Could not instantiate AdminEditTechnicianViewController. Check Storyboard ID + Custom Class.")
+                print("Could not instantiate AdminEditTechnicianViewController. Check Storyboard ID + Custom Class.")
                 return
             }
 
@@ -199,7 +200,7 @@ final class PendingRequestsViewController: UIViewController {
     
     
     // Inside handleDetailsTapped:
-    // ✅ NEW: Open viwe Details screen + pass UID
+    //NEW: Open viwe Details screen + pass UID
         @objc private func handleDetailsTapped(_ sender: UIButton) {
             guard let uid = sender.accessibilityIdentifier, !uid.isEmpty else { return }
 
@@ -207,7 +208,7 @@ final class PendingRequestsViewController: UIViewController {
             let sb = self.storyboard ?? UIStoryboard(name: "Main", bundle: nil)
             guard let editVC = sb.instantiateViewController(withIdentifier: "ViewRequestViewController")
                     as? ViewRequestViewController else {
-                print("❌ Could not instantiate ViewRequestViewController. Check Storyboard ID + Custom Class.")
+                print("Could not instantiate ViewRequestViewController. Check Storyboard ID + Custom Class.")
                 return
             }
 
@@ -223,14 +224,79 @@ final class PendingRequestsViewController: UIViewController {
             }
         }
 
+    
+    
+    private func deleteRequestAndDecrementCount(requestId: String) {
+        let db = Firestore.firestore()
+        let requestRef = db.collection("requests").document(requestId)
+
+        db.runTransaction({ (transaction, errorPointer) -> Any? in
+            // 1) Read request doc first
+            let requestSnap: DocumentSnapshot
+            do {
+                requestSnap = try transaction.getDocument(requestRef)
+            } catch let error as NSError {
+                errorPointer?.pointee = error
+                return nil
+            }
+
+            guard let data = requestSnap.data() else {
+                // Request already gone; nothing to do
+                return nil
+            }
+
+            // 2) Extract technician id from the request
+            // CHANGE THIS KEY to match your schema (common options shown)
+            let technicianId =
+                (data["assignedTechnicianId"] as? String) ??
+                (data["technicianId"] as? String) ??
+                (data["assignedTo"] as? String)
+
+            if let techId = technicianId, !techId.isEmpty {
+                let techRef = db.collection("technicians").document(techId)
+
+                // 3) Read technician doc so we can clamp at 0
+                let techSnap: DocumentSnapshot
+                do {
+                    techSnap = try transaction.getDocument(techRef)
+                } catch let error as NSError {
+                    errorPointer?.pointee = error
+                    return nil
+                }
+
+                let current = (techSnap.data()?["assignedTaskCount"] as? Int) ?? 0
+                let newValue = max(0, current - 1)
+
+                transaction.updateData(["assignedTaskCount": newValue], forDocument: techRef)
+            }
+
+            // 4) Delete the request
+            transaction.deleteDocument(requestRef)
+
+            return nil
+        }) { [weak self] (_, error) in
+            if let error = error {
+                print("Transaction failed:", error.localizedDescription)
+                self?.showAlert("Failed to delete request")
+                return
+            }
+
+            print("Request deleted + technician count decremented")
+            DispatchQueue.main.async {
+                self?.loadPendingRequests()
+            }
+        }
+    }
+
+
 
     private func updateRequestStatus(requestId: String, status: String) {
         db.collection("requests").document(requestId).updateData(["status": status]) { [weak self] error in
             DispatchQueue.main.async {
                 if let error = error {
-                    self?.showAlert("Failed ❌: \(error.localizedDescription)")
+                    self?.showAlert("Failed: \(error.localizedDescription)")
                 } else {
-                    self?.showAlert("Request \(status) ✅")
+                    self?.showAlert("Request \(status)")
                     self?.loadPendingRequests()
                 }
             }

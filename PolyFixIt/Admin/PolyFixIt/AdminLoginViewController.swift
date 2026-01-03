@@ -1,10 +1,16 @@
+//
+//  AdminLoginViewController.swift
+//  SignIn
+//
+//  Created by BP-36-212-19 on 24/12/2025.
+//
+
+
 import UIKit
 import FirebaseAuth
 import FirebaseFirestore
 
-// =============================
-// Merged Admin Struct
-// =============================
+
 struct Admin: Codable {
     // Personal info
     let uid: String
@@ -15,9 +21,7 @@ struct Admin: Codable {
 
 class AdminLoginViewController: UIViewController {
 
-    // -----------------------------
-    // IBOutlets: UI elements from storyboard
-    // -----------------------------
+
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var emailStatusLabel: UILabel!
@@ -44,9 +48,8 @@ class AdminLoginViewController: UIViewController {
         // Clear any previous warning messages
 //        clearWarnings()
 
-        // -----------------------------
-        // AUTO-LOGIN CHECK
-        // -----------------------------
+     
+    
         if let currentUser = Auth.auth().currentUser {
             // Firebase user exists, now check stored admin info
             if let savedAdminData = UserDefaults.standard.data(forKey: "loggedInAdmin"),
@@ -84,9 +87,6 @@ class AdminLoginViewController: UIViewController {
 
     // NOTE: Touch handling / inactivity timeout is global via AdminApplication + SessionManager.
 
-    // =============================
-    // Login Button Action
-    // =============================
     @IBAction func submitButtonTapped(_ sender: UIButton) {
         clearWarnings()
 
@@ -145,9 +145,7 @@ class AdminLoginViewController: UIViewController {
         }
     }
 
-    // =============================
-    // Fetch Admin Data
-    // =============================
+
     private func fetchAdminData(uid: String) {
         let db = Firestore.firestore()
         db.collection("admin").document(uid).getDocument { snapshot, error in
@@ -180,9 +178,7 @@ class AdminLoginViewController: UIViewController {
         }
     }
 
-//    // =============================
-//    // Logout Button Action
-//    // =============================
+
 //    @IBAction func logoutButtonTapped(_ sender: UIButton) {
 //        print("Logout button tapped")
 //        
@@ -195,9 +191,7 @@ class AdminLoginViewController: UIViewController {
 //        }
 //    }
 
-    // =============================
-    // Helper Methods
-    // =============================
+
     private func clearWarnings() {
         emailStatusLabel.text = ""
         passwordStatusLabel.text = ""
@@ -228,9 +222,6 @@ class AdminLoginViewController: UIViewController {
         }
     }
 
-    // =============================
-    // Missing Functions
-    // =============================
 
     // Check if the email belongs to an admin
     private func checkIfAdmin(email: String, completion: @escaping (Bool) -> Void) {

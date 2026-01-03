@@ -186,7 +186,7 @@ private extension AdminDashboardViewController {
         resolutionLineChart.rightAxis.enabled = false
     }
 
-    // ✅ ONLY CHANGE IS HERE
+    //ONLY CHANGE IS HERE
     func renderRequestsByUserBar(_ rows: [RequestRow]) {
         var counts: [String: Int] = [:]
         rows.forEach { counts[$0.submittedByPath ?? ""] = (counts[$0.submittedByPath ?? ""] ?? 0) + 1 }
@@ -200,7 +200,7 @@ private extension AdminDashboardViewController {
         let data = BarChartData(dataSet: BarChartDataSet(entries: entries, label: "Requests"))
         requestsByUserBarChart.data = data
 
-        // 🔴 HIDE X-AXIS LABELS COMPLETELY
+        //HIDE X-AXIS LABELS COMPLETELY
         let xAxis = requestsByUserBarChart.xAxis
         xAxis.drawLabelsEnabled = false
         xAxis.drawGridLinesEnabled = false

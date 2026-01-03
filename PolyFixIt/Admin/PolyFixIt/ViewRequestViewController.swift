@@ -22,7 +22,7 @@ final class ViewRequestViewController: UIViewController {
     @IBOutlet weak var deleteButton: UIButton!
     @IBOutlet weak var acceptButtonTapped: UIButton!
     @IBOutlet weak var reas_assignButton: UIButton!
-    @IBOutlet weak var EditButton: UIButton!
+
     
     // MARK: - Properties
     private let db = Firestore.firestore()
@@ -36,7 +36,7 @@ final class ViewRequestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //precondition(requestId != nil, "❌ requestId was not set")
+        //precondition(requestId != nil, " requestId was not set")
         descriptionView.isEditable = false
         descriptionView.isScrollEnabled = true
         
@@ -47,7 +47,7 @@ final class ViewRequestViewController: UIViewController {
     private func fetchRequest() {
         RequestManager.shared.fetchRequest(requestId: requestId) { [weak self] request in
             guard let self = self, let request = request else {
-                self?.showAlert("Failed to load request ❌")
+                self?.showAlert("Failed to load request")
                 return
             }
             
@@ -62,9 +62,9 @@ final class ViewRequestViewController: UIViewController {
         titleLabel.text = request.title
         descriptionView.text = request.description
         
-        categoryLabel.text = request.selectedCategory ?? "-"
-        priorityLevelLabel.text = request.selectedPriorityLevel ?? "-"
-        statusLabel.text = request.status
+        categoryLabel.text = request.selectedCategory
+        priorityLevelLabel.text = request.selectedPriorityLevel
+        statusLabel.text = "Status: \(request.status)"
         
         // Location
         if request.location.count == 3 {
@@ -98,19 +98,20 @@ final class ViewRequestViewController: UIViewController {
 
         let normalizedStatus = status.lowercased()
 
-        // Edit & Reassign → only Pending
-        EditButton.isEnabled = (normalizedStatus == "pending")
+        //EditButton.isEnabled normalizedStatus == "pending"
         
-        reas_assignButton.isEnabled = (normalizedStatus != "pending")
+        reas_assignButton.isEnabled =
+            normalizedStatus != "pending" &&
+            normalizedStatus != "completed"
 
-        // Delete → disabled when completed
+        // Delete disabled when completed
         deleteButton.isEnabled = (normalizedStatus != "completed")
 
-        // Accept → enabled ONLY when pending
+        // Accept enabled ONLY when pending
         acceptButtonTapped.isEnabled = (normalizedStatus == "pending")
 
-        // Visual feedback
-        styleButton(EditButton)
+  
+//        styleButton(EditButton)
         styleButton(reas_assignButton)
         styleButton(deleteButton)
         styleButton(acceptButtonTapped)
@@ -138,22 +139,87 @@ final class ViewRequestViewController: UIViewController {
 
     
     // MARK: - Button Actions
-      @IBAction func deleteButtonTapped(_ sender: UIButton) {
-          let alert = UIAlertController(
-              title: "Cancel Request",
-              message: "Are you sure you want to cancel this request?",
-              preferredStyle: .alert
-          )
+    @IBAction func deleteButtonTapped(_ sender: UIButton) {
+        guard let requestId = self.requestId, !requestId.isEmpty else { return }
 
-          alert.addAction(UIAlertAction(title: "No", style: .cancel))
-          alert.addAction(UIAlertAction(title: "Yes", style: .destructive) { [weak self] _ in
-              self?.updateRequestStatus("Canceled")
-              guard let self = self else { return }
-              self.navigateToAdminTabBar()
-          })
+        let alert = UIAlertController(
+            title: "Delete Request",
+            message: "This action cannot be undone. Are you sure?",
+            preferredStyle: .alert
+        )
 
-          present(alert, animated: true)
-      }
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+            self?.deleteRequestAndDecrementCount(requestId: requestId)
+        })
+
+        present(alert, animated: true)
+    }
+
+    
+    private func deleteRequestAndDecrementCount(requestId: String) {
+        let db = Firestore.firestore()
+        let requestRef = db.collection("requests").document(requestId)
+
+        db.runTransaction({ (transaction, errorPointer) -> Any? in
+            // Read request doc first
+            let requestSnap: DocumentSnapshot
+            do {
+                requestSnap = try transaction.getDocument(requestRef)
+            } catch let error as NSError {
+                errorPointer?.pointee = error
+                return nil
+            }
+
+            guard let data = requestSnap.data() else {
+                // Request already gone; nothing to do
+                return nil
+            }
+
+            //Extract technician id from the request
+            // CHANGE THIS KEY to match your schema (common options shown)
+            let technicianId =
+                (data["assignedTechnicianId"] as? String) ??
+                (data["technicianId"] as? String) ??
+                (data["assignedTo"] as? String)
+
+            if let techId = technicianId, !techId.isEmpty {
+                let techRef = db.collection("technicians").document(techId)
+
+                //Read technician doc so we can clamp at 0
+                let techSnap: DocumentSnapshot
+                do {
+                    techSnap = try transaction.getDocument(techRef)
+                } catch let error as NSError {
+                    errorPointer?.pointee = error
+                    return nil
+                }
+
+                let current = (techSnap.data()?["assignedTaskCount"] as? Int) ?? 0
+                let newValue = max(0, current - 1)
+
+                transaction.updateData(["assignedTaskCount": newValue], forDocument: techRef)
+            }
+
+            //Delete the request
+            transaction.deleteDocument(requestRef)
+
+            return nil
+        }) { [weak self] (_, error) in
+            if let error = error {
+                print("Transaction failed:", error.localizedDescription)
+                self?.showAlert("Failed to delete request")
+                return
+            }
+
+            print("Request deleted + technician count decremented")
+            DispatchQueue.main.async {
+                self?.navigateToAdminTabBar()
+            }
+        }
+    }
+
+
 
       @IBAction func acceptButtonTapped(_ sender: UIButton) {
           let alert = UIAlertController(
@@ -164,7 +230,7 @@ final class ViewRequestViewController: UIViewController {
 
           alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
           alert.addAction(UIAlertAction(title: "Accept", style: .default) { [weak self] _ in
-              self?.updateRequestStatus("Accepted")
+              self?.updateRequestStatus("accepted")
               guard let self = self else { return }
               self.navigateToAdminTabBar()
           })
@@ -172,28 +238,28 @@ final class ViewRequestViewController: UIViewController {
           present(alert, animated: true)
       }
     
-    @IBAction func editButtonTapped(_ sender: UIButton) {
-        guard let uid = sender.accessibilityIdentifier, !uid.isEmpty else { return }
-        
-        // Use the current storyboard when possible (safer than hardcoding "Main").
-        let sb = self.storyboard ?? UIStoryboard(name: "Main", bundle: nil)
-        guard let editVC = sb.instantiateViewController(withIdentifier: "EditRequestViewController")
-                as? EditRequestViewController else {
-            print("❌ Could not instantiate EditRequestViewController. Check Storyboard ID + Custom Class.")
-            return
-        }
-        
-        editVC.userId = uid
-        
-        // If this screen isn't embedded in a UINavigationController, push will do nothing.
-        // Present modally as a fallback.
-        if let nav = self.navigationController {
-            nav.pushViewController(editVC, animated: true)
-        } else {
-            editVC.modalPresentationStyle = .fullScreen
-            self.present(editVC, animated: true)
-        }
-    }
+//    @IBAction func editButtonTapped(_ sender: UIButton) {
+//        guard let uid = sender.accessibilityIdentifier, !uid.isEmpty else { return }
+//        
+//        // Use the current storyboard when possible (safer than hardcoding "Main").
+//        let sb = self.storyboard ?? UIStoryboard(name: "Main", bundle: nil)
+//        guard let editVC = sb.instantiateViewController(withIdentifier: "EditRequestViewController")
+//                as? EditRequestViewController else {
+//            print("Could not instantiate EditRequestViewController. Check Storyboard ID + Custom Class.")
+//            return
+//        }
+//        
+//        editVC.userId = uid
+//        
+//        // If this screen isn't embedded in a UINavigationController, push will do nothing.
+//        // Present modally as a fallback.
+//        if let nav = self.navigationController {
+//            nav.pushViewController(editVC, animated: true)
+//        } else {
+//            editVC.modalPresentationStyle = .fullScreen
+//            self.present(editVC, animated: true)
+//        }
+//    }
     
     @IBAction func assignButtonTapped(_ sender: UIButton) {
         guard let rid = self.requestId, !rid.isEmpty else { return }
@@ -202,7 +268,7 @@ final class ViewRequestViewController: UIViewController {
         
         guard let vc = sb.instantiateViewController(withIdentifier: "AdminTechnicianReassignmentViewController")
                 as? AdminTechnicianReassignmentViewController else {
-            print("❌ Could not instantiate AdminTechnicianReassignmentViewController. Check Storyboard ID + Custom Class.")
+            print("Could not instantiate AdminTechnicianReassignmentViewController. Check Storyboard ID + Custom Class.")
             return
         }
         
@@ -230,10 +296,10 @@ final class ViewRequestViewController: UIViewController {
                 switch result {
                 case .success:
                     self?.statusLabel.text = status
-                    self?.showAlert("Request updated to \(status) ✅")
+                    self?.showAlert("Request updated to \(status)")
                     
                 case .failure(let error):
-                    self?.showAlert("Failed ❌: \(error.localizedDescription)")
+                    self?.showAlert("Failed: \(error.localizedDescription)")
                 }
             }
         }
@@ -253,7 +319,7 @@ final class ViewRequestViewController: UIViewController {
             guard let self else { return }
             
             if let error = error {
-                print("❌ fetchRequesterName(users/\(uid)) error:", error)
+                print("fetchRequesterName(users/\(uid)) error:", error)
                 DispatchQueue.main.async { self.requesterLabel.text = "Unknown" }
                 return
             }

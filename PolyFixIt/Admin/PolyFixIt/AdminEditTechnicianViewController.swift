@@ -92,7 +92,7 @@ final class AdminEditTechnicianViewController: UIViewController {
         }
     }
 
-    // ✅ Password Regex Validation
+    //Password Regex Validation
     // Rules:
     // - min 8 chars
     // - at least 1 uppercase, 1 lowercase, 1 number
@@ -116,7 +116,7 @@ final class AdminEditTechnicianViewController: UIViewController {
             return
         }
 
-        // ✅ Validate password only if admin entered one
+        //Validate password only if admin entered one
         let password = (passwordTextField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
         if !password.isEmpty && !isValidPassword(password) {
             showAlert(

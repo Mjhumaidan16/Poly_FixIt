@@ -2,12 +2,6 @@
 //  TechListViewController.swift
 //  SignIn
 //
-//  Reused + updated for Technician Dashboard storyboard:
-//  - Top counters: total technicians, currently free, currently busy, ongoing tasks, upcoming tasks
-//  - List in stack view: tap busy -> schedule screen, tap free -> assignment screen
-//  - Filters: search + segmented (All / Free / Busy)
-//  - Busy/free derived from `requests` collection by matching `assignedTechnician` document reference
-//
 
 import UIKit
 import FirebaseFirestore
@@ -122,7 +116,7 @@ private extension TechListViewController {
 
         // Find UI anchors
         guard let stack = findTechniciansStackView() else {
-            print("❌ Could not find technicians stack view.")
+            print("Could not find technicians stack view.")
             return
         }
         techniciansStackView = stack
@@ -136,7 +130,7 @@ private extension TechListViewController {
 
         guard let busyTemplate = templateCardBusy,
               let freeTemplate = templateCardFree else {
-            print("❌ Could not find BOTH template cards (busy + free) inside stack view.")
+            print("Could not find BOTH template cards (busy + free) inside stack view.")
             return
         }
 
@@ -183,11 +177,11 @@ private extension TechListViewController {
             guard self.renderToken == myToken else { return }
 
             if let techError {
-                print("❌ Firestore technicians error:", techError)
+                print("Firestore technicians error:", techError)
                 return
             }
             if let reqError {
-                print("❌ Firestore requests error:", reqError)
+                print("Firestore requests error:", reqError)
                 return
             }
 
@@ -616,7 +610,7 @@ private extension UIView {
             let data = try NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: false)
             return try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? UIView
         } catch {
-            print("❌ Clone view failed:", error)
+            print("Clone view failed:", error)
             return nil
         }
     }

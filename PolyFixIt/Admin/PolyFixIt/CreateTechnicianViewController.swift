@@ -23,11 +23,11 @@ class CreateTechnicianViewController: UIViewController {
     // MARK: - Department Menu
     private func configureDepartmentMenu() {
         let departments = [
-            "Plumbing Technician",
-            "IT Technician",
-            "HVAC Technician",
-            "Furniture Technician",
-            "Safety Technician"
+            "Plumbing",
+            "IT",
+            "HVAC",
+            "Furniture",
+            "Safety"
         ]
 
         let actions = departments.map { dept in
@@ -54,7 +54,7 @@ class CreateTechnicianViewController: UIViewController {
             return
         }
 
-        // 1️⃣ Create Firebase Auth user
+        //create Firebase Auth user
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             if let error = error {
                 self.showAlert("Auth Error: \(error.localizedDescription)")
@@ -66,7 +66,7 @@ class CreateTechnicianViewController: UIViewController {
                 return
             }
 
-            // 2️⃣ Create Firestore technician document (NO password)
+            //Create Firestore technician document (NO password)
             self.createTechnicianDocument(
                 uid: uid,
                 fullName: fullName,

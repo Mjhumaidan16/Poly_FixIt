@@ -3,12 +3,6 @@
 //  SignIn
 //
 //  Campus -> Building -> Class picker backend.
-//
-//  How to use:
-//  1) Set your scene's custom class to `LocationBackendViewController`.
-//  2) Add a UIPickerView and connect it to `locationPickerView`.
-//  3) Read `selectedCampus`, `selectedBuilding`, `selectedClass` when you need.
-//
 
 import UIKit
 import FirebaseFirestore

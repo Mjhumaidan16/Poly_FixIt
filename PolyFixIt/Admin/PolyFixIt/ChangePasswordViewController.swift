@@ -3,16 +3,12 @@ import FirebaseAuth
 
 class AdminChangePasswordViewController: UIViewController {
 
-    // -----------------------------
-    // IBOutlets: UI elements from storyboard
-    // -----------------------------
-    @IBOutlet weak var changePasswordTextField: UITextField! // ✅ Added change password text field IBOutlet
-    @IBOutlet weak var changePasswordStatusLabel: UILabel! // ✅ Added change password label IBOutlet
-    @IBOutlet weak var changePasswordButton: UIButton! // ✅ Added change password button IBOutlet
 
-    // =============================
-    // Change Password Button Action
-    // =============================
+    @IBOutlet weak var changePasswordTextField: UITextField! //Added change password text field IBOutlet
+    @IBOutlet weak var changePasswordStatusLabel: UILabel! //Added change password label IBOutlet
+    @IBOutlet weak var changePasswordButton: UIButton! //Added change password button IBOutlet
+
+ 
     @IBAction func changePasswordButtonTapped(_ sender: UIButton) {
         guard let newPassword = changePasswordTextField.text, !newPassword.isEmpty else {
             changePasswordStatusLabel.text = "Enter new password"
@@ -20,9 +16,7 @@ class AdminChangePasswordViewController: UIViewController {
             return
         }
 
-        // -----------------------------
-        // PASSWORD VALIDATION
-        // -----------------------------
+   
         if !isValidPassword(newPassword) {
             changePasswordStatusLabel.text = "Password must meet the requirments"
             removeWarningsAfterDelay()
@@ -40,9 +34,7 @@ class AdminChangePasswordViewController: UIViewController {
                     print("Password updated successfully")
                     self.changePasswordStatusLabel.text = "Password updated"
 
-                    // -----------------------------
-                    // LOG OUT USER AFTER PASSWORD CHANGE
-                    // -----------------------------
+               
                     // Remove saved admin data
                     UserDefaults.standard.removeObject(forKey: "loggedInAdmin")
                     
@@ -65,9 +57,7 @@ class AdminChangePasswordViewController: UIViewController {
         }
     }
 
-    // =============================
-    // Password Validation Helper
-    // =============================
+
     private func isValidPassword(_ password: String) -> Bool {
         // Minimum 8 characters, 1 uppercase, 1 lowercase, 1 number
         let passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$"
@@ -75,9 +65,7 @@ class AdminChangePasswordViewController: UIViewController {
         return passwordPred.evaluate(with: password)
     }
 
-    // =============================
-    // Helper Methods
-    // =============================
+   
     private func removeWarningsAfterDelay() {
         // Remove warnings after 7 seconds
         DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
@@ -90,9 +78,6 @@ class AdminChangePasswordViewController: UIViewController {
     }
     
     
-        // =============================
-        // Logout Button Action
-        // =============================
         @IBAction func logoutButtonTapped(_ sender: UIButton) {
             UserDefaults.standard.removeObject(forKey: "loggedInAdmin")
     

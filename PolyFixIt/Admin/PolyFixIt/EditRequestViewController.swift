@@ -23,6 +23,8 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
     private var uploadedImageUrl: String?
     private var currentRequest: Request?
     private var didPickNewImage: Bool = false
+    private var didForcePriorityIndex = false
+
 
     private let buildingsByCampus: [String: [String]] = [
         "CampA": ["19", "36", "5"],
@@ -77,7 +79,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
         
         // Prevent a crash if this screen is opened without a request id.
         guard let requestId = userId, !requestId.isEmpty else {
-            print("❌ EditRequestViewController opened without userId/requestId")
+            print("EditRequestViewController opened without userId/requestId")
             disableEditing()
             showAlert("Missing request id. Please open this screen from a request.")
             return
@@ -105,46 +107,79 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
 
                 // IMPORTANT: menus must be configured (otherwise you’re relying on storyboard menus)
                 self.setupCategoryDropdownMenu()
-                self.setupPriorityMenu()
+                self.setupPriorityDropdownMenu()
 
                 self.enableEditing()
             }
         }
     }
-
+    
     // MARK: - Setup Category Menu
     private func setupCategoryDropdownMenu() {
-        let actions: [UIAction] = categories.map { category in
-            UIAction(title: category, state: .off) { [weak self] _ in
-                guard let self = self else { return }
-                self.selectedCategory = category
-                self.CategoryButton.setTitle(category, for: .normal)
-            }
+        // 1) Normalize DB value to one of the items in `categories`
+        if let selected = selectedCategory?.trimmingCharacters(in: .whitespacesAndNewlines),
+           let match = categories.first(where: { $0.caseInsensitiveCompare(selected) == .orderedSame }) {
+            selectedCategory = match
+        } else {
+            selectedCategory = nil
         }
 
-        CategoryButton.menu = UIMenu(title: "Select Category", children: actions)
+        // 2) Set button title (don’t force first item)
+        if let selectedCategory {
+            CategoryButton.setTitle(selectedCategory, for: .normal)
+        } else {
+            CategoryButton.setTitle("Select Category", for: .normal)
+        }
+
+        // 3) Build actions with correct checkmark state
+        let actions: [UIAction] = categories.map { category in
+            UIAction(
+                title: category,
+                state: (category.caseInsensitiveCompare(selectedCategory ?? "") == .orderedSame) ? .on : .off,
+                handler: { [weak self] _ in
+                    guard let self else { return }
+                    self.selectedCategory = category
+                    self.CategoryButton.setTitle(category, for: .normal)
+
+                    // rebuild so the checkmark moves
+                    self.setupCategoryDropdownMenu()
+                }
+            )
+        }
+
+        CategoryButton.menu = UIMenu(title: "Select Category", options: .displayInline, children: actions)
         CategoryButton.showsMenuAsPrimaryAction = true
+        CategoryButton.changesSelectionAsPrimaryAction = false
     }
+
     
     // MARK: - Setup Priority Menu
-    private func setupPriorityMenu() {
-        guard !priorityLevels.isEmpty else { return }
-        
-        if selectedPriorityLevel == nil {
-            selectedPriorityLevel = priorityLevels.first
-            if let selectedPriorityLevel { PriorityLevelButton.setTitle(selectedPriorityLevel, for: .normal) }
+    private func setupPriorityDropdownMenu() {
+
+        let forcedIndex = didForcePriorityIndex ? nil : 2
+
+        let actions = priorityLevels.enumerated().map { index, level in
+            UIAction(
+                title: level,
+                state: (forcedIndex == index || level == selectedPriorityLevel) ? .on : .off,
+                handler: { [weak self] _ in
+                    guard let self else { return }
+                    self.didForcePriorityIndex = true
+                    self.selectedPriorityLevel = level
+                    self.PriorityLevelButton.setTitle(level, for: .normal)
+                    self.setupPriorityDropdownMenu()
+                }
+            )
         }
 
-        let actions = priorityLevels.map { level in
-            UIAction(title: level.capitalized) { [weak self] _ in
-                self?.selectedPriorityLevel = level
-                self?.PriorityLevelButton.setTitle(level.capitalized, for: .normal)
-                print("Priority selected: \(self?.selectedPriorityLevel ?? "None")")
-            }
-        }
+        PriorityLevelButton.menu = UIMenu(
+            title: "Priority Level",
+            options: .displayInline,
+            children: actions
+        )
 
-        PriorityLevelButton.menu = UIMenu(title: "Select Priority", children: actions)
         PriorityLevelButton.showsMenuAsPrimaryAction = true
+        PriorityLevelButton.changesSelectionAsPrimaryAction = false
     }
 
     // MARK: - Enable/Disable Editing
@@ -184,7 +219,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
        
 
          guard request.location.count == 3 else {
-             print("❌ Invalid location array, skipping location prefill")
+             print("Invalid location array, skipping location prefill")
              return
          }
 
@@ -212,7 +247,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
          }
 
         setupCategoryDropdownMenu()
-        setupPriorityMenu() // NEW
+        setupPriorityDropdownMenu() // NEW
     }
 
     // MARK: - Picker Handling
@@ -273,10 +308,10 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
 //            DispatchQueue.main.async {
 //                switch result {
 //                case .success:
-//                    self?.showAlert("Request deleted successfully ✅")
+//                    self?.showAlert("Request deleted successfully")
 //                    self?.navigationController?.popViewController(animated: true)
 //                case .failure(let error):
-//                    self?.showAlert("Failed to delete request ❌: \(error.localizedDescription)")
+//                    self?.showAlert("Failed to delete request: \(error.localizedDescription)")
 //                }
 //            }
 //        }
@@ -304,12 +339,12 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
                     try await self.performUpdate()
                     await MainActor.run {
                         self.submitButton.isEnabled = true
-                        self.showupAlert()   // ✅ navigate only AFTER success
+                        self.showupAlert()   //navigate only AFTER success
                     }
                 } catch {
                     await MainActor.run {
                         self.submitButton.isEnabled = true
-                        self.showAlert("Failed to submit request ❌: \(error.localizedDescription)")
+                        self.showAlert("Failed to submit request: \(error.localizedDescription)")
                     }
                 }
             }
@@ -378,7 +413,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
             throw NSError(domain: "EditRequest", code: 0, userInfo: [NSLocalizedDescriptionKey: "Missing required fields"])
         }
 
-        // ✅ Keep the current image URL unless a new one was picked & uploaded
+        //Keep the current image URL unless a new one was picked & uploaded
         let finalImageUrl: String? = {
             if didPickNewImage {
                 return uploadedImageUrl // this should be set after upload
@@ -397,7 +432,7 @@ final class EditRequestViewController: UIViewController, UIPickerViewDelegate, U
             priorityLevel: currentRequest?.priorityLevel ?? ["high","middel","low"],
             selectedCategory: selectedCategory,
             selectedPriorityLevel: selectedPriorityLevel,
-            imageUrl: finalImageUrl,   // ✅ THIS is the key line
+            imageUrl: finalImageUrl,   //THIS is the key line
             imageProof: nil,
             submittedBy: nil,
             assignedTechnician: nil,

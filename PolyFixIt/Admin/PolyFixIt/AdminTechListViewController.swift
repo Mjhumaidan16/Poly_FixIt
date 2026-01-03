@@ -2,7 +2,7 @@
 //  AdminTechListViewController.swift
 //  SignIn
 //
-//  Created by BP-36-212-19 on 24/12/2025.
+//  Created by BP-36-212-18 on 24/12/2025.
 //
 
 import UIKit
@@ -37,7 +37,7 @@ final class AdminTechListViewController: UIViewController {
 
         guard let stackView = findTechStackView(),
               let templateCard = stackView.arrangedSubviews.first(where: { $0.tag == 1 }) else {
-            print("❌ Could not find stackView or template card (tag=1).")
+            print("Could not find stackView or template card (tag=1).")
             refreshButton.isEnabled = true
             return
         }
@@ -50,7 +50,7 @@ final class AdminTechListViewController: UIViewController {
             v.removeFromSuperview()
         }
 
-        // ✅ Fetch ALL technicians (active + inactive)
+        //Fetch ALL technicians (active + inactive)
         db.collection("technicians").getDocuments { [weak self] snapshot, error in
             guard let self = self else { return }
             guard self.renderToken == myToken else { return }
@@ -60,7 +60,7 @@ final class AdminTechListViewController: UIViewController {
             }
 
             if let error = error {
-                print("❌ Firestore error:", error)
+                print("Firestore error:", error)
                 return
             }
 
@@ -129,7 +129,7 @@ final class AdminTechListViewController: UIViewController {
         // We will reuse the same storyboard button (it was "Delete") and switch its title to Activate when needed
         let actionButton = findDeleteOrActivateButton(in: card)
 
-        // ✅ NEW: Edit button
+        //Edit button
         let editButton = findEditButton(in: card)
 
         // Name split
@@ -166,7 +166,7 @@ final class AdminTechListViewController: UIViewController {
             actionButton.addTarget(self, action: #selector(handleActionTapped(_:)), for: .touchUpInside)
         }
 
-        // ✅ NEW: Wire Edit -> open edit screen + pass UID
+        //Wire Edit -> open edit screen + pass UID
         if let editButton {
             editButton.accessibilityIdentifier = techUID
             editButton.removeTarget(self, action: #selector(handleEditTapped(_:)), for: .touchUpInside)
@@ -212,7 +212,7 @@ final class AdminTechListViewController: UIViewController {
                 return
             }
 
-            // ✅ auto refresh
+            //auto refresh
             self.loadTechniciansAndRender()
         }
     }
@@ -237,7 +237,7 @@ final class AdminTechListViewController: UIViewController {
         }
     }
 
-    // ✅ NEW: Open edit screen + pass UID
+    //NEW: Open edit screen + pass UID
     @objc private func handleEditTapped(_ sender: UIButton) {
         guard let uid = sender.accessibilityIdentifier, !uid.isEmpty else { return }
 
@@ -245,7 +245,7 @@ final class AdminTechListViewController: UIViewController {
         let sb = self.storyboard ?? UIStoryboard(name: "Main", bundle: nil)
         guard let editVC = sb.instantiateViewController(withIdentifier: "AdminEditTechnicianViewController")
                 as? AdminEditTechnicianViewController else {
-            print("❌ Could not instantiate AdminEditTechnicianViewController. Check Storyboard ID + Custom Class.")
+            print("Could not instantiate AdminEditTechnicianViewController. Check Storyboard ID + Custom Class.")
             return
         }
 
@@ -304,7 +304,7 @@ final class AdminTechListViewController: UIViewController {
         })
     }
 
-    // ✅ NEW: Find Edit button
+    //Find Edit button
     private func findEditButton(in card: UIView) -> UIButton? {
         let buttons = card.allSubviews.compactMap { $0 as? UIButton }
         return buttons.first(where: { button in
@@ -324,7 +324,7 @@ private extension UIView {
             let data = try NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: false)
             return try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? UIView
         } catch {
-            print("❌ Clone view failed:", error)
+            print("Clone view failed:", error)
             return nil
         }
     }

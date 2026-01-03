@@ -1,11 +1,7 @@
 import UIKit
 import FirebaseAuth
 
-/// Global inactivity/session manager for the Admin app.
-///
-/// - Catches taps globally via `AdminApplication`.
-/// - Logs out after `timeoutSeconds` of inactivity.
-/// - Redirects to the Admin login screen (`AdminLoginViewController` in `Main.storyboard`).
+
 final class SessionManager {
 
     static let shared = SessionManager()

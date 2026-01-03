@@ -1,3 +1,13 @@
+
+
+//
+//  AdminTechnicianReassignmentViewController
+//  SignIn
+//
+//  Created by BP-36-212-08 on 24/12/2025.
+//
+
+
 import UIKit
 import FirebaseFirestore
 
@@ -39,7 +49,7 @@ final class AdminTechnicianReassignmentViewController: UIViewController {
         super.viewDidLoad()
 
         if requestID == nil || requestID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            print("❌ requestID is missing. Pass it before presenting this VC.")
+            print("requestID is missing. Pass it before presenting this VC.")
         }
 
         wireUpUI()
@@ -84,12 +94,14 @@ final class AdminTechnicianReassignmentViewController: UIViewController {
         let myToken = UUID()
         renderToken = myToken
 
-        db.collection("technicians").getDocuments { [weak self] snap, err in
+        db.collection("technicians")
+            .whereField("isActive", isEqualTo: true)
+            .getDocuments { [weak self] snap, err in
             guard let self else { return }
             guard self.renderToken == myToken else { return }
 
             if let err = err {
-                print("❌ Failed to fetch technicians: \(err)")
+                print("Failed to fetch technicians: \(err)")
                 self.showAlert(title: "Error", message: "Failed to fetch technicians.")
                 return
             }
@@ -170,7 +182,7 @@ final class AdminTechnicianReassignmentViewController: UIViewController {
         }
 
         guard let template = templateCardView else {
-            print("❌ No template card found. Add 1 sample technician card view inside the stack in storyboard.")
+            print("No template card found. Add 1 sample technician card view inside the stack in storyboard.")
             return
         }
 
@@ -193,7 +205,7 @@ final class AdminTechnicianReassignmentViewController: UIViewController {
         let tasksLabel = card.viewWithTag(1003) as? UILabel
         let ongoingLabel = card.viewWithTag(1006) as? UILabel
 
-        // ✅ The two you want fixed (BUSY vs CATEGORY)
+        //The two you want fixed (BUSY vs CATEGORY)
         let busyLabel = card.viewWithTag(1004) as? UILabel
         let categoryLabel = card.viewWithTag(1005) as? UILabel
 
@@ -202,7 +214,7 @@ final class AdminTechnicianReassignmentViewController: UIViewController {
         tasksLabel?.text = "\(tech.assignedTaskCount) Tasks Assigned"
         ongoingLabel?.text = tech.ongoingTitle.isEmpty ? "Ongoing: —" : "Ongoing: \(tech.ongoingTitle)"
 
-        // ✅ correct placement
+        //correct placement
         busyLabel?.text = tech.isBusy ? "Busy" : "Free"
         busyLabel?.textAlignment = .center
 
@@ -297,7 +309,7 @@ final class AdminTechnicianReassignmentViewController: UIViewController {
             self.confirmButton?.isEnabled = true
 
             if let err = err {
-                print("❌ Reassignment failed: \(err)")
+                print("Reassignment failed: \(err)")
                 self.showAlert(title: "Error", message: "Failed to reassign technician.")
                 return
             }

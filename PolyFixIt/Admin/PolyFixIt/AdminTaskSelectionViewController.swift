@@ -1,3 +1,10 @@
+//
+//  AdminTaskSelectionViewController.swift
+//  SignIn
+//
+//  Created by BP-36-212-19 on 25/12/2025.
+//
+
 import UIKit
 import FirebaseFirestore
 
@@ -39,7 +46,7 @@ final class AdminTaskSelectionViewController: UIViewController {
 
         // Safety
         if technicianUID == nil || technicianUID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            print("❌ technicianUID is missing. Make sure you pass it before presenting this VC.")
+            print("technicianUID is missing. Make sure you pass it before presenting this VC.")
         }
 
         wireUpUI()
@@ -92,7 +99,7 @@ final class AdminTaskSelectionViewController: UIViewController {
             guard self.renderToken == myToken else { return }
 
             if let err = err {
-                print("❌ Failed to fetch requests: \(err)")
+                print("Failed to fetch requests: \(err)")
                 self.showAlert(title: "Error", message: "Failed to fetch requests.")
                 return
             }
@@ -145,7 +152,7 @@ final class AdminTaskSelectionViewController: UIViewController {
         }
 
         guard let template = templateCardView else {
-            print("❌ No template card found in stack view. Add 1 sample card view inside the stack in storyboard.")
+            print("No template card found in stack view. Add 1 sample card view inside the stack in storyboard.")
             return
         }
 
@@ -262,7 +269,7 @@ final class AdminTaskSelectionViewController: UIViewController {
             self.confirmButton?.isEnabled = true
 
             if let err = err {
-                print("❌ Batch commit failed: \(err)")
+                print("Batch commit failed: \(err)")
                 self.showAlert(title: "Error", message: "Failed to assign tasks.")
                 return
             }
