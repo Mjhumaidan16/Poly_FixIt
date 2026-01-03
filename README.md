@@ -1,125 +1,92 @@
-# 📱 Campus Repair & Maintenance Request System  
+# PolyFixIt
 
-A mobile application developed as part of **IT8108 – Mobile Programming** coursework. The app streamlines the process of submitting, tracking, and managing repair or maintenance requests across university campuses.  
-
-It addresses common issues such as **delayed response times, lack of visibility, and poor communication** between students, staff, technicians, and administrators.  
-
----
-
-## 🚀 Project Overview  
-
-This project follows a **user-centered design approach**, moving through research, design, prototyping, and development. The application delivers a meaningful and professional user experience through:  
-
-- Thoughtful design decisions.  
-- Clear, intuitive functionality.  
-- Organized interface and workflows.  
-
-**Target platform:** iOS (iOS 17.0+, Xcode 15/16)  
+## Project Information
+* **App Name**: PolyFixIt
+* **GitHub Repository**: [https://github.com/Mjhumaidan16/Poly_FixIt](https://github.com/Mjhumaidan16/Poly_FixIt)
+* **Project Goal**: A mobile application to simplify managing and maintaining college facility issues (infrastructure, Wi-Fi, etc) through direct communication between students, technicians, and admins.
 
 ---
 
-## 👥 User Roles & Permissions  
-
-### 🎓 Student/Staff  
-- Submit repair/maintenance requests (with images, location, category, urgency).  
-- Modify or cancel requests before assignment.  
-- Track request status updates (New → Assigned → In Progress → Done).  
-- Receive notifications for status changes.  
-- Provide feedback/rating after completion.  
-
-### 🔧 Technician  
-- View assigned tickets and maintenance schedules.  
-- Update ticket progress in real time.  
-- Track completed jobs, total workload, and resolution times.  
-- Use filtering/sorting tools for efficient task management.  
-
-### 🛠️ Admin  
-- Assign and prioritize tasks based on urgency/severity.  
-- Monitor requests, staff performance, and system analytics.  
-- Resolve escalations for delayed/unresolved tickets.  
-- Access an **Admin Dashboard** with KPIs and performance metrics.  
-- Export or print statistics in PDF format.  
+## Group Members
+* **Mohammed Humaidan** - 202202728
+* **Hussain Humaidan** - 202304938
+* **Salman Ameeri** - 202203227
+* **Ali Aljufairi** - 202304898
+* **Abdulrahman Abdulla** - 202301682
+* **Abdulla Naser** - 202304876
 
 ---
 
-## 📌 Core Features  
-
-- 📷 **Repair Request Submission** – Attach images, select category, location & urgency.  
-- ✏️ **Request Modification** – Update or cancel requests (before assignment).  
-- 📊 **Request Tracking** – View status in real time.  
-- 📅 **Technician Scheduling** – Assigned tasks and planned jobs.  
-- 📈 **Admin Dashboard** – Analytics on total requests, resolution time, staff performance.  
-- 🔔 **Push Notifications** – Alerts for request updates and task assignments.  
-- ⭐ **Feedback System** – Requesters can rate the service after resolution.  
-- ⏫ **Escalation Mechanism** – Handle unresolved or delayed issues.  
-- 🔍 **Filtering & Sorting Tools** – For technicians and admins to manage workload.  
+## Main Features (Developer + Tester)
+| Developer | Main Features (Developed) | Testing Features (Tested) |
+| :--- | :--- | :--- |
+| **Salman Ameeri** | Repair Request Submission, Rate Workers and Requesters | Request Management, Technician/Maintenance Account Creation |
+| **Hussain Humaidan** | Request Management, Technician Account Creation | Repair Request Submission, Rate Workers and Requestors |
+| **Abdulrahman Abdulla** | Room Availability, Inventory System | Admin Dashboard with Analytics, User Follow-Up Chat |
+| **Ali Aljufairi** | Admin Dashboard, User Follow-Up Chat | Room Availability, Inventory System |
+| **Abdulla Naser** | User Notifications, Settings Page | User Auth, Technician Assignment |
+| **Mohammed Humaidan** | User Authentication, Technician Assignment | User Notifications, Settings Page |
 
 ---
 
-## 🤖 Additional Enhancements  
-
-- 🧠 **AI-Powered Task Assignment** – Automatically assign requests based on category, urgency, or location.  
-- 💬 **Chatbot Integration** – Handles common issues before ticket submission.  
-- ⏱️ **Predictive Maintenance** – AI recommends optimal scheduling after request completion.  
-- 🚫 **Validation & Control** – Option to restrict invalid requesters.  
-
----
-
-## 🌍 Alignment with UN SDGs  
-
-- **SDG 9** – Industry, Innovation, and Infrastructure  
-- **SDG 11** – Sustainable Cities and Communities  
-
----
-
-## 🛠️ Tech Stack  
-
-- **Language/Framework:** Swift (Xcode 15/16)  
-- **Target Platform:** iOS 17+  
-- **Prototyping Tools:** Figma / Adobe XD  
-- **Database:** MongoDB Atlas  
-- **Notifications:** Local + Push Notifications  
+## Extra Features
+* **Salman Ameeri**: 
+    1. Interactive Request Map View for locating issues geographically.
+* **Hussain Humaidan**: 
+    1. Google Auth Integration.
+    2. OTP verification.
+* **Abdulrahman Abdulla**: 
+    1. Emergency Alert System.
+* **Ali Aljufairi**: 
+    1. Admin statistics as pdf file.
+* **Abdulla Naser**: 
+    1. Guided video for new users.
+* **Mohammed Humaidan**: 
+    1. Smart Chat.
+    2. AI-Enchanced Repair Request.
 
 ---
 
-## 📂 Project Structure  
-├── **DesignDocument.pdf** # Background research, feature list, mockups  <br>
-├── **Prototype.fig/.xd** # High-fidelity prototype (Figma/Adobe XD)  <br>
-├── **Screenshots/** # Mockups and app preview  <br>
-├── **SourceCode/** # Swift iOS source files <br>
-├── **README.md** # Project documentation (this file)  <br>
+## Design Changes
+* **Null**: Null
+* **Null**: Null
+* **Null**: Null
 
+---
+
+## Libraries, Packages, & External Code
+* **AVFoundation**: Used AVFoundation for diplaying the guide video for the new app users.
+* **Firebase SDK**: Used for real-time database, authentication, and cloud storage.
+* **SMTP**: Used to send OTP verf codes to verif the newly created accounts.
+* **MapKit**: For showing a image as a pre-loaded map with a dots overview as a interactive Request Map View for locating issues geographically.
+* **GoogleSignIn-iOS**: For sign in and signing up using the pre-logged in google account.
+* **FSCalender**: Used to display a calendar view for scheduling, filtering and room availability.
+* **DGCharts**: Used for creating interactive and visually appealing charts in the admin dashboard.
+* **Cloudinary**: Used for image and media management, including uploading and displaying photos.
+* **Gemini Restful API**: Used to handle communication between the user and the AI bot.
 
 
 ---
 
-## 📸 Screens & Mockups  
+## Project Setup Instructions
+1.  **Clone the Repository**: `git clone https://github.com/Mjhumaidan16/Poly_FixIt.git`
+2.  **Add Dependencies in Xcode**:  
+`https://github.com/cloudinary/cloudinary_ios.git`  
+`https://github.com/WenchaoD/FSCalendar`  
+`https://github.com/ChartsOrg/Charts`  
+`https://github.com/google/GoogleSignIn-iOS`  
+`https://github.com/Kitura/Swift-SMTP`  
+`https://github.com/firebase/firebase-ios-sdk`
 
-- Login / Signup  
-- Submit Repair Request  
-- Request Tracking  
-- Technician Schedule  
-- Admin Dashboard  
-- Feedback & Rating  
-
-*(See `/Screenshots` folder for wireframes and mockups.)*  
-
+4.  **Setup Environment**: Ensure you have an active Firebase project link, the `google-services.json`
+5.  **Launch**: Run the project usign the xcode IDE
 ---
 
-## 📅 Development Workflow  
-
-1. Research & Background Analysis  
-2. Feature Planning & Distribution  
-3. Low-Fidelity Mockups (individual)  
-4. High-Fidelity Prototype (group)  
-5. App Development (Swift + Xcode)  
-6. Testing & Refinement  
-7. Final Demonstration  
+## Testing Details
+* **Simulators Used**: iPhone 16 Pro.
+* **Admin Login Credentials**:
+    * **Email**: admin@admin.com
+    * **Password**:  Huss_390370855
 
 ---
-
-## 📜 License  
-
-This project is developed for **educational purposes** under IT8108 – Mobile Programming.  
-You are free to **fork, reference, or adapt it for learning**.  
 
