@@ -48,9 +48,10 @@
 ---
 
 ## Design Changes
-* **Null**: Null
-* **Null**: Null
-* **Null**: Null
+* **Removed the Duplicate request**: Removed the duplicate request from the admin dashboard.
+* **Added pending request**: Added the pending request to the admin dashboard.
+* **Added the AVFoundation**: Added the AVFoundation to show off the guided video for the newly created users.
+* **Added a chat with AI**: Added a btn in the request list that will redirect the ticketer to an AI based chat.
 
 ---
 
