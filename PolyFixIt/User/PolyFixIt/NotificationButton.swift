@@ -3,7 +3,7 @@ import SwiftUI
 import FirebaseFirestore
 import UserNotifications
 
-// MARK: - نموذج البيانات
+// MARK: - Data Model
 struct NotificationMessage: Identifiable {
     let id = UUID()
     let title: String
@@ -11,7 +11,7 @@ struct NotificationMessage: Identifiable {
     let timestamp: String
 }
 
-// MARK: - واجهة القائمة المنسدلة (SwiftUI)
+// MARK: - Dropdown Interface (SwiftUI)
 struct StackedNotificationView: View {
     let notifications: [NotificationMessage]
     private let scaleFactor: CGFloat = 1.1
@@ -19,7 +19,7 @@ struct StackedNotificationView: View {
     var body: some View {
         VStack(spacing: 0) {
             if notifications.isEmpty {
-                Text("لا توجد إشعارات حالياً")
+                Text("No notifications currently")
                     .font(.system(size: 14 * scaleFactor))
                     .foregroundColor(.secondary)
                     .padding()
@@ -35,7 +35,7 @@ struct StackedNotificationView: View {
                 .padding(.vertical, 8 * scaleFactor)
             }
             Divider()
-            Button(action: { print("show all") }) {
+            Button(action: { print("Show all tapped") }) {
                 Text("View All")
                     .font(.system(size: 16 * scaleFactor, weight: .bold))
                     .frame(maxWidth: .infinity)
@@ -54,22 +54,32 @@ struct StackedNotificationView: View {
             Circle()
                 .fill(Color.blue.opacity(0.2))
                 .frame(width: 32 * scaleFactor, height: 32 * scaleFactor)
-                .overlay(Image(systemName: "person.fill").font(.system(size: 10 * scaleFactor)).foregroundColor(.blue))
+                .overlay(
+                    Image(systemName: "person.fill")
+                        .font(.system(size: 10 * scaleFactor))
+                        .foregroundColor(.blue)
+                )
             
             VStack(alignment: .leading, spacing: 2) {
                 HStack {
-                    Text(item.title).font(.system(size: 14 * scaleFactor, weight: .bold))
+                    Text(item.title)
+                        .font(.system(size: 14 * scaleFactor, weight: .bold))
                     Spacer()
-                    Text(item.timestamp).font(.system(size: 10 * scaleFactor)).foregroundColor(.secondary)
+                    Text(item.timestamp)
+                        .font(.system(size: 10 * scaleFactor))
+                        .foregroundColor(.secondary)
                 }
-                Text(item.message).font(.system(size: 12 * scaleFactor)).foregroundColor(.secondary).lineLimit(2)
+                Text(item.message)
+                    .font(.system(size: 12 * scaleFactor))
+                    .foregroundColor(.secondary)
+                    .lineLimit(2)
             }
         }
         .padding(12 * scaleFactor)
     }
 }
 
-// MARK: - منطق زر الإشعارات (User)
+// MARK: - Notification Button Logic (User)
 class NotificationButton: UIBarButtonItem {
     
     private var messages: [NotificationMessage] = []
@@ -117,7 +127,7 @@ class NotificationButton: UIBarButtonItem {
             hidePanel()
         } else {
             showPanel(in: parentVC)
-            updateBadge(count: 0) // اختياري: تصفير الشارة عند الفتح
+            updateBadge(count: 0) // Optional: Reset badge when opened
         }
         isPanelVisible.toggle()
     }
@@ -128,6 +138,7 @@ class NotificationButton: UIBarButtonItem {
             .addSnapshotListener { [weak self] querySnapshot, error in
                 guard let self = self, let documents = querySnapshot?.documents else { return }
                 
+                // Filtering notifications belonging to "users" collection path
                 let userDocs = documents.filter { doc in
                     if let receiverRef = doc.data()["receiver"] as? DocumentReference {
                         return receiverRef.path.contains("users")
@@ -140,7 +151,7 @@ class NotificationButton: UIBarButtonItem {
                     let sender = data["triggeredby"] as? String ?? "Admin"
                     let msg = data["message"] as? String ?? ""
                     
-                    var timeStr = "الآن"
+                    var timeStr = "Now"
                     if let ts = data["time"] as? Timestamp {
                         let formatter = DateFormatter()
                         formatter.dateFormat = "h:mm a"
@@ -172,12 +183,12 @@ class NotificationButton: UIBarButtonItem {
         parent.view.addSubview(hc.view)
         hc.didMove(toParent: parent)
 
-        // MARK: - تعديل القيود للإزاحة (Constraints)
+        // MARK: - Offset Constraints
         NSLayoutConstraint.activate([
-            // constant: 60 يدفع المربع للأسفل أكثر بعيداً عن زر الجرس
+            // Pushes the panel down further from the bell icon
             hc.view.topAnchor.constraint(equalTo: parent.view.safeAreaLayoutGuide.topAnchor, constant: 60),
             
-            // constant: -60 يدفع المربع لجهة اليسار أكثر
+            // Pushes the panel further to the left
             hc.view.trailingAnchor.constraint(equalTo: parent.view.trailingAnchor, constant: -60)
         ])
 
@@ -202,7 +213,7 @@ class NotificationButton: UIBarButtonItem {
     }
 }
 
-// MARK: - Extension لتسهيل الوصول للـ View Controller
+// MARK: - Extension to find the parent View Controller
 extension UIView {
     var findParentViewController: UIViewController? {
         var parentResponder: UIResponder? = self

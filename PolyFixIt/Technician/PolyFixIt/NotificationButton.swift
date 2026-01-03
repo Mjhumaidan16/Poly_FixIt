@@ -2,7 +2,7 @@ import UIKit
 import SwiftUI
 import FirebaseFirestore
 
-// MARK: - نموذج البيانات
+// MARK: - Data Model
 struct NotificationMessage: Identifiable {
     let id = UUID()
     let title: String
@@ -10,7 +10,7 @@ struct NotificationMessage: Identifiable {
     let timestamp: String
 }
 
-// MARK: - واجهة القائمة المنسدلة (SwiftUI)
+// MARK: - Technician Dropdown Interface (SwiftUI)
 struct StackedNotificationView: View {
     let notifications: [NotificationMessage]
     private let scaleFactor: CGFloat = 1.1
@@ -18,7 +18,7 @@ struct StackedNotificationView: View {
     var body: some View {
         VStack(spacing: 0) {
             if notifications.isEmpty {
-                Text("لا توجد إشعارات للفنيين حالياً")
+                Text("No technician alerts currently")
                     .font(.system(size: 14 * scaleFactor))
                     .foregroundColor(.secondary)
                     .padding()
@@ -34,7 +34,7 @@ struct StackedNotificationView: View {
                 .padding(.vertical, 8 * scaleFactor)
             }
             Divider()
-            Button(action: { print("عرض الكل") }) {
+            Button(action: { print("View All Tapped") }) {
                 Text("View All")
                     .font(.system(size: 16 * scaleFactor, weight: .bold))
                     .frame(maxWidth: .infinity)
@@ -53,22 +53,32 @@ struct StackedNotificationView: View {
             Circle()
                 .fill(Color.orange.opacity(0.2))
                 .frame(width: 32 * scaleFactor, height: 32 * scaleFactor)
-                .overlay(Image(systemName: "wrench.and.screwdriver.fill").font(.system(size: 10 * scaleFactor)).foregroundColor(.orange))
+                .overlay(
+                    Image(systemName: "wrench.and.screwdriver.fill")
+                        .font(.system(size: 10 * scaleFactor))
+                        .foregroundColor(.orange)
+                )
             
             VStack(alignment: .leading, spacing: 2) {
                 HStack {
-                    Text(item.title).font(.system(size: 14 * scaleFactor, weight: .bold))
+                    Text(item.title)
+                        .font(.system(size: 14 * scaleFactor, weight: .bold))
                     Spacer()
-                    Text(item.timestamp).font(.system(size: 10 * scaleFactor)).foregroundColor(.secondary)
+                    Text(item.timestamp)
+                        .font(.system(size: 10 * scaleFactor))
+                        .foregroundColor(.secondary)
                 }
-                Text(item.message).font(.system(size: 12 * scaleFactor)).foregroundColor(.secondary).lineLimit(2)
+                Text(item.message)
+                    .font(.system(size: 12 * scaleFactor))
+                    .foregroundColor(.secondary)
+                    .lineLimit(2)
             }
         }
         .padding(12 * scaleFactor)
     }
 }
 
-// MARK: - منطق زر الإشعارات (المخصص للفنيين فقط)
+// MARK: - Technician Notification Button Logic
 class NotificationButton: UIBarButtonItem {
     
     private var messages: [NotificationMessage] = []
@@ -111,22 +121,25 @@ class NotificationButton: UIBarButtonItem {
 
     @objc private func togglePanel() {
         guard let parentVC = triggerButton.findParentViewController else { return }
-        if isPanelVisible { hidePanel() } else { showPanel(in: parentVC); updateBadge(count: 0) }
+        
+        if isPanelVisible {
+            hidePanel()
+        } else {
+            showPanel(in: parentVC)
+            updateBadge(count: 0) // Clear badge on view
+        }
         isPanelVisible.toggle()
     }
 
     private func fetchAllTechnicianNotifications() {
-        // سيقوم هذا الاستعلام بجلب كافة الإشعارات في قاعدة البيانات
-        // ثم نقوم بتصفيتها برمجياً لنعرض فقط التي تنتمي لمجموعة الـ technicians
         db.collection("notifications")
             .order(by: "time", descending: true)
             .addSnapshotListener { [weak self] querySnapshot, error in
                 guard let self = self, let documents = querySnapshot?.documents else { return }
                 
-                // التصفية بناءً على مسار الـ Reference
+                // Filtering based on the Reference path for technicians
                 let techDocs = documents.filter { doc in
                     if let receiverRef = doc.data()["receiver"] as? DocumentReference {
-                        // التحقق إذا كان المرجع يشير إلى مجموعة technicians
                         return receiverRef.path.contains("technicians")
                     }
                     return false
@@ -137,7 +150,7 @@ class NotificationButton: UIBarButtonItem {
                     let sender = data["triggeredby"] as? String ?? "Admin"
                     let msg = data["message"] as? String ?? ""
                     
-                    var timeStr = "الآن"
+                    var timeStr = "Now"
                     if let ts = data["time"] as? Timestamp {
                         let formatter = DateFormatter()
                         formatter.dateFormat = "h:mm a"
@@ -164,6 +177,7 @@ class NotificationButton: UIBarButtonItem {
         self.hostingController = hc
         hc.view.backgroundColor = .clear
         hc.view.translatesAutoresizingMaskIntoConstraints = false
+        
         parent.addChild(hc)
         parent.view.addSubview(hc.view)
         hc.didMove(toParent: parent)
@@ -190,6 +204,7 @@ class NotificationButton: UIBarButtonItem {
     }
 }
 
+// MARK: - Extension to find the parent View Controller
 extension UIView {
     var findParentViewController: UIViewController? {
         var parentResponder: UIResponder? = self
