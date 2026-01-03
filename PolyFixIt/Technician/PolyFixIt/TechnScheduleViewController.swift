@@ -14,9 +14,9 @@ final class TechnScheduleViewController: UIViewController, UISearchBarDelegate, 
 
     // MARK: - Storyboard Outlets (connect these)
     @IBOutlet weak var scrollView: UIScrollView!
-    @IBOutlet weak var datePicker: FSCalendar!          // storyboard: xUg-Qf-ZSc
-    @IBOutlet weak var tasksForLabel: UILabel!          // storyboard: 5g1-pR-eg0
-    @IBOutlet weak var searchBar: UISearchBar!          // storyboard: 7rs-RG-lLR
+    @IBOutlet weak var datePicker: FSCalendar!          
+    @IBOutlet weak var tasksForLabel: UILabel!          
+    @IBOutlet weak var searchBar: UISearchBar!          
     @IBOutlet weak var requestsStackView: UIStackView!  // the vertical list container
 
     // We’ll use the first arranged subview as a template card (your storyboard already has sample cards).
